@@ -19,7 +19,7 @@ CREATE TABLE user_data (
   birth_day  DATETIME    NOT NULL,
   country    VARCHAR(20),
   city       VARCHAR(20),
-  adress     VARCHAR(40),
+  address     VARCHAR(40),
   telephone  VARCHAR(25) NOT NULL,
   PRIMARY KEY (passport),
   FOREIGN KEY (login_id) REFERENCES user (login_id)

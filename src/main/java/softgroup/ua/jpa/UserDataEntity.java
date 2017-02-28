@@ -14,7 +14,7 @@ public class UserDataEntity {
     private Timestamp birthDay;
     private String country;
     private String city;
-    private String adress;
+    private String address;
     private String telephone;
     private UserEntity userByLoginId;
 
@@ -99,13 +99,13 @@ public class UserDataEntity {
     }
 
     @Basic
-    @Column(name = "adress")
-    public String getAdress() {
-        return adress;
+    @Column(name = "address")
+    public String getAddress() {
+        return address;
     }
 
-    public void setAdress(String adress) {
-        this.adress = adress;
+    public void setAddress(String adress) {
+        this.address = adress;
     }
 
     @Basic
@@ -133,7 +133,7 @@ public class UserDataEntity {
         if (birthDay != null ? !birthDay.equals(that.birthDay) : that.birthDay != null) return false;
         if (country != null ? !country.equals(that.country) : that.country != null) return false;
         if (city != null ? !city.equals(that.city) : that.city != null) return false;
-        if (adress != null ? !adress.equals(that.adress) : that.adress != null) return false;
+        if (address != null ? !address.equals(that.address) : that.address != null) return false;
         if (telephone != null ? !telephone.equals(that.telephone) : that.telephone != null) return false;
 
         return true;
@@ -149,12 +149,12 @@ public class UserDataEntity {
         result = 31 * result + (birthDay != null ? birthDay.hashCode() : 0);
         result = 31 * result + (country != null ? country.hashCode() : 0);
         result = 31 * result + (city != null ? city.hashCode() : 0);
-        result = 31 * result + (adress != null ? adress.hashCode() : 0);
+        result = 31 * result + (address != null ? address.hashCode() : 0);
         result = 31 * result + (telephone != null ? telephone.hashCode() : 0);
         return result;
     }
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "login_id", referencedColumnName = "login_id", nullable = false)
     public UserEntity getUserByLoginId() {
         return userByLoginId;
