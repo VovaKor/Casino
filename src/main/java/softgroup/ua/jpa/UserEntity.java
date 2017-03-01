@@ -3,6 +3,7 @@ package softgroup.ua.jpa;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.List;
 
 
 @Entity
@@ -14,6 +15,7 @@ public class UserEntity {
     private BigDecimal balance;
     private String email;
     private Timestamp lastLoginDate;
+    private List<Transaction> transactionList;
 
     @Id
     @Column(name = "login_id")
@@ -73,6 +75,15 @@ public class UserEntity {
 
     public void setLastLoginDate(Timestamp lastLoginDate) {
         this.lastLoginDate = lastLoginDate;
+    }
+    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.LAZY)
+    public List<Transaction> getTransactionList() {
+        return transactionList;
+    }
+
+    public void setTransactionList(List<Transaction> transactionList) {
+        this.transactionList = transactionList;
     }
 
     @Override

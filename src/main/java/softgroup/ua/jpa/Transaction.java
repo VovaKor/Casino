@@ -48,7 +48,7 @@ public class Transaction implements Serializable {
     
     @JoinColumn(name = "login_id", referencedColumnName = "login_id")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private User user;
+    private UserEntity user;
 
     public Transaction() {
     }
@@ -95,11 +95,11 @@ public class Transaction implements Serializable {
         this.info = info;
     }
 
-    public User getUser() {
+    public UserEntity getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(UserEntity user) {
         this.user = user;
     }
 
