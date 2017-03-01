@@ -40,7 +40,7 @@ CREATE TABLE transaction (
   transaction_id BIGINT        NOT NULL,
   login_id       VARCHAR(20)   NOT NULL,
   date_time      TIMESTAMP     NOT NULL,
-  value          DECIMAL(9, 2) NOT NULL,
+  amount          DECIMAL(9, 2) NOT NULL,
   info           VARCHAR(255),
   CONSTRAINT pk_transaction_id
   PRIMARY KEY (transaction_id),
