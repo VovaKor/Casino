@@ -36,7 +36,6 @@ CREATE TABLE feedback (
   PRIMARY KEY (feedback_id)
 );
 
-<<<<<<< HEAD
 CREATE TABLE transaction (
   transaction_id BIGINT        NOT NULL,
   login_id       VARCHAR(20)   NOT NULL,
@@ -49,19 +48,5 @@ CREATE TABLE transaction (
   FOREIGN KEY (login_id)
   REFERENCES user (login_id)
     ON DELETE CASCADE
-=======
-CREATE TABLE transaction(
- transaction_id  BIGINT NOT NULL,
- login_id VARCHAR(20) NOT NULL,
- date_time TIMESTAMP NOT NULL,
- amount DECIMAL(9,2) NOT NULL,
- info VARCHAR(255),
- CONSTRAINT pk_transaction_id
- 	PRIMARY KEY (transaction_id),
- CONSTRAINT fk_login_id
- 	FOREIGN KEY (login_id)
- 	REFERENCES user (login_id)
- 	ON DELETE CASCADE
-        ON UPDATE CASCADE
->>>>>>> 93dcaf748d3c2b55824124f90cf6edfcc838ac9a
+    ON UPDATE CASCADE
 );
