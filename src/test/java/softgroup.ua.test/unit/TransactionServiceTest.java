@@ -6,7 +6,9 @@ import java.sql.DriverManager;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.Date;
+import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +29,11 @@ public class TransactionServiceTest {
     @Autowired
     private TransactionService transactionService;
     
+    private static UserEntity user;
+    
     //This method will be removed after UserService creation
-    public void insertTestUser() throws Exception {
+    @BeforeClass
+    public static void insertTestUser() throws Exception {
         Class.forName("com.mysql.jdbc.Driver");
         Connection connection = null;
         Statement stmt = null;
@@ -44,11 +49,20 @@ public class TransactionServiceTest {
             if (null != connection) {
                 connection.close();
             }
-        }   
+        }
+        
+        user = new UserEntity();
+        user.setLoginId("TestUser");
+        user.setPassword("passwd");
+        user.setBalance(new BigDecimal(500));
+        user.setEmail("test@casino.com");
+        user.setLastLoginDate(Timestamp.valueOf("2016-05-30 23:04:12"));
+        user.setRolesId(0);
     }
     
     //This method will be removed after UserService creation
-    public void deleteTestUser() throws Exception {
+    @AfterClass
+    public static void deleteTestUser() throws Exception {
         Class.forName("com.mysql.jdbc.Driver");
         Connection connection = null;
         Statement stmt = null;
@@ -67,18 +81,8 @@ public class TransactionServiceTest {
     }
     
     @Test
-    public void addTransaction() throws Exception {
+    public void addTransactionTest() throws Exception {
         Transaction transaction = new Transaction(new Long(124), new Date(System.currentTimeMillis()), new BigDecimal(-50));
-        
-        UserEntity user = new UserEntity();
-        user.setLoginId("TestUser");
-        user.setPassword("passwd");
-        user.setBalance(new BigDecimal(500));
-        user.setEmail("test@casino.com");
-        user.setLastLoginDate(Timestamp.valueOf("2016-05-30 23:04:12"));
-        user.setRolesId(0);
-        
-        insertTestUser();
         
         transaction.setUser(user);
         transactionService.addTransaction(transaction);
@@ -90,8 +94,28 @@ public class TransactionServiceTest {
         testTransaction = transactionService.getTransactionById(transaction.getTransactionId());
         
         Assert.assertNull("Can't delete transaction", testTransaction);
+    }
+    
+    @Test
+    public void getAllTransactionsTest() throws Exception {
+        Transaction transaction = new Transaction(new Long(125), new Date(System.currentTimeMillis()), new BigDecimal(150));
+        transaction.setUser(user);
+        int transactionsNumber = transactionService.getAll().size();
+        transactionService.addTransaction(transaction);
+        Assert.assertEquals(transactionsNumber + 1, transactionService.getAll().size());
+        transactionService.deleteTransaction(transaction.getTransactionId());
+        Assert.assertEquals(transactionsNumber, transactionService.getAll().size());
+    }
+    
+    @Test
+    public void getTransactionByIdTest() throws Exception {
+        Long transactionId = new Long(126);
+        Transaction transaction = new Transaction(transactionId, new Date(System.currentTimeMillis()), new BigDecimal(150));
+        transaction.setUser(user);        
+        transactionService.addTransaction(transaction);
         
-        deleteTestUser();
+        Assert.assertEquals(transactionId, transactionService.getTransactionById(transactionId).getTransactionId());
+        transactionService.deleteTransaction(transaction.getTransactionId());
     }
     
 }
