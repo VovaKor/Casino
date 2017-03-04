@@ -1,4 +1,10 @@
-use casino;
+CREATE TABLE roles(
+  roles_id  INT NOT NULL,
+  role_name VARCHAR(20) NOT NULL,
+  description VARCHAR(200) NOT NULL,
+  PRIMARY KEY (roles_id)
+);
+
 CREATE TABLE user (
   login_id        VARCHAR(20)   NOT NULL,
   password        VARCHAR(255)  NOT NULL,
@@ -6,14 +12,8 @@ CREATE TABLE user (
   balance         DECIMAL(9, 2) NOT NULL,
   email           VARCHAR(30)   NOT NULL,
   last_login_date TIMESTAMP,
-  PRIMARY KEY (login_id)
+  PRIMARY KEY (login_id),
   FOREIGN KEY (roles_id) REFERENCES roles(roles_id)
-);
-CREATE TABLE roles(
- roles_id  INT NOT NULL,
- role_name VARCHAR(20) NOT NULL,
- description VARCHAR(200) NOT NULL,
- PRIMARY KEY (roles_id)
 );
 
 CREATE TABLE automat(
