@@ -1,13 +1,17 @@
 package softgroup.ua.jpa;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * Created by Вова on 04.03.2017.
  */
 @Entity
 @Table(name = "automat", schema = "casino")
-public class AutomatEntity {
+@NamedQueries({
+        @NamedQuery(name = "AutomatEntity.findAll", query = "SELECT a FROM AutomatEntity a")})
+public class AutomatEntity implements Serializable{
+    private static final long serialVersionUID = 1L;
     private int automatId;
     private String automatName;
     private String description;
