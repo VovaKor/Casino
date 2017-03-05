@@ -2,6 +2,8 @@ package softgroup.ua.jpa;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Вова on 04.03.2017.
@@ -15,6 +17,8 @@ public class AutomatEntity implements Serializable{
     private int automatId;
     private String automatName;
     private String description;
+    private List<GamesEntity> gamesEntityList;
+    //private List<CommentsEntity> commentsEntityList;
 
     @Id
     @Column(name = "automat_id", nullable = false)
@@ -45,6 +49,23 @@ public class AutomatEntity implements Serializable{
     public void setDescription(String description) {
         this.description = description;
     }
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "automatEntity")
+    public List<GamesEntity> getGamesEntityList() {
+        return gamesEntityList;
+    }
+
+    public void setGamesEntityList(List<GamesEntity> gamesEntityList) {
+        this.gamesEntityList = gamesEntityList;
+    }
+
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "automatEntity")
+//    public List<CommentsEntity> getCommentsEntityList() {
+//        return commentsEntityList;
+//    }
+//
+//    public void setCommentsEntityList(List<CommentsEntity> commentsEntityList) {
+//        this.commentsEntityList = commentsEntityList;
+//    }
 
     @Override
     public boolean equals(Object o) {
