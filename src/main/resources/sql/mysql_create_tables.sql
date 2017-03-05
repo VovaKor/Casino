@@ -64,3 +64,16 @@ CREATE TABLE transaction (
     ON DELETE CASCADE
     ON UPDATE CASCADE
 );
+
+CREATE TABLE games (
+  game_id	BIGINT   NOT NULL,
+  login_id	VARCHAR(20)  NOT NULL,	
+  automat_id	INT  NOT NULL,
+  amount        DECIMAL(9, 2) NOT NULL,
+  date_time     TIMESTAMP,
+  PRIMARY KEY (game_id),
+  FOREIGN KEY (login_id) REFERENCES user (login_id)
+	ON UPDATE CASCADE,
+  FOREIGN KEY (automat_id) REFERENCES automat (automat_id)
+	ON UPDATE CASCADE
+);
