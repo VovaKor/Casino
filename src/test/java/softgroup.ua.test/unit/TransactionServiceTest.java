@@ -14,7 +14,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import softgroup.ua.jpa.Transaction;
+import softgroup.ua.jpa.TransactionEntity;
 import softgroup.ua.jpa.UserEntity;
 import softgroup.ua.service.TransactionService;
 
@@ -82,11 +82,11 @@ public class TransactionServiceTest {
     
     @Test
     public void addTransactionTest() throws Exception {
-        Transaction transaction = new Transaction(new Long(124), new Date(System.currentTimeMillis()), new BigDecimal(-50));
+        TransactionEntity transaction = new TransactionEntity(new Long(124), new Date(System.currentTimeMillis()), new BigDecimal(-50));
         
         transaction.setUser(user);
         transactionService.addTransaction(transaction);
-        Transaction testTransaction = transactionService.getTransactionById(transaction.getTransactionId());
+        TransactionEntity testTransaction = transactionService.getTransactionById(transaction.getTransactionId());
         
         Assert.assertNotNull("New transaction wasn't found", testTransaction);
         
@@ -98,7 +98,7 @@ public class TransactionServiceTest {
     
     @Test
     public void getAllTransactionsTest() throws Exception {
-        Transaction transaction = new Transaction(new Long(125), new Date(System.currentTimeMillis()), new BigDecimal(150));
+        TransactionEntity transaction = new TransactionEntity(new Long(125), new Date(System.currentTimeMillis()), new BigDecimal(150));
         transaction.setUser(user);
         int transactionsNumber = transactionService.getAll().size();
         transactionService.addTransaction(transaction);
@@ -110,7 +110,7 @@ public class TransactionServiceTest {
     @Test
     public void getTransactionByIdTest() throws Exception {
         Long transactionId = new Long(126);
-        Transaction transaction = new Transaction(transactionId, new Date(System.currentTimeMillis()), new BigDecimal(150));
+        TransactionEntity transaction = new TransactionEntity(transactionId, new Date(System.currentTimeMillis()), new BigDecimal(150));
         transaction.setUser(user);        
         transactionService.addTransaction(transaction);
         

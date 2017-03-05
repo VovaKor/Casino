@@ -3,7 +3,7 @@ package softgroup.ua.service;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import softgroup.ua.jpa.Transaction;
+import softgroup.ua.jpa.TransactionEntity;
 import softgroup.ua.repository.TransactionRepository;
 
 /**
@@ -16,15 +16,15 @@ public class TransactionService {
     @Autowired
     private TransactionRepository transactionRepository;
     
-    public void addTransaction(Transaction transaction) {
+    public void addTransaction(TransactionEntity transaction) {
         transactionRepository.saveAndFlush(transaction);
     }
     
-    public List<Transaction> getAll() {
+    public List<TransactionEntity> getAll() {
         return transactionRepository.findAll();
     }
     
-    public Transaction getTransactionById(Long transactionId) {
+    public TransactionEntity getTransactionById(Long transactionId) {
         return transactionRepository.findOne(transactionId);
     }
     

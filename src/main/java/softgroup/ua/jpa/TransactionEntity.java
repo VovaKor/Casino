@@ -22,7 +22,7 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "transaction")
-public class Transaction implements Serializable {
+public class TransactionEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -50,14 +50,14 @@ public class Transaction implements Serializable {
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private UserEntity user;
 
-    public Transaction() {
+    public TransactionEntity() {
     }
 
-    public Transaction(Long transactionId) {
+    public TransactionEntity(Long transactionId) {
         this.transactionId = transactionId;
     }
 
-    public Transaction(Long transactionId, Date dateTime, BigDecimal amount) {
+    public TransactionEntity(Long transactionId, Date dateTime, BigDecimal amount) {
         this.transactionId = transactionId;
         this.dateTime = dateTime;
         this.amount = amount;
@@ -113,10 +113,10 @@ public class Transaction implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Transaction)) {
+        if (!(object instanceof TransactionEntity)) {
             return false;
         }
-        Transaction other = (Transaction) object;
+        TransactionEntity other = (TransactionEntity) object;
         if ((this.transactionId == null && other.transactionId != null) || (this.transactionId != null && !this.transactionId.equals(other.transactionId))) {
             return false;
         }

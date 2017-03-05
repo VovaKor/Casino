@@ -15,7 +15,7 @@ public class UserEntity {
     private BigDecimal balance;
     private String email;
     private Timestamp lastLoginDate;
-    private List<Transaction> transactionList;
+    private List<TransactionEntity> transactionList;
 
     @Id
     @Column(name = "login_id")
@@ -78,11 +78,11 @@ public class UserEntity {
     }
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.LAZY)
-    public List<Transaction> getTransactionList() {
+    public List<TransactionEntity> getTransactionList() {
         return transactionList;
     }
 
-    public void setTransactionList(List<Transaction> transactionList) {
+    public void setTransactionList(List<TransactionEntity> transactionList) {
         this.transactionList = transactionList;
     }
 
