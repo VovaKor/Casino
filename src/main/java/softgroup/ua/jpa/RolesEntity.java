@@ -2,6 +2,8 @@ package softgroup.ua.jpa;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Вова on 04.03.2017.
@@ -15,6 +17,7 @@ public class RolesEntity implements Serializable {
     private int rolesId;
     private String roleName;
     private String description;
+    private List<UserEntity> userList;
 
     @Id
     @Column(name = "roles_id", nullable = false)
@@ -44,6 +47,15 @@ public class RolesEntity implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @ManyToMany(mappedBy = "rolesList", cascade = CascadeType.DETACH)
+    public List<UserEntity> getUserList() {
+        return userList;
+    }
+
+    public void setUserList(List<UserEntity> userList) {
+        this.userList = userList;
     }
 
     @Override
