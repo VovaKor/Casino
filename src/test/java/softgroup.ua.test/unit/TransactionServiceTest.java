@@ -41,7 +41,7 @@ public class TransactionServiceTest {
             connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/casino", "app", "qwerty");
             stmt = connection.createStatement();
             stmt.executeUpdate("INSERT INTO user (login_id , password, roles_id, balance, email, last_login_date) "
-                + "VALUES (\"TestUser\", \"passwd\", 0, 500, \"test@casino.com\", \"2016-05-30 23:04:12\");");
+                + "VALUES (\"TestUser\", \"passwd\", 1, 500, \"test@casino.com\", \"2016-05-30 23:04:12\");");
         } finally {
             if (null != stmt) {
                 stmt.close();
@@ -57,7 +57,7 @@ public class TransactionServiceTest {
         user.setBalance(new BigDecimal(500));
         user.setEmail("test@casino.com");
         user.setLastLoginDate(Timestamp.valueOf("2016-05-30 23:04:12"));
-        user.setRolesId(0);
+        user.setRolesId(1);
     }
     
     //This method will be removed after UserService creation
