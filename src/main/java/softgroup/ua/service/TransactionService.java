@@ -1,6 +1,9 @@
 package softgroup.ua.service;
 
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import softgroup.ua.jpa.TransactionEntity;
@@ -20,15 +23,48 @@ public class TransactionService {
         transactionRepository.saveAndFlush(transaction);
     }
     
-    public List<TransactionEntity> getAll() {
+    public List<TransactionEntity> getAllTransactions() {
         return transactionRepository.findAll();
     }
     
-    public TransactionEntity getTransactionById(Long transactionId) {
+    public TransactionEntity findTransactionById(Long transactionId) {
         return transactionRepository.findOne(transactionId);
     }
     
     public void deleteTransaction(Long transactionId) {
         transactionRepository.delete(transactionId);
     }
+
+    public List<TransactionEntity> findTransactionByDateTime(Date dateTime) {
+        return transactionRepository.findByDateTime(dateTime);
+    }
+
+    public List<TransactionEntity> findTransactionByDateTimeBefore(Date dateTime) {
+        return transactionRepository.findByDateTimeBefore(dateTime);
+    }
+    
+    public List<TransactionEntity> findTransactionByDateTimeAfter(Date dateTime) {
+        return transactionRepository.findByDateTimeAfter(dateTime);
+    }
+    
+    public List<TransactionEntity> findTransactionByDateTimeBetween(Date startDateTime, Date endDateTime) {
+        return transactionRepository.findByDateTimeBetween(startDateTime, endDateTime);
+    }
+    
+    public List<TransactionEntity> findTransactionByAmount(BigDecimal amount) {
+        return transactionRepository.findByAmount(amount);
+    }
+    
+    public List<TransactionEntity> findTransactionByAmountGreaterThan(BigDecimal amount) {
+        return transactionRepository.findByAmountGreaterThan(amount);
+    }
+    
+    public List<TransactionEntity> findTransactionByAmountLessThan(BigDecimal amount) {
+        return transactionRepository.findByAmountLessThan(amount);
+    }
+    
+    public List<TransactionEntity> findByInfoContaining(String info) {
+        return transactionRepository.findByInfoContaining(info);
+    }
+    
 }
