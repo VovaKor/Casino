@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import softgroup.ua.jpa.TransactionEntity;
 import softgroup.ua.repository.TransactionRepository;
@@ -14,10 +15,15 @@ import softgroup.ua.repository.TransactionRepository;
  * @author alexander
  */
 @Service
-public class TransactionService {
+public class TransactionService extends GeneralServiceImp<TransactionEntity, Long>{
     
     @Autowired
     private TransactionRepository transactionRepository;
+    
+    @Override
+    public JpaRepository<TransactionEntity, Long> getRepository() {
+        return transactionRepository;
+    }
     
     public void addTransaction(TransactionEntity transaction) {
         transactionRepository.saveAndFlush(transaction);
@@ -63,7 +69,7 @@ public class TransactionService {
         return transactionRepository.findByAmountLessThan(amount);
     }
     
-    public List<TransactionEntity> findByInfoContaining(String info) {
+    public List<TransactionEntity> findTransactionByInfoContaining(String info) {
         return transactionRepository.findByInfoContaining(info);
     }
     

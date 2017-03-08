@@ -1,14 +1,12 @@
 package softgroup.ua.test.unit;
 
 import java.math.BigDecimal;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.Statement;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Date;
-import org.junit.AfterClass;
+import org.junit.After;
 import org.junit.Assert;
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import softgroup.ua.jpa.TransactionEntity;
 import softgroup.ua.jpa.UserEntity;
+import softgroup.ua.repository.UserRepository;
 import softgroup.ua.service.TransactionService;
 
 /**
@@ -25,97 +24,111 @@ import softgroup.ua.service.TransactionService;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class TransactionServiceTest {
-    
+
     @Autowired
     private TransactionService transactionService;
     
-    private static UserEntity user;
-    
-    //This method will be removed after UserService creation
-    @BeforeClass
-    public static void insertTestUser() throws Exception {
-        Class.forName("com.mysql.jdbc.Driver");
-        Connection connection = null;
-        Statement stmt = null;
-        try {
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/casino", "app", "qwerty");
-            stmt = connection.createStatement();
-            stmt.executeUpdate("INSERT INTO user (login_id , password, roles_id, balance, email, last_login_date) "
-                + "VALUES (\"TestUser\", \"passwd\", 1, 500, \"test@casino.com\", \"2016-05-30 23:04:12\");");
-        } finally {
-            if (null != stmt) {
-                stmt.close();
-            }
-            if (null != connection) {
-                connection.close();
-            }
-        }
+    @Autowired
+    private UserRepository userRepository;
+
+    private UserEntity testUser;
+    private TransactionEntity testTransaction;
+
+    @Before
+    public void insertTestUserAndTransaction() {
+        testUser = new UserEntity();
+        testUser.setLoginId("TestUser");
+        testUser.setPassword("passwd");
+        testUser.setBalance(new BigDecimal(500));
+        testUser.setEmail("test@casino.com");
+        testUser.setLastLoginDate(Timestamp.valueOf(LocalDateTime.now()));
+        testUser.setRolesId(3);
+        userRepository.save(testUser);
         
-        user = new UserEntity();
-        user.setLoginId("TestUser");
-        user.setPassword("passwd");
-        user.setBalance(new BigDecimal(500));
-        user.setEmail("test@casino.com");
-        user.setLastLoginDate(Timestamp.valueOf("2016-05-30 23:04:12"));
-        user.setRolesId(1);
+        testTransaction = new TransactionEntity(Long.valueOf(126), new Date(System.currentTimeMillis()), new BigDecimal(150));
+        testTransaction.setInfo("Transaction information");
+        testTransaction.setUser(testUser);
+        transactionService.save(testTransaction);
     }
-    
-    //This method will be removed after UserService creation
-    @AfterClass
-    public static void deleteTestUser() throws Exception {
-        Class.forName("com.mysql.jdbc.Driver");
-        Connection connection = null;
-        Statement stmt = null;
-        try {
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/casino", "app", "qwerty");
-            stmt = connection.createStatement();
-            stmt.executeUpdate("DELETE FROM user WHERE login_id = \"TestUser\";");
-        } finally {
-            if (null != stmt) {
-                stmt.close();
-            }
-            if (null != connection) {
-                connection.close();
-            }
-        }   
+
+    @After
+    public void deleteTestUserAndTransaction() {
+        transactionService.delete(testTransaction.getTransactionId());
+        userRepository.delete(testUser.getLoginId());
     }
-    
+
     @Test
-    public void addTransactionTest() throws Exception {
+    public void addTransactionTest() {
         TransactionEntity transaction = new TransactionEntity(new Long(124), new Date(System.currentTimeMillis()), new BigDecimal(-50));
-        
-        transaction.setUser(user);
+        transaction.setUser(testUser);
         transactionService.addTransaction(transaction);
-        TransactionEntity testTransaction = transactionService.getTransactionById(transaction.getTransactionId());
-        
-        Assert.assertNotNull("New transaction wasn't found", testTransaction);
-        
+        Assert.assertNotNull("New transaction wasn't found", transactionService.findTransactionById(transaction.getTransactionId()));
         transactionService.deleteTransaction(transaction.getTransactionId());
-        testTransaction = transactionService.getTransactionById(transaction.getTransactionId());
-        
-        Assert.assertNull("Can't delete transaction", testTransaction);
+        Assert.assertNull("Can't delete transaction", transactionService.findTransactionById(transaction.getTransactionId())); 
+    }
+
+    @Test
+    public void getAllTransactionsTest() {
+        int transactionsAmount = transactionService.getAllTransactions().size();
+        TransactionEntity transaction = new TransactionEntity(new Long(124), new Date(System.currentTimeMillis()), new BigDecimal(50));
+        transaction.setUser(testUser);
+        transactionService.addTransaction(transaction);
+        Assert.assertEquals(transactionsAmount + 1, transactionService.getAllTransactions().size());
+        transactionService.deleteTransaction(transaction.getTransactionId());
+        Assert.assertEquals(transactionsAmount, transactionService.getAllTransactions().size());
+    }
+
+    @Test
+    public void findTransactionByIdTest() {
+        TransactionEntity transaction = transactionService.findTransactionById(testTransaction.getTransactionId());
+        Assert.assertEquals(testTransaction.getTransactionId(), transaction.getTransactionId());
+    }
+
+    @Test
+    public void findTransactionByDateTimeTest() {
+        Assert.assertEquals(1, transactionService.findTransactionByDateTime(testTransaction.getDateTime()).size());
+    }
+
+    @Test
+    public void findTransactionByDateTimeBeforeTest() {
+        Date date = new Date(System.currentTimeMillis() + 10000);
+        Assert.assertEquals(1, transactionService.findTransactionByDateTimeBefore(date).size());
     }
     
     @Test
-    public void getAllTransactionsTest() throws Exception {
-        TransactionEntity transaction = new TransactionEntity(new Long(125), new Date(System.currentTimeMillis()), new BigDecimal(150));
-        transaction.setUser(user);
-        int transactionsNumber = transactionService.getAll().size();
-        transactionService.addTransaction(transaction);
-        Assert.assertEquals(transactionsNumber + 1, transactionService.getAll().size());
-        transactionService.deleteTransaction(transaction.getTransactionId());
-        Assert.assertEquals(transactionsNumber, transactionService.getAll().size());
+    public void findTransactionByDateTimeAfterTest() {
+        Date date = new Date(System.currentTimeMillis() - 10000);
+        Assert.assertEquals(1, transactionService.findTransactionByDateTimeAfter(date).size());
     }
     
     @Test
-    public void getTransactionByIdTest() throws Exception {
-        Long transactionId = new Long(126);
-        TransactionEntity transaction = new TransactionEntity(transactionId, new Date(System.currentTimeMillis()), new BigDecimal(150));
-        transaction.setUser(user);        
-        transactionService.addTransaction(transaction);
-        
-        Assert.assertEquals(transactionId, transactionService.getTransactionById(transactionId).getTransactionId());
-        transactionService.deleteTransaction(transaction.getTransactionId());
+    public void findTransactionByDateTimeBeetwenTest() {
+        Date startTime = new Date(System.currentTimeMillis() - 10000);
+        Date endTime = new Date(System.currentTimeMillis() + 10000);
+        Assert.assertEquals(1, transactionService.findTransactionByDateTimeBetween(startTime, endTime).size());
     }
     
+    @Test
+    public void findTransactionByAmountTest() {
+        BigDecimal amount = new BigDecimal(150);
+        Assert.assertEquals(1, transactionService.findTransactionByAmount(amount).size());
+    }
+    
+    @Test
+    public void findTransactionByAmountGreaterThanTest() {
+        BigDecimal amount = new BigDecimal(100);
+        Assert.assertEquals(1, transactionService.findTransactionByAmountGreaterThan(amount).size());
+    }
+    
+    @Test
+    public void findTransactionByAmountLessThanTest() {
+        BigDecimal amount = new BigDecimal(200);
+        Assert.assertEquals(1, transactionService.findTransactionByAmountLessThan(amount).size());
+    }
+    
+    @Test
+    public void findTransactionByInfoContainingTest() {
+        String info = "information";
+        Assert.assertEquals(1, transactionService.findTransactionByInfoContaining(info).size());
+    }
 }
