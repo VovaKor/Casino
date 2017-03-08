@@ -1,23 +1,46 @@
 package softgroup.ua.jpa;
 
+import org.hibernate.validator.constraints.Email;
+import softgroup.ua.jpa.content.Content;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.math.BigDecimal;
-import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 
 @Entity
 @Table(name = "user", schema = "casino")
-public class UserEntity {
+public class UserEntity implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     private String loginId;
     private String password;
     private int rolesId;
     private BigDecimal balance;
     private String email;
-    private Timestamp lastLoginDate;
+    private Calendar lastLoginDate;
+    private UserDataEntity userData;
     private List<TransactionEntity> transactionList;
+    private List<Content> contentList;
+
+    public UserEntity(){
+
+    }
+
+    public UserEntity(String loginId, String password, int rolesId, BigDecimal balance, String email) {
+        this.loginId = loginId;
+        this.password = password;
+        this.rolesId = rolesId;
+        this.balance = balance;
+        this.email = email;
+    }
 
     @Id
+    @NotNull
     @Column(name = "login_id")
     public String getLoginId() {
         return loginId;
@@ -28,6 +51,7 @@ public class UserEntity {
     }
 
     @Basic
+    @NotNull
     @Column(name = "password")
     public String getPassword() {
         return password;
@@ -38,6 +62,7 @@ public class UserEntity {
     }
 
     @Basic
+    @NotNull
     @Column(name = "roles_id")
     public int getRolesId() {
         return rolesId;
@@ -48,6 +73,7 @@ public class UserEntity {
     }
 
     @Basic
+    @NotNull
     @Column(name = "balance")
     public BigDecimal getBalance() {
         return balance;
@@ -58,6 +84,8 @@ public class UserEntity {
     }
 
     @Basic
+    @NotNull
+    @Email
     @Column(name = "email")
     public String getEmail() {
         return email;
@@ -68,16 +96,27 @@ public class UserEntity {
     }
 
     @Basic
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "last_login_date")
-    public Timestamp getLastLoginDate() {
+    public Calendar getLastLoginDate() {
         return lastLoginDate;
     }
 
-    public void setLastLoginDate(Timestamp lastLoginDate) {
+    public void setLastLoginDate(Calendar lastLoginDate) {
         this.lastLoginDate = lastLoginDate;
     }
-    
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.LAZY)
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    public UserDataEntity getUserData() {
+        return userData;
+    }
+
+    public void setUserData(UserDataEntity userData) {
+        this.userData = userData;
+    }
+
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
     public List<TransactionEntity> getTransactionList() {
         return transactionList;
     }
@@ -86,8 +125,17 @@ public class UserEntity {
         this.transactionList = transactionList;
     }
 
+    @OneToMany(mappedBy = "author", cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
+    public List<Content> getContentList() {
+        return contentList;
+    }
+
+    public void setContentList(List<Content> contentList) {
+        this.contentList = contentList;
+    }
+
     @Override
-    public boolean equals(Object o) {
+     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
@@ -113,5 +161,21 @@ public class UserEntity {
         result = 31 * result + (email != null ? email.hashCode() : 0);
         result = 31 * result + (lastLoginDate != null ? lastLoginDate.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd MM yyyy HH:mm:ss");
+
+        return "UserEntity{" +
+                "loginId='" + loginId + '\'' +
+                ", password='" + password + '\'' +
+                ", rolesId=" + rolesId +
+                ", balance=" + balance +
+                ", email='" + email + '\'' +
+                ", lastLoginDate=" + sdf.format(lastLoginDate.getTime()) +
+                ", transactionList=" + transactionList +
+                ", userData=" + userData +
+                '}';
     }
 }

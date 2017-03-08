@@ -1,24 +1,54 @@
 package softgroup.ua.jpa;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 @Entity
 @Table(name = "user_data", schema = "casino")
-public class UserDataEntity {
+public class UserDataEntity implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    public enum Gender{
+        MALE, FEMALE
+    }
+
     private String passport;
     private String name;
     private String surname;
     private String patronymic;
-    private byte gender;
-    private Timestamp birthDay;
+    private Gender gender;
+    private Calendar birthDay;
     private String country;
     private String city;
     private String address;
     private String telephone;
-    private UserEntity userByLoginId;
+    private String loginId;
+    private UserEntity user;
+
+    public UserDataEntity(){
+
+    }
+
+    public UserDataEntity(String loginId, String passport, String name, String surname, String patronymic, Gender gender, Calendar birthDay, String country, String city, String address, String telephone) {
+        this.passport = passport;
+        this.name = name;
+        this.surname = surname;
+        this.patronymic = patronymic;
+        this.gender = gender;
+        this.birthDay = birthDay;
+        this.country = country;
+        this.city = city;
+        this.address = address;
+        this.telephone = telephone;
+        this.loginId = loginId;
+    }
 
     @Id
+    @NotNull
     @Column(name = "passport")
     public String getPassport() {
         return passport;
@@ -29,7 +59,8 @@ public class UserDataEntity {
     }
 
     @Basic
-    @Column(name = "name")
+    @NotNull
+    @Column(name = "name", nullable = false)
     public String getName() {
         return name;
     }
@@ -39,7 +70,8 @@ public class UserDataEntity {
     }
 
     @Basic
-    @Column(name = "surname")
+    @NotNull
+    @Column(name = "surname", nullable = false)
     public String getSurname() {
         return surname;
     }
@@ -59,22 +91,25 @@ public class UserDataEntity {
     }
 
     @Basic
-    @Column(name = "gender")
-    public byte getGender() {
+    @Enumerated
+    @Column(name = "gender", columnDefinition = "ENUM(MALE, FEMALE")
+    public Gender getGender() {
         return gender;
     }
 
-    public void setGender(byte gender) {
+    public void setGender(Gender gender) {
         this.gender = gender;
     }
 
     @Basic
+    @NotNull
+    @Temporal(TemporalType.DATE)
     @Column(name = "birth_day")
-    public Timestamp getBirthDay() {
+    public Calendar getBirthDay() {
         return birthDay;
     }
 
-    public void setBirthDay(Timestamp birthDay) {
+    public void setBirthDay(Calendar birthDay) {
         this.birthDay = birthDay;
     }
 
@@ -109,6 +144,7 @@ public class UserDataEntity {
     }
 
     @Basic
+    @NotNull
     @Column(name = "telephone")
     public String getTelephone() {
         return telephone;
@@ -116,6 +152,27 @@ public class UserDataEntity {
 
     public void setTelephone(String telephone) {
         this.telephone = telephone;
+    }
+
+    @Basic
+    @NotNull
+    @Column(name = "login_id")
+    public String getLoginId() {
+        return loginId;
+    }
+
+    public void setLoginId(String loginId) {
+        this.loginId = loginId;
+    }
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "login_id" ,referencedColumnName = "login_id", insertable = false, updatable = false)
+    public UserEntity getUser() {
+        return user;
+    }
+
+    public void setUser(UserEntity user) {
+        this.user = user;
     }
 
     @Override
@@ -145,7 +202,7 @@ public class UserDataEntity {
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (surname != null ? surname.hashCode() : 0);
         result = 31 * result + (patronymic != null ? patronymic.hashCode() : 0);
-        result = 31 * result + (int) gender;
+        result = 31 * result + (gender != null ? gender.hashCode() : 0);
         result = 31 * result + (birthDay != null ? birthDay.hashCode() : 0);
         result = 31 * result + (country != null ? country.hashCode() : 0);
         result = 31 * result + (city != null ? city.hashCode() : 0);
@@ -154,13 +211,23 @@ public class UserDataEntity {
         return result;
     }
 
-    @OneToOne
-    @JoinColumn(name = "login_id", referencedColumnName = "login_id", nullable = false)
-    public UserEntity getUserByLoginId() {
-        return userByLoginId;
-    }
+    @Override
+    public String toString() {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd MM yyyy");
 
-    public void setUserByLoginId(UserEntity userByLoginId) {
-        this.userByLoginId = userByLoginId;
+        return "UserDataEntity{" +
+                "passport='" + passport + '\'' +
+                //", loginId='" + loginId + '\'' +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", patronymic='" + patronymic + '\'' +
+                ", gender=" + gender +
+                ", birthDay=" + sdf.format(birthDay.getTime()) +
+                ", country='" + country + '\'' +
+                ", city='" + city + '\'' +
+                ", address='" + address + '\'' +
+                ", telephone='" + telephone + '\'' +
+                ", loginId=" + loginId +
+                '}';
     }
 }
