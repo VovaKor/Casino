@@ -12,6 +12,8 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -49,6 +51,14 @@ public class GamesEntity implements Serializable {
     @Column(name = "date_time")
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateTime;
+    
+    @JoinColumn(name = "login_id", referencedColumnName = "login_id")
+    @ManyToOne(optional = false)
+    private UserEntity loginId;
+    
+    @JoinColumn(name = "automat_id", referencedColumnName = "automat_id")
+    @ManyToOne(optional = false)
+    private AutomatEntity automatId;
 
     public GamesEntity() {
     }
@@ -87,6 +97,22 @@ public class GamesEntity implements Serializable {
         this.dateTime = dateTime;
     }
 
+    public UserEntity getLoginId() {
+        return loginId;
+    }
+
+    public void setLoginId(UserEntity loginId) {
+        this.loginId = loginId;
+    }
+
+    public AutomatEntity getAutomatId() {
+        return automatId;
+    }
+
+    public void setAutomatId(AutomatEntity automatId) {
+        this.automatId = automatId;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;
