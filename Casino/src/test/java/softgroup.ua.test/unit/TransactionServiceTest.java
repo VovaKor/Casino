@@ -1,9 +1,9 @@
 package softgroup.ua.test.unit;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.GregorianCalendar;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -41,7 +41,7 @@ public class TransactionServiceTest {
         testUser.setPassword("passwd");
         testUser.setBalance(new BigDecimal(500));
         testUser.setEmail("test@casino.com");
-        testUser.setLastLoginDate(Timestamp.valueOf(LocalDateTime.now()));
+        testUser.setLastLoginDate(new GregorianCalendar());
         testUser.setRolesId(3);
         userRepository.save(testUser);
         

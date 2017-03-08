@@ -10,6 +10,7 @@ import softgroup.ua.repository.UserRepository;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 /**
  * Created by Vlad on 05.03.2017.
@@ -34,7 +35,7 @@ public class BootstrapUserService implements InitializingBean {
             user.setLoginId("admin");
             user.setPassword("12345");
             user.setRolesId(1);
-            user.setLastLoginDate(new Timestamp(new Date().getTime()));
+            user.setLastLoginDate(new GregorianCalendar());
             userRepository.save(user);
             System.out.println("Created system user admin");
         }
