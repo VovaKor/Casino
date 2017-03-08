@@ -49,7 +49,7 @@ public class AutomatEntity implements Serializable{
     public void setDescription(String description) {
         this.description = description;
     }
-    @OneToMany(cascade = CascadeType.DETACH, mappedBy = "automatEntity")
+    @OneToMany(cascade = CascadeType.DETACH, mappedBy = "automatId")
     public List<GamesEntity> getGamesEntityList() {
         return gamesEntityList;
     }
