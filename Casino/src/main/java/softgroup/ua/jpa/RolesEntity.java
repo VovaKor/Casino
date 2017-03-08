@@ -49,14 +49,14 @@ public class RolesEntity implements Serializable {
         this.description = description;
     }
 
-    @ManyToMany(mappedBy = "rolesList", cascade = CascadeType.DETACH)
-    public List<UserEntity> getUserList() {
-        return userList;
-    }
-
-    public void setUserList(List<UserEntity> userList) {
-        this.userList = userList;
-    }
+//    @ManyToMany(mappedBy = "rolesList", cascade = CascadeType.DETACH)
+//    public List<UserEntity> getUserList() {
+//        return userList;
+//    }
+//
+//    public void setUserList(List<UserEntity> userList) {
+//        this.userList = userList;
+//    }
 
     @Override
     public boolean equals(Object o) {
