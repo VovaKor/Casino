@@ -32,7 +32,7 @@ public class UserData implements Serializable {
     private String loginId;
     private User user;
 
-    public UserData(){
+    public UserData() {
 
     }
 
@@ -50,7 +50,7 @@ public class UserData implements Serializable {
         this.loginId = loginId;
     }
 
-    public UserData(String loginId){
+    public UserData(String loginId) {
         this.loginId = loginId;
     }
 
@@ -172,8 +172,8 @@ public class UserData implements Serializable {
         this.loginId = loginId;
     }
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "login_id" ,referencedColumnName = "login_id", insertable = false, updatable = false)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "login_id", referencedColumnName = "login_id", insertable = false, updatable = false)
     public User getUser() {
         return user;
     }

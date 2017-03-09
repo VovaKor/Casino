@@ -2,6 +2,7 @@ package softgroup.ua.jpa;
 
 import org.hibernate.validator.constraints.Email;
 import softgroup.ua.jpa.content.Content;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -32,9 +33,14 @@ public class User implements Serializable {
     private List<TransactionEntity> transactionList = new ArrayList<>();
     private List<Content> contentList = new ArrayList<>();
 
-    public User(){
+    public User() {
 
     }
+
+    public User(String loginId) {
+        this.loginId = loginId;
+    }
+
 
     public User(String loginId, String password, BigDecimal balance, String email) {
         this.loginId = loginId;
@@ -108,11 +114,11 @@ public class User implements Serializable {
         this.userData = userData;
     }
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.DETACH, fetch = FetchType.LAZY )
+    @OneToMany(mappedBy = "user", cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
     public List<GamesEntity> getGamesList() {
         return gamesList;
     }
- 
+
     public void setGamesList(List<GamesEntity> gamesList) {
         this.gamesList = gamesList;
     }
@@ -148,7 +154,7 @@ public class User implements Serializable {
     }
 
     @Override
-     public boolean equals(Object o) {
+    public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
