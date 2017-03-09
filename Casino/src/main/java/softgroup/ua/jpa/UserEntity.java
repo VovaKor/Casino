@@ -26,6 +26,7 @@ public class UserEntity implements Serializable {
     private UserDataEntity userData;
     private List<TransactionEntity> transactionList;
     private List<Content> contentList;
+    private List<GamesEntity> gamesList;
 
     public UserEntity(){
 
@@ -114,8 +115,16 @@ public class UserEntity implements Serializable {
     public void setUserData(UserDataEntity userData) {
         this.userData = userData;
     }
-
-
+    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "loginId")
+    public List<GamesEntity> getGamesList() {
+        return gamesList;
+    }
+ 
+    public void setGamesList(List<GamesEntity> gamesList) {
+        this.gamesList = gamesList;
+    }
+     
     @OneToMany(mappedBy = "user", cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
     public List<TransactionEntity> getTransactionList() {
         return transactionList;
