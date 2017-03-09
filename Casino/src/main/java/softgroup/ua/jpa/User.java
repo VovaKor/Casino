@@ -7,35 +7,38 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+/**
+ * @author Stanislav Rymar
+ */
 
 @Entity
 @Table(name = "user", schema = "casino")
-public class UserEntity implements Serializable {
+public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     private String loginId;
     private String password;
-    private int rolesId;
     private BigDecimal balance;
     private String email;
     private Calendar lastLoginDate;
-    private UserDataEntity userData;
-    private List<TransactionEntity> transactionList;
-    private List<Content> contentList;
-    private List<GamesEntity> gamesList;
+    private UserData userData;
+    private List<GamesEntity> gamesList = new ArrayList<>();
+    private List<RolesEntity> rolesList = new ArrayList<>();
+    private List<TransactionEntity> transactionList = new ArrayList<>();
+    private List<Content> contentList = new ArrayList<>();
 
-    public UserEntity(){
+    public User(){
 
     }
 
-    public UserEntity(String loginId, String password, int rolesId, BigDecimal balance, String email) {
+    public User(String loginId, String password, BigDecimal balance, String email) {
         this.loginId = loginId;
         this.password = password;
-        this.rolesId = rolesId;
         this.balance = balance;
         this.email = email;
     }
@@ -60,17 +63,6 @@ public class UserEntity implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    @Basic
-    @NotNull
-    @Column(name = "roles_id")
-    public int getRolesId() {
-        return rolesId;
-    }
-
-    public void setRolesId(int rolesId) {
-        this.rolesId = rolesId;
     }
 
     @Basic
@@ -108,15 +100,15 @@ public class UserEntity implements Serializable {
     }
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    public UserDataEntity getUserData() {
+    public UserData getUserData() {
         return userData;
     }
 
-    public void setUserData(UserDataEntity userData) {
+    public void setUserData(UserData userData) {
         this.userData = userData;
     }
-    
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "loginId")
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.DETACH, fetch = FetchType.LAZY )
     public List<GamesEntity> getGamesList() {
         return gamesList;
     }
@@ -124,7 +116,19 @@ public class UserEntity implements Serializable {
     public void setGamesList(List<GamesEntity> gamesList) {
         this.gamesList = gamesList;
     }
-     
+
+    @JoinTable(name = "user_roles", joinColumns = {
+            @JoinColumn(name = "login_id", referencedColumnName = "login_id")}, inverseJoinColumns = {
+            @JoinColumn(name = "roles_id", referencedColumnName = "roles_id")})
+    @ManyToMany(cascade = CascadeType.DETACH)
+    public List<RolesEntity> getRolesList() {
+        return rolesList;
+    }
+
+    public void setRolesList(List<RolesEntity> rolesList) {
+        this.rolesList = rolesList;
+    }
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
     public List<TransactionEntity> getTransactionList() {
         return transactionList;
@@ -148,9 +152,9 @@ public class UserEntity implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        UserEntity that = (UserEntity) o;
+        User that = (User) o;
 
-        if (rolesId != that.rolesId) return false;
+        if (rolesList != that.rolesList) return false;
         if (loginId != null ? !loginId.equals(that.loginId) : that.loginId != null) return false;
         if (password != null ? !password.equals(that.password) : that.password != null) return false;
         if (balance != null ? !balance.equals(that.balance) : that.balance != null) return false;
@@ -165,7 +169,6 @@ public class UserEntity implements Serializable {
     public int hashCode() {
         int result = loginId != null ? loginId.hashCode() : 0;
         result = 31 * result + (password != null ? password.hashCode() : 0);
-        result = 31 * result + rolesId;
         result = 31 * result + (balance != null ? balance.hashCode() : 0);
         result = 31 * result + (email != null ? email.hashCode() : 0);
         result = 31 * result + (lastLoginDate != null ? lastLoginDate.hashCode() : 0);
@@ -176,10 +179,9 @@ public class UserEntity implements Serializable {
     public String toString() {
         SimpleDateFormat sdf = new SimpleDateFormat("dd MM yyyy HH:mm:ss");
 
-        return "UserEntity{" +
+        return "User{" +
                 "loginId='" + loginId + '\'' +
                 ", password='" + password + '\'' +
-                ", rolesId=" + rolesId +
                 ", balance=" + balance +
                 ", email='" + email + '\'' +
                 ", lastLoginDate=" + sdf.format(lastLoginDate.getTime()) +

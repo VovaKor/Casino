@@ -1,14 +1,12 @@
 package softgroup.ua.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import softgroup.ua.jpa.User;
-
+import softgroup.ua.jpa.UserData;
 
 /**
  * @author Stanislav Rymar
  */
-public interface UserRepository extends JpaRepository<User, String> {
-
+public interface UserDataRepository extends JpaRepository<UserData, String> {
 
 
 }

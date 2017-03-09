@@ -1,20 +1,23 @@
 package softgroup.ua.jpa;
 
+import softgroup.ua.jpa.enums.Gender;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+
+/**
+ * @author Stanislav Rymar
+ */
+
 @Entity
 @Table(name = "user_data", schema = "casino")
-public class UserDataEntity implements Serializable {
+public class UserData implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    public enum Gender{
-        MALE, FEMALE
-    }
 
     private String passport;
     private String name;
@@ -27,13 +30,13 @@ public class UserDataEntity implements Serializable {
     private String address;
     private String telephone;
     private String loginId;
-    private UserEntity user;
+    private User user;
 
-    public UserDataEntity(){
+    public UserData(){
 
     }
 
-    public UserDataEntity(String loginId, String passport, String name, String surname, String patronymic, Gender gender, Calendar birthDay, String country, String city, String address, String telephone) {
+    public UserData(String loginId, String passport, String name, String surname, String patronymic, Gender gender, Calendar birthDay, String country, String city, String address, String telephone) {
         this.passport = passport;
         this.name = name;
         this.surname = surname;
@@ -44,6 +47,10 @@ public class UserDataEntity implements Serializable {
         this.city = city;
         this.address = address;
         this.telephone = telephone;
+        this.loginId = loginId;
+    }
+
+    public UserData(String loginId){
         this.loginId = loginId;
     }
 
@@ -60,7 +67,7 @@ public class UserDataEntity implements Serializable {
 
     @Basic
     @NotNull
-    @Column(name = "name", nullable = false)
+    @Column(name = "name")
     public String getName() {
         return name;
     }
@@ -71,7 +78,7 @@ public class UserDataEntity implements Serializable {
 
     @Basic
     @NotNull
-    @Column(name = "surname", nullable = false)
+    @Column(name = "surname")
     public String getSurname() {
         return surname;
     }
@@ -92,7 +99,7 @@ public class UserDataEntity implements Serializable {
 
     @Basic
     @Enumerated
-    @Column(name = "gender", columnDefinition = "ENUM(MALE, FEMALE")
+    @Column(name = "gender")
     public Gender getGender() {
         return gender;
     }
@@ -167,11 +174,11 @@ public class UserDataEntity implements Serializable {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "login_id" ,referencedColumnName = "login_id", insertable = false, updatable = false)
-    public UserEntity getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(UserEntity user) {
+    public void setUser(User user) {
         this.user = user;
     }
 
@@ -180,7 +187,7 @@ public class UserDataEntity implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        UserDataEntity that = (UserDataEntity) o;
+        UserData that = (UserData) o;
 
         if (gender != that.gender) return false;
         if (passport != null ? !passport.equals(that.passport) : that.passport != null) return false;
@@ -215,7 +222,7 @@ public class UserDataEntity implements Serializable {
     public String toString() {
         SimpleDateFormat sdf = new SimpleDateFormat("dd MM yyyy");
 
-        return "UserDataEntity{" +
+        return "UserData{" +
                 "passport='" + passport + '\'' +
                 //", loginId='" + loginId + '\'' +
                 ", name='" + name + '\'' +

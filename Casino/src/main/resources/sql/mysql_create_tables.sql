@@ -8,12 +8,10 @@ CREATE TABLE roles (
 CREATE TABLE user (
   login_id        CHAR(20)   NOT NULL,
   password        VARCHAR(255)  NOT NULL,
-  roles_id        INT           NOT NULL,
   balance         DECIMAL(9, 2) NOT NULL,
   email           VARCHAR(30)   NOT NULL,
   last_login_date TIMESTAMP,
-  PRIMARY KEY (login_id),
-  FOREIGN KEY (roles_id) REFERENCES roles (roles_id)
+  PRIMARY KEY (login_id)
 );
 
 CREATE TABLE automat (

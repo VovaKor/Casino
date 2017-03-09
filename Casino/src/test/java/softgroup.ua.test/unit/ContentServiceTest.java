@@ -5,13 +5,12 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import softgroup.ua.jpa.UserEntity;
+import softgroup.ua.jpa.User;
 import softgroup.ua.jpa.content.Content;
 import softgroup.ua.repository.UserRepository;
 import softgroup.ua.repository.content.ContentRepository;
 import softgroup.ua.service.content.ContentService;
 
-import javax.jws.soap.SOAPBinding;
 import java.util.Date;
 import java.util.List;
 
@@ -32,7 +31,7 @@ public class ContentServiceTest {
 
     @Test
     public void testCriteriaSearch(){
-        UserEntity user = userRepository.findOne("admin");
+        User user = userRepository.findOne("admin");
         List<Content> list  = contentRepository.findByAuthor(user);
 
         for(Content content : list){
@@ -51,7 +50,7 @@ public class ContentServiceTest {
 
     @Test
     public void test() {
-        UserEntity user = userRepository.findOne("admin");
+        User user = userRepository.findOne("admin");
 
         Content content = new Content();
         content.setAuthor(user);

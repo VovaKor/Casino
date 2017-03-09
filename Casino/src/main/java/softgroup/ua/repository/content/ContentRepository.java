@@ -3,10 +3,9 @@ package softgroup.ua.repository.content;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
-import softgroup.ua.jpa.UserEntity;
+import softgroup.ua.jpa.User;
 import softgroup.ua.jpa.content.Content;
 
 import java.util.List;
@@ -17,7 +16,7 @@ import java.util.List;
 public interface ContentRepository extends JpaRepository<Content, Long> {
 
     @Query("SELECT c FROM Content c WHERE c.author=:author")
-    public List<Content> findByAuthor(@Param("author") UserEntity author);
+    public List<Content> findByAuthor(@Param("author") User author);
 
     @Modifying
     @Transactional

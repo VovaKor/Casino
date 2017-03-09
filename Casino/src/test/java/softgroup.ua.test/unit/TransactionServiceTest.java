@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import softgroup.ua.jpa.TransactionEntity;
-import softgroup.ua.jpa.UserEntity;
+import softgroup.ua.jpa.User;
 import softgroup.ua.repository.UserRepository;
 import softgroup.ua.service.TransactionService;
 
@@ -31,18 +31,17 @@ public class TransactionServiceTest {
     @Autowired
     private UserRepository userRepository;
 
-    private UserEntity testUser;
+    private User testUser;
     private TransactionEntity testTransaction;
 
     @Before
     public void insertTestUserAndTransaction() {
-        testUser = new UserEntity();
+        testUser = new User();
         testUser.setLoginId("TestUser");
         testUser.setPassword("passwd");
         testUser.setBalance(new BigDecimal(500));
         testUser.setEmail("test@casino.com");
         testUser.setLastLoginDate(new GregorianCalendar());
-        testUser.setRolesId(3);
         userRepository.save(testUser);
         
         testTransaction = new TransactionEntity(Long.valueOf(126), new Date(System.currentTimeMillis()), new BigDecimal(150));

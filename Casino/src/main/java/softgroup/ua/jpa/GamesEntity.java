@@ -54,7 +54,7 @@ public class GamesEntity implements Serializable {
     
     @JoinColumn(name = "login_id", referencedColumnName = "login_id")
     @ManyToOne(optional = false)
-    private UserEntity loginId;
+    private User user;
     
     @JoinColumn(name = "automat_id", referencedColumnName = "automat_id")
     @ManyToOne(optional = false)
@@ -97,12 +97,12 @@ public class GamesEntity implements Serializable {
         this.dateTime = dateTime;
     }
 
-    public UserEntity getLoginId() {
-        return loginId;
+    public User getUser() {
+        return user;
     }
 
-    public void setLoginId(UserEntity loginId) {
-        this.loginId = loginId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public AutomatEntity getAutomatId() {

@@ -16,7 +16,7 @@ INSERT INTO roles(roles_id, role_name, description)
             VALUES (4, 'guest', 'Can sign up, operate his temporary balance, view site''s content, play games and leave feedback');
 
 
-INSERT INTO user(login_id, password, roles_id, balance, email) VALUES('erik12', 'sdf2342dgsd', 1, 500.00, 'eri12@gmail.com');
+INSERT INTO user(login_id, password, balance, email) VALUES('erik12', 'sdf2342dgsd', 500.00, 'eri12@gmail.com');
 INSERT INTO user_data(passport, login_id, name, surname, patronymic, gender, birth_day, country, city, address, telephone) VALUES (
   'NM302402', 'erik12', 'Erik', 'Piterson', 'Edson', 1, '1982-01-19', 'Canada', 'Ottava', 'unknown', '123412412'
 );
