@@ -14,14 +14,21 @@ import java.util.List;
         @NamedQuery(name = "AutomatEntity.findAll", query = "SELECT a FROM AutomatEntity a")})
 public class AutomatEntity implements Serializable{
     private static final long serialVersionUID = 1L;
-    private int automatId;
-    private String automatName;
-    private String description;
-    private List<GamesEntity> gamesEntityList;
-    //private List<CommentsEntity> commentsEntityList;
-
     @Id
     @Column(name = "automat_id", nullable = false)
+    private int automatId;
+    @Basic
+    @Column(name = "automat_name", nullable = false, length = 20)
+    private String automatName;
+    @Basic
+    @Column(name = "description", nullable = false, length = 200)
+    private String description;
+    
+    @OneToMany(cascade = CascadeType.DETACH, mappedBy = "automat")
+    private List<GamesEntity> gamesList = new ArrayList<>();
+    
+    //private List<CommentsEntity> commentsEntityList;
+
     public int getAutomatId() {
         return automatId;
     }
@@ -30,8 +37,6 @@ public class AutomatEntity implements Serializable{
         this.automatId = automatId;
     }
 
-    @Basic
-    @Column(name = "automat_name", nullable = false, length = 20)
     public String getAutomatName() {
         return automatName;
     }
@@ -40,8 +45,6 @@ public class AutomatEntity implements Serializable{
         this.automatName = automatName;
     }
 
-    @Basic
-    @Column(name = "description", nullable = false, length = 200)
     public String getDescription() {
         return description;
     }
@@ -49,13 +52,12 @@ public class AutomatEntity implements Serializable{
     public void setDescription(String description) {
         this.description = description;
     }
-    @OneToMany(cascade = CascadeType.DETACH, mappedBy = "automatId")
-    public List<GamesEntity> getGamesEntityList() {
-        return gamesEntityList;
+    public List<GamesEntity> getGamesList() {
+        return gamesList;
     }
 
-    public void setGamesEntityList(List<GamesEntity> gamesEntityList) {
-        this.gamesEntityList = gamesEntityList;
+    public void setGamesList(List<GamesEntity> gamesList) {
+        this.gamesList = gamesList;
     }
 
 //    @OneToMany(cascade = CascadeType.DETACH, mappedBy = "automatEntity")
