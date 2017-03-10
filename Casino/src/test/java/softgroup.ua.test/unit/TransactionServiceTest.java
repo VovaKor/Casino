@@ -27,7 +27,7 @@ public class TransactionServiceTest {
 
     @Autowired
     private TransactionService transactionService;
-    
+
     @Autowired
     private UserRepository userRepository;
 
@@ -37,13 +37,13 @@ public class TransactionServiceTest {
     @Before
     public void insertTestUserAndTransaction() {
         testUser = new User();
-        testUser.setLoginId("TestUser");
-        testUser.setPassword("passwd");
         testUser.setBalance(new BigDecimal(500));
         testUser.setEmail("test@casino.com");
+        testUser.setLoginId("TransactionUser");
+        testUser.setPassword("qwerty");
         testUser.setLastLoginDate(new GregorianCalendar());
         userRepository.save(testUser);
-        
+
         testTransaction = new TransactionEntity(Long.valueOf(126), new Date(System.currentTimeMillis()), new BigDecimal(150));
         testTransaction.setInfo("Transaction information");
         testTransaction.setUser(testUser);
@@ -63,7 +63,7 @@ public class TransactionServiceTest {
         transactionService.addTransaction(transaction);
         Assert.assertNotNull("New transaction wasn't found", transactionService.findTransactionById(transaction.getTransactionId()));
         transactionService.deleteTransaction(transaction.getTransactionId());
-        Assert.assertNull("Can't delete transaction", transactionService.findTransactionById(transaction.getTransactionId())); 
+        Assert.assertNull("Can't delete transaction", transactionService.findTransactionById(transaction.getTransactionId()));
     }
 
     @Test
@@ -93,38 +93,38 @@ public class TransactionServiceTest {
         Date date = new Date(System.currentTimeMillis() + 10000);
         Assert.assertEquals(1, transactionService.findTransactionByDateTimeBefore(date).size());
     }
-    
+
     @Test
     public void findTransactionByDateTimeAfterTest() {
         Date date = new Date(System.currentTimeMillis() - 10000);
         Assert.assertEquals(1, transactionService.findTransactionByDateTimeAfter(date).size());
     }
-    
+
     @Test
     public void findTransactionByDateTimeBeetwenTest() {
         Date startTime = new Date(System.currentTimeMillis() - 10000);
         Date endTime = new Date(System.currentTimeMillis() + 10000);
         Assert.assertEquals(1, transactionService.findTransactionByDateTimeBetween(startTime, endTime).size());
     }
-    
+
     @Test
     public void findTransactionByAmountTest() {
         BigDecimal amount = new BigDecimal(150);
         Assert.assertEquals(1, transactionService.findTransactionByAmount(amount).size());
     }
-    
+
     @Test
     public void findTransactionByAmountGreaterThanTest() {
         BigDecimal amount = new BigDecimal(100);
         Assert.assertEquals(1, transactionService.findTransactionByAmountGreaterThan(amount).size());
     }
-    
+
     @Test
     public void findTransactionByAmountLessThanTest() {
         BigDecimal amount = new BigDecimal(200);
         Assert.assertEquals(1, transactionService.findTransactionByAmountLessThan(amount).size());
     }
-    
+
     @Test
     public void findTransactionByInfoContainingTest() {
         String info = "information";
