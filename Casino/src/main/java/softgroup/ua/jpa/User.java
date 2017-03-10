@@ -105,7 +105,7 @@ public class User implements Serializable {
         this.lastLoginDate = lastLoginDate;
     }
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
     public UserData getUserData() {
         return userData;
     }
