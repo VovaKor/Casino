@@ -6,17 +6,23 @@ import softgroup.ua.jpa.AutomatEntity;
 import softgroup.ua.repository.AutomatRepository;
 
 import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  * Created by Вова on 08.03.2017.
  */
 @Service
-public class AutomatsService {
+public class AutomatsService extends GeneralServiceImp<AutomatEntity, Long>{
 
     @Autowired
     AutomatRepository automatRepository;
 
     public List <AutomatEntity> getAllAutomats() {
         return automatRepository.findAll();
+    }
+
+    @Override
+    public JpaRepository<AutomatEntity, Long> getRepository() {
+        return automatRepository;
     }
 }
