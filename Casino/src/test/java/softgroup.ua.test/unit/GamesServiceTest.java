@@ -1,6 +1,7 @@
 package softgroup.ua.test.unit;
 
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
@@ -18,6 +19,7 @@ import softgroup.ua.jpa.User;
 import softgroup.ua.repository.UserRepository;
 import softgroup.ua.repository.AutomatRepository;
 import softgroup.ua.service.GamesService;
+import softgroup.ua.service.UserService;
 
 /**
  *
@@ -29,6 +31,7 @@ public class GamesServiceTest {
 
     @Autowired
     private GamesService gamesService;
+    static Long gameId = Long.valueOf(100);
     
     @Autowired
     private UserRepository userRepository;
@@ -41,9 +44,9 @@ public class GamesServiceTest {
     private GamesEntity testGame;
 
     @Before
-    public void insertTestGame() {
+    public void insertTestData() {
         testUser = new User();
-        testUser.setLoginId("TestUser");
+        testUser.setLoginId("TestUser2");
         testUser.setPassword("passwd");
         testUser.setBalance(new BigDecimal(500));
         testUser.setEmail("test@casino.com");
@@ -56,27 +59,26 @@ public class GamesServiceTest {
         testAutomat.setDescription("TestAutomatDiscr");
         automatRepository.save(testAutomat);
         
-        //testGame = new GamesEntity(Long.valueOf(100), new BigDecimal(500), new Date(System.currentTimeMillis()));
-        //testGame.setAutomatId(testAutomat);
-        //testGame.setUser(testUser);
-        //gamesService.save(testGame);
     }
 
     @After
-    public void deleteTestGame() {
-        gamesService.delete(testGame.getGameId());
-        //automatRepository.delete(testAutomat.getAutomatId());
+    public void deleteTestData() {
+        automatRepository.delete(testAutomat.getAutomatId());
         userRepository.delete(testUser.getLoginId());
     }
 
     @Test
     public void addGameTest() {
-        GamesEntity game = new GamesEntity(Long.valueOf(100), new BigDecimal(500), new Date(System.currentTimeMillis()));
+        //GamesEntity game = new GamesEntity(new Long(100), new BigDecimal(500), new Date(System.currentTimeMillis()));
+        GamesEntity game = new GamesEntity(gameId);
+        game.setAmount(new BigDecimal(500.00));
+        game.setDateTime(new GregorianCalendar(1990, 1, 8));
         game.setUser(testUser);
+        game.setAutomat(testAutomat);
         gamesService.addGames(game);
-        Assert.assertNotNull("New transaction wasn't found", gamesService.findGameById(game.getGameId()));
+        Assert.assertNotNull("New game wasn't found", gamesService.findGameById(game.getGameId()));
         gamesService.deleteGame(game.getGameId());
-        Assert.assertNull("Can't delete transaction", gamesService.findGameById(game.getGameId())); 
+        Assert.assertNull("Can't delete game", gamesService.findGameById(game.getGameId())); 
     }
 
     
