@@ -7,10 +7,12 @@ package softgroup.ua.jpa;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -50,15 +52,15 @@ public class GamesEntity implements Serializable {
     @NotNull
     @Column(name = "date_time")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date dateTime;
+    private Calendar dateTime;
     
     @JoinColumn(name = "login_id", referencedColumnName = "login_id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private User user;
     
     @JoinColumn(name = "automat_id", referencedColumnName = "automat_id")
-    @ManyToOne(optional = false)
-    private AutomatEntity automatId;
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private AutomatEntity automat;
 
     public GamesEntity() {
     }
@@ -67,7 +69,7 @@ public class GamesEntity implements Serializable {
         this.gameId = gameId;
     }
 
-    public GamesEntity(Long gameId, BigDecimal amount, Date dateTime) {
+    public GamesEntity(Long gameId, BigDecimal amount, Calendar dateTime) {
         this.gameId = gameId;
         this.amount = amount;
         this.dateTime = dateTime;
@@ -89,11 +91,11 @@ public class GamesEntity implements Serializable {
         this.amount = amount;
     }
 
-    public Date getDateTime() {
+    public Calendar getDateTime() {
         return dateTime;
     }
 
-    public void setDateTime(Date dateTime) {
+    public void setDateTime(Calendar dateTime) {
         this.dateTime = dateTime;
     }
 
@@ -105,12 +107,12 @@ public class GamesEntity implements Serializable {
         this.user = user;
     }
 
-    public AutomatEntity getAutomatId() {
-        return automatId;
+    public AutomatEntity getAutomat() {
+        return automat;
     }
 
-    public void setAutomatId(AutomatEntity automatId) {
-        this.automatId = automatId;
+    public void setAutomat(AutomatEntity automat) {
+        this.automat = automat;
     }
     
     @Override

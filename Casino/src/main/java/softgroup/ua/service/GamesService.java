@@ -56,8 +56,7 @@ public class GamesService extends GeneralServiceImp<GamesEntity, Long>{
     public List<GamesEntity> findGamesByDateTimeBetween(Date startDateTime, Date endDateTime) {
         return gamesRepository.findByDateTimeBetween(startDateTime, endDateTime);
     }
-    
-    
+        
     public List<GamesEntity> findGamesByAmountGreaterThan(BigDecimal amount) {
         return gamesRepository.findByAmountGreaterThan(amount);
     }
