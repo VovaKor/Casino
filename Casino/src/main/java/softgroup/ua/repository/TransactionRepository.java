@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import softgroup.ua.jpa.TransactionEntity;
+import softgroup.ua.jpa.User;
 
 /**
  *
@@ -35,5 +36,7 @@ public interface TransactionRepository extends JpaRepository<TransactionEntity, 
     public List<TransactionEntity> findByAmountLessThan(BigDecimal amount);
         
     public List<TransactionEntity> findByInfoContaining(String info);
+    
+    public List<TransactionEntity> findByUser(User user);
     
 }

@@ -5,24 +5,17 @@
  */
 package softgroup.ua.api;
 
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author alexander
+ * @author alexche
  */
 @XmlRootElement
-public class Transaction {
-    @XmlElement(required = true)
-    public String transactionId;
-    @XmlElement(required = true)
-    public String loginId;
-    @XmlElement(required = true)
-    public String dateTime;
-    @XmlElement(required = true)
-    public String amount;
+public class TransactionsListReply extends GenericReply {
     @XmlElement
-    public String info;
+    public List<Transaction> transactions = new ArrayList<Transaction>();
 }
