@@ -54,7 +54,7 @@ public class GamesServiceTest {
         userRepository.save(testUser);
         
         testAutomat = new AutomatEntity();
-        testAutomat.setAutomatId(1);
+        testAutomat.setAutomatId(100);
         testAutomat.setAutomatName("TestAutomat");
         testAutomat.setDescription("TestAutomatDiscr");
         automatRepository.save(testAutomat);
