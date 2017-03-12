@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by Вова on 04.03.2017.
  */
-public interface RolesRepository extends JpaRepository<RolesEntity, Long> {
+public interface RolesRepository extends JpaRepository<RolesEntity, Integer> {
     public List <RolesEntity> findByRoleName (String roleName);
     public List <RolesEntity> findByRolesId (int rolesId);
     //public List <RolesEntity> findAll();
