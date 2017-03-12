@@ -2,6 +2,7 @@ package softgroup.ua.jpa;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -9,14 +10,21 @@ import java.util.List;
  */
 @Entity
 @Table(name = "roles", schema = "casino")
-@NamedQueries({
-        @NamedQuery(name = "RolesEntity.findAll", query = "SELECT r FROM RolesEntity r")})
+//@NamedQueries({
+//        @NamedQuery(name = "RolesEntity.findAll", query = "SELECT r FROM RolesEntity r")})
 public class RolesEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     private int rolesId;
     private String roleName;
     private String description;
-    private List<User> userList;
+    private List<User> userList = new ArrayList<>();
+    public RolesEntity(){}
+
+    public RolesEntity(int rolesId, String roleName, String description) {
+        this.rolesId=rolesId;
+        this.roleName=roleName;
+        this.description=description;
+    }
 
     @Id
     @Column(name = "roles_id", nullable = false)
