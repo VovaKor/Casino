@@ -10,8 +10,8 @@ import java.util.List;
  */
 @Entity
 @Table(name = "automat", schema = "casino")
-@NamedQueries({
-        @NamedQuery(name = "AutomatEntity.findAll", query = "SELECT a FROM AutomatEntity a")})
+//@NamedQueries({
+     //   @NamedQuery(name = "AutomatEntity.findAll", query = "SELECT a FROM AutomatEntity a")})
 public class AutomatEntity implements Serializable{
     private static final long serialVersionUID = 1L;
     @Id
@@ -26,7 +26,13 @@ public class AutomatEntity implements Serializable{
     
     @OneToMany(cascade = CascadeType.DETACH, mappedBy = "automat")
     private List<GamesEntity> gamesList = new ArrayList<>();
-    
+    public AutomatEntity(){}
+    public AutomatEntity(int automatId, String automatName, String description) {
+        this.automatId=automatId;
+        this.automatName=automatName;
+        this.description=description;
+    }
+
     //private List<CommentsEntity> commentsEntityList;
 
     public int getAutomatId() {
