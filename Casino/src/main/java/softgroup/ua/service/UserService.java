@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import softgroup.ua.jpa.RolesEntity;
+import softgroup.ua.jpa.RoleEntity;
 import softgroup.ua.jpa.User;
 import softgroup.ua.repository.UserDataRepository;
 import softgroup.ua.repository.UserRepository;
@@ -32,7 +32,7 @@ public class UserService {
         User user = userRepository.getOne(loginId);
         if (user != null) {
             logger.debug("Deleting users %s with id %s", user.getLoginId());
-            List<RolesEntity> rolesList = user.getRolesList();
+            List<RoleEntity> rolesList = user.getRolesList();
             rolesList.clear();
 
             userDataRepository.delete(user.getUserData().getPassport());

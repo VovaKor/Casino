@@ -7,23 +7,23 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import softgroup.ua.api.AutomatsListReply;
 import softgroup.ua.jpa.AutomatEntity;
-import softgroup.ua.service.AutomatsMapper;
-import softgroup.ua.service.AutomatsService;
+import softgroup.ua.service.AutomatMapper;
+import softgroup.ua.service.AutomatService;
 
 /**
  * Created by Вова on 08.03.2017.
  */
 @RestController
-public class AutomatsController {
+public class AutomatController {
     @Autowired
-    AutomatsService automatsService;
+    AutomatService automatService;
     @Autowired
-    AutomatsMapper automatsMapper;
+    AutomatMapper automatMapper;
     @RequestMapping(path="/automats/all",  method= RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public AutomatsListReply getAllAutomats(){
         AutomatsListReply reply = new AutomatsListReply();
-        for (AutomatEntity automat:automatsService.getAllAutomats()) {
-            reply.automats.add(automatsMapper.fromInternal(automat));
+        for (AutomatEntity automat: automatService.getAllAutomats()) {
+            reply.automats.add(automatMapper.fromInternal(automat));
         }
         return reply;
     }

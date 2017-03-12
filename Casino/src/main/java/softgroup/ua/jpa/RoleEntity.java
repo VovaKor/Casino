@@ -11,29 +11,29 @@ import java.util.List;
 @Entity
 @Table(name = "roles", schema = "casino")
 //@NamedQueries({
-//        @NamedQuery(name = "RolesEntity.findAll", query = "SELECT r FROM RolesEntity r")})
-public class RolesEntity implements Serializable {
+//        @NamedQuery(name = "RoleEntity.findAll", query = "SELECT r FROM RoleEntity r")})
+public class RoleEntity implements Serializable {
     private static final long serialVersionUID = 1L;
-    private int rolesId;
+    private int roleId;
     private String roleName;
     private String description;
     private List<User> userList = new ArrayList<>();
-    public RolesEntity(){}
+    public RoleEntity(){}
 
-    public RolesEntity(int rolesId, String roleName, String description) {
-        this.rolesId=rolesId;
+    public RoleEntity(int roleId, String roleName, String description) {
+        this.roleId=roleId;
         this.roleName=roleName;
         this.description=description;
     }
 
     @Id
-    @Column(name = "roles_id", nullable = false)
-    public int getRolesId() {
-        return rolesId;
+    @Column(name = "role_id", nullable = false)
+    public int getRoleId() {
+        return roleId;
     }
 
-    public void setRolesId(int rolesId) {
-        this.rolesId = rolesId;
+    public void setRoleId(int roleId) {
+        this.roleId = roleId;
     }
 
     @Basic
@@ -70,9 +70,9 @@ public class RolesEntity implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        RolesEntity that = (RolesEntity) o;
+        RoleEntity that = (RoleEntity) o;
 
-        if (rolesId != that.rolesId) return false;
+        if (roleId != that.roleId) return false;
         if (roleName != null ? !roleName.equals(that.roleName) : that.roleName != null) return false;
         if (description != null ? !description.equals(that.description) : that.description != null) return false;
 
@@ -81,7 +81,7 @@ public class RolesEntity implements Serializable {
 
     @Override
     public int hashCode() {
-        int result = rolesId;
+        int result = roleId;
         result = 31 * result + (roleName != null ? roleName.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
         return result;

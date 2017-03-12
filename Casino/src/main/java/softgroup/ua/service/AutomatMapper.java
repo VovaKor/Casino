@@ -8,7 +8,7 @@ import softgroup.ua.jpa.AutomatEntity;
  * Created by Вова on 08.03.2017.
  */
 @Component
-public class AutomatsMapper {
+public class AutomatMapper {
     /**
      * Maps internal JPA model to external REST model
      * @param automatEntity internal automat model

@@ -7,18 +7,16 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import softgroup.ua.service.RolesService;
-
-import static org.junit.Assert.*;
+import softgroup.ua.service.RoleService;
 
 /**
  * Created by Вова on 08.03.2017.
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class RolesServiceTest {
+public class RoleServiceTest {
     @Autowired
-    RolesService rolesService;
+    RoleService roleService;
     @Before
     public void setUp() throws Exception {
     }
@@ -29,7 +27,7 @@ public class RolesServiceTest {
 
     @Test
     public void getAllRoles() throws Exception {
-        int count = rolesService.getAllRoles().size();
+        int count = roleService.getAllRoles().size();
         assert(count>=4);
     }
 

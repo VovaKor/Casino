@@ -5,7 +5,7 @@
         <class>softgroup.ua.jpa.User</class>
         <class>softgroup.ua.jpa.UserData</class>
         <class>softgroup.ua.jpa.AutomatEntity</class>
-        <class>softgroup.ua.jpa.RolesEntity</class>
+        <class>softgroup.ua.jpa.RoleEntity</class>
         <class>softgroup.ua.jpa.Feedback</class>
         <class>softgroup.ua.jpa.content.Content</class>
         <class>softgroup.ua.jpa.TransactionEntity</class>

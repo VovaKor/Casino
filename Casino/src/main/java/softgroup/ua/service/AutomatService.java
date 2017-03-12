@@ -12,7 +12,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * Created by Вова on 08.03.2017.
  */
 @Service
-public class AutomatsService extends GeneralServiceImp<AutomatEntity, Integer>{
+public class AutomatService extends GeneralServiceImp<AutomatEntity, Integer>{
 
     @Autowired
     AutomatRepository automatRepository;

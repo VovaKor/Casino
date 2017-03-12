@@ -29,7 +29,7 @@ public class User implements Serializable {
     private Calendar lastLoginDate;
     private UserData userData;
     private List<GamesEntity> gamesList = new ArrayList<>();
-    private List<RolesEntity> rolesList = new ArrayList<>();
+    private List<RoleEntity> rolesList = new ArrayList<>();
     private List<TransactionEntity> transactionList = new ArrayList<>();
     private List<Content> contentList = new ArrayList<>();
 
@@ -127,11 +127,11 @@ public class User implements Serializable {
             @JoinColumn(name = "login_id", referencedColumnName = "login_id")}, inverseJoinColumns = {
             @JoinColumn(name = "roles_id", referencedColumnName = "roles_id")})
     @ManyToMany(cascade = CascadeType.DETACH)
-    public List<RolesEntity> getRolesList() {
+    public List<RoleEntity> getRolesList() {
         return rolesList;
     }
 
-    public void setRolesList(List<RolesEntity> rolesList) {
+    public void setRolesList(List<RoleEntity> rolesList) {
         this.rolesList = rolesList;
     }
 
