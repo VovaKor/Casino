@@ -19,7 +19,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import softgroup.ua.jpa.TransactionEntity;
 import softgroup.ua.service.TransactionService;
-import softgroup.ua.service.UserService;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -27,6 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.hamcrest.CoreMatchers.containsString;
 import softgroup.ua.jpa.User;
+import softgroup.ua.repository.UserRepository;
 import softgroup.ua.utils.EntityIdGenerator;
 /**
  *
@@ -41,7 +41,7 @@ public class TransactionControllerTest {
     @Autowired
     TransactionService transactionService;
     @Autowired
-    UserService userService;
+    UserRepository userRepository;
     
     TransactionEntity transactionEntity;
     User testUser;
@@ -49,23 +49,22 @@ public class TransactionControllerTest {
     @Before
     public void setUp() {
         testUser = new User();
-        testUser.setBalance(new BigDecimal(30));
+        testUser.setBalance(new BigDecimal(500));
         testUser.setEmail("test@casino.com");
-        testUser.setLoginId("TestTransactionUser");
+        testUser.setLoginId("TestUserTrans");
         testUser.setPassword("qwerty");
         testUser.setLastLoginDate(new GregorianCalendar());
-        userService.addUser(testUser);
+        userRepository.save(testUser);
         
         transactionEntity = new TransactionEntity(EntityIdGenerator.random(), new Date(System.currentTimeMillis()), new BigDecimal(150));
         transactionEntity.setInfo("Transaction information");
-        transactionEntity.setUser(userService.getUserById("admin"));
+        transactionEntity.setUser(userRepository.findOne(testUser.getLoginId()));
         transactionService.save(transactionEntity);
     }
     
     @After
     public void tearDown() {
         transactionService.deleteTransaction(transactionEntity.getTransactionId());
-        userService.deleteUser(testUser.getLoginId());
     }
     
     @Test
