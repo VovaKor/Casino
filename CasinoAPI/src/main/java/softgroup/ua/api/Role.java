@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class Role {
     @XmlElement(required=false)
-    public int roleId;
+    public Integer roleId;
     @XmlElement(required=true)
     public String roleName;
     @XmlElement(required=true)

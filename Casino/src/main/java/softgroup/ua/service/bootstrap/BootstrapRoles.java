@@ -6,8 +6,8 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import softgroup.ua.jpa.RolesEntity;
-import softgroup.ua.repository.RolesRepository;
+import softgroup.ua.jpa.RoleEntity;
+import softgroup.ua.repository.RoleRepository;
 
 /**
  * Created by Вова on 12.03.2017.
@@ -16,27 +16,27 @@ import softgroup.ua.repository.RolesRepository;
 public class BootstrapRoles implements InitializingBean {
     private static final Logger logger =  LoggerFactory.getLogger(BootstrapRoles.class);
     @Autowired
-    private RolesRepository rolesRepository;
+    private RoleRepository roleRepository;
     @Override
     @Transactional
     public void afterPropertiesSet() throws Exception {
         createRoles();
     }
     private void createRoles() {
-        if (rolesRepository.findByRolesId(1).isEmpty()) {
-            rolesRepository.save(new RolesEntity(1,"root","Administrative user, has access to everything."));
+        if (roleRepository.findByRoleId(1)== null) {
+            roleRepository.save(new RoleEntity(1,"root","Administrative user, has access to everything."));
             logger.debug("Created role \"root\"");
         }
-        if (rolesRepository.findByRolesId(2).isEmpty()) {
-            rolesRepository.save(new RolesEntity(2,"moderator","Can edit feedbacks, comments and content."));
+        if (roleRepository.findByRoleId(2)== null) {
+            roleRepository.save(new RoleEntity(2,"moderator","Can edit feedbacks, comments and content."));
             logger.debug("Created role \"moderator\"");
         }
-        if (rolesRepository.findByRolesId(3).isEmpty()) {
-            rolesRepository.save(new RolesEntity(3,"player","Can sign in, operate his balance, play games, edit his own personal data, view games history and site's content, leave comments and feedback."));
+        if (roleRepository.findByRoleId(3)== null) {
+            roleRepository.save(new RoleEntity(3,"player","Can sign in, operate his balance, play games, edit his own personal data, view games history and site's content, leave comments and feedback."));
             logger.debug("Created role \"player\"");
         }
-        if (rolesRepository.findByRolesId(4).isEmpty()) {
-            rolesRepository.save(new RolesEntity(4,"guest","Can sign up, operate his temporary balance, view site's content, play games and leave feedback."));
+        if (roleRepository.findByRoleId(4)== null) {
+            roleRepository.save(new RoleEntity(4,"guest","Can sign up, operate his temporary balance, view site's content, play games and leave feedback."));
             logger.debug("Created role \"guest\"");
         }
     }
