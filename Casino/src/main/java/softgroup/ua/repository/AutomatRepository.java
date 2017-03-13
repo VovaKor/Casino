@@ -12,7 +12,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 @Repository
 public interface AutomatRepository extends JpaRepository <AutomatEntity, Integer> {
-    public List <AutomatEntity> findByAutomatId (int automatId);
+    public AutomatEntity findByAutomatId (int automatId);
     public List <AutomatEntity> findByAutomatName (String automatName);
    // public List <AutomatEntity> findAll();
 }

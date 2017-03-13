@@ -73,7 +73,7 @@ public class RoleController {
         }catch (Exception e){
             reply.retcode = -1;
             reply.error_message = e.getMessage();
-            logger.error("Error deleting user. Exception: "+e.getMessage(),e);
+            logger.error("Error deleting role. Exception: "+e.getMessage(),e);
         }
         return reply;
     }

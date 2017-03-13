@@ -21,8 +21,10 @@ public class RoleServiceTest {
 
     @Autowired
     RoleService roleService;
+
     private RoleEntity roleEntity;
     private Integer roleId;
+
     @Before
     public void setUp() throws Exception {
         roleId = 100;
@@ -41,26 +43,19 @@ public class RoleServiceTest {
     }
 
     @Test
-    public void addAndDeleteRole() throws Exception {
+    public void addUpdateDeleteRole() throws Exception {
+        /*Adding role test*/
         roleService.addRole(roleEntity);
         RoleEntity testRoleEntity = roleService.getRoleById(roleId);
         assertNotNull("Test role not found.",testRoleEntity);
-        roleService.deleteRole(roleId);
-        testRoleEntity = roleService.getRoleById(roleId);
-        assertNull("Test role not deleted.",testRoleEntity);
-    }
-
-    @Test
-    public void updateAndDeleteRole() throws Exception {
-        roleService.addRole(roleEntity);
-        RoleEntity testRoleEntity = roleService.getRoleById(roleId);
-        assertNotNull("Test role not found.",testRoleEntity);
+        /*Updating role test*/
         testRoleEntity.setRoleName("updatedTestName");
         testRoleEntity.setDescription("New test description");
         roleService.updateRole(testRoleEntity);
         testRoleEntity = roleService.getRoleById(roleId);
         assertEquals("Role name not updated","updatedTestName",testRoleEntity.getRoleName());
         assertEquals("Role description not updated","New test description",testRoleEntity.getDescription());
+        /*Deleting role test*/
         roleService.deleteRole(roleId);
         testRoleEntity = roleService.getRoleById(roleId);
         assertNull("Test role not deleted.",testRoleEntity);

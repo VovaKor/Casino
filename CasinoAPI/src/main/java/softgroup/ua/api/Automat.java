@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class Automat {
     @XmlElement(required=false)
-    public int automatId;
+    public Integer automatId;
     @XmlElement(required=true)
     public String automatName;
     @XmlElement(required=true)

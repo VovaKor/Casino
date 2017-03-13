@@ -23,7 +23,7 @@ public class BootstrapAutomat implements InitializingBean {
         createAutomat();
     }
     private void createAutomat() {
-        if (automatRepository.findByAutomatId(1).isEmpty()) {
+        if (automatRepository.findByAutomatId(1)==null) {
             automatRepository.save(new AutomatEntity(1,"Slot machine","A slot machine is a casino gambling machine with three or more reels which spin when a button is pushed."));
             logger.debug("Created automat \"Slot machine\"");
         }
