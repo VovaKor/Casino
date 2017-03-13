@@ -65,6 +65,7 @@ public class TransactionControllerTest {
     @After
     public void tearDown() {
         transactionService.deleteTransaction(transactionEntity.getTransactionId());
+        userRepository.delete(testUser);
     }
     
     @Test
@@ -74,5 +75,15 @@ public class TransactionControllerTest {
                 .andExpect(content().string(containsString(transactionEntity.getUser().getLoginId())))
                 .andExpect(content().string(containsString(String.valueOf(transactionEntity.getTransactionId()))))
                 .andExpect(content().string(containsString(String.valueOf(transactionEntity.getAmount()))));
+    }
+    
+    @Test
+    public void getTransactionsByLoginIdTest() throws  Exception {
+        this.mockMvc.perform(get("/transactions/byloginid/TestUserTrans"))
+                .andDo(print()).andExpect(status().isOk())
+                .andExpect(content().string(containsString(transactionEntity.getUser().getLoginId())))
+                .andExpect(content().string(containsString(String.valueOf(transactionEntity.getTransactionId()))))
+                .andExpect(content().string(containsString(String.valueOf(transactionEntity.getAmount()))))
+                .andExpect(content().string(containsString(transactionEntity.getInfo())));
     }
 }
