@@ -31,6 +31,8 @@ public class RoleServiceTest {
 
     @After
     public void tearDown() throws Exception {
+        roleId = null;
+        roleEntity = null;
     }
     @Test
     public void getRoleById() throws Exception {
