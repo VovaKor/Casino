@@ -36,7 +36,17 @@ public class UserData implements Serializable {
 
     }
 
+    public UserData(String loginId ,String passport, String name, String surname, Calendar birthDay, String telephone) {
+        this.loginId = loginId;
+        this.passport = passport;
+        this.name = name;
+        this.surname = surname;
+        this.birthDay = birthDay;
+        this.telephone = telephone;
+    }
+
     public UserData(String loginId, String passport, String name, String surname, String patronymic, Gender gender, Calendar birthDay, String country, String city, String address, String telephone) {
+        this.loginId = loginId;
         this.passport = passport;
         this.name = name;
         this.surname = surname;
@@ -47,7 +57,6 @@ public class UserData implements Serializable {
         this.city = city;
         this.address = address;
         this.telephone = telephone;
-        this.loginId = loginId;
     }
 
     public UserData(String loginId) {

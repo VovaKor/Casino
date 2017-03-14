@@ -8,5 +8,4 @@ import softgroup.ua.jpa.UserData;
  */
 public interface UserDataRepository extends JpaRepository<UserData, String> {
 
-
 }

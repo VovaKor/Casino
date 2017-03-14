@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import softgroup.ua.jpa.RoleEntity;
 import softgroup.ua.jpa.User;
 import softgroup.ua.repository.UserDataRepository;
 import softgroup.ua.repository.UserRepository;
@@ -24,36 +23,58 @@ public class UserService {
     private UserDataRepository userDataRepository;
 
     public void addUser(User user) {
-        logger.debug("Adding user with login_id = %s", user.getLoginId());
-        userRepository.saveAndFlush(user);
+        logger.debug("Adding user with login/id = %s", user.getLoginId());
+        userRepository.save(user);
     }
 
     public void deleteUser(String loginId) {
-        User user = userRepository.getOne(loginId);
-        if (user != null) {
-            logger.debug("Deleting users %s with id %s", user.getLoginId());
-            List<RoleEntity> rolesList = user.getRolesList();
-            rolesList.clear();
-
-            userDataRepository.delete(user.getUserData().getPassport());
-            userRepository.delete(loginId);
-        }
+        logger.debug("Deleting use with login/id = %s", loginId);
+        userRepository.delete(loginId);
     }
-
 
     public void updateUser(User user) {
-        logger.debug("User with login_id = %s was updated", user.getLoginId());
-        userRepository.saveAndFlush(user);
+        logger.debug("Updating user with login/id = %s", user.getLoginId());
+        userRepository.save(user);
     }
 
+    public User findUserById(String loginId) {
+        logger.debug("Searching user with login/id = %s", loginId);
+        return userRepository.findOne(loginId);
+    }
 
-    public User getUserById(String loginId) {
-        return userRepository.getOne(loginId);
+    public List<User> findUserByName(String name) {
+        logger.debug("Searching users with name = %s", name);
+        return userRepository.findUserByName(name);
+    }
+
+    public List<User> findUserBySurname(String surname) {
+        logger.debug("Searching users with surname = %s", surname);
+        return userRepository.findUserBySurname(surname);
+    }
+
+    public List<User> findUserByNameAndSurname(String name, String surname) {
+        logger.debug("Searching users with name = %s and surname = %s", name, surname);
+        return userRepository.findUserByNameAndSurname(name, surname);
+    }
+
+    public User findUserByPassport(String passport) {
+        logger.debug("Searching user with passport = %s", passport);
+        return userRepository.findUserByPassport(passport);
+    }
+
+    public User findUserByTelephone(String telephone) {
+        logger.debug("Searching user with telephone = %s", telephone);
+        return userRepository.findUserByTelephone(telephone);
     }
 
     public List<User> getAllUser() {
+        logger.debug("Searching all users");
         return userRepository.findAll();
     }
 
+    public void deleteAllUser() {
+        logger.debug("Deleting all users");
+        userRepository.deleteAll();
+    }
 
 }

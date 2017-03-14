@@ -42,7 +42,7 @@ public class TransactionsController {
     @RequestMapping(path = "/transactions/byloginid/{loginId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public TransactionsListReply getTransactionsByLoginId(@PathVariable String loginId) {
         TransactionsListReply transactionsListReply = new TransactionsListReply();
-        transactionService.findTransactionsByUser(userService.getUserById(loginId)).stream().forEach((TransactionEntity t) -> {
+        transactionService.findTransactionsByUser(userService.findUserById(loginId)).stream().forEach((TransactionEntity t) -> {
             transactionsListReply.transactions.add(transactionMapper.fromInternal(t));
         });
         return transactionsListReply;
