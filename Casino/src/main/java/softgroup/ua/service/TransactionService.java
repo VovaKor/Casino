@@ -26,8 +26,9 @@ public class TransactionService extends GeneralServiceImp<TransactionEntity, Lon
         return transactionRepository;
     }
     
-    public void addTransaction(TransactionEntity transaction) {
-        transactionRepository.saveAndFlush(transaction);
+    public TransactionEntity addTransaction(TransactionEntity transaction) {
+        transaction = transactionRepository.saveAndFlush(transaction);
+        return transaction;
     }
     
     public List<TransactionEntity> getAllTransactions() {

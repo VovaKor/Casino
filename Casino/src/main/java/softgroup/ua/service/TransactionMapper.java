@@ -5,9 +5,13 @@
  */
 package softgroup.ua.service;
 
+import java.math.BigDecimal;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import softgroup.ua.api.Transaction;
 import softgroup.ua.jpa.TransactionEntity;
+import softgroup.ua.repository.UserRepository;
+import softgroup.ua.utils.EntityIdGenerator;
 
 /**
  *
@@ -15,6 +19,9 @@ import softgroup.ua.jpa.TransactionEntity;
  */
 @Component
 public class TransactionMapper {
+    
+    @Autowired
+    private UserRepository userRepository;
     
     public Transaction fromInternal(TransactionEntity transactionEntity) {
         Transaction apiTransaction = null;
@@ -28,5 +35,23 @@ public class TransactionMapper {
             apiTransaction.transactionId = String.valueOf(transactionEntity.getTransactionId());
         }
         return apiTransaction;
+    }
+    
+    public TransactionEntity toInternal(Transaction transaction) throws Exception {
+        TransactionEntity internalTransaction = null;
+        if (null != transaction) {
+            internalTransaction = new TransactionEntity();
+            if(null != transaction.transactionId) {
+                internalTransaction.setTransactionId(Long.valueOf(transaction.transactionId));
+            } else {
+                internalTransaction.setTransactionId(Math.abs(EntityIdGenerator.random()));
+            }
+            internalTransaction.setAmount(new BigDecimal(transaction.amount));
+            internalTransaction.setInfo(transaction.info);
+            internalTransaction.setUser(userRepository.findOne(transaction.loginId));
+        } else {
+            throw new Exception("Error parsing transaction");
+        }
+        return internalTransaction;
     }
 }

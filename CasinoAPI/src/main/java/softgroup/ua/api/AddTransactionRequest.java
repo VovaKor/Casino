@@ -13,15 +13,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author alexander
  */
 @XmlRootElement
-public class Transaction {
-    @XmlElement(required = false)
-    public String transactionId;
+public class AddTransactionRequest {
     @XmlElement(required = true)
-    public String loginId;
-    @XmlElement(required = false)
-    public String dateTime;
-    @XmlElement(required = true)
-    public String amount;
-    @XmlElement
-    public String info;
+    public Transaction transaction;
 }
