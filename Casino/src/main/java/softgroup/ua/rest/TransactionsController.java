@@ -17,7 +17,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import softgroup.ua.api.AddTransactionRequest;
 import softgroup.ua.api.TransactionsListReply;
+import softgroup.ua.finance.FinanceEngine;
+import softgroup.ua.finance.ModelFinanceEngine;
 import softgroup.ua.jpa.TransactionEntity;
+import softgroup.ua.jpa.User;
 import softgroup.ua.service.TransactionMapper;
 import softgroup.ua.service.TransactionService;
 import softgroup.ua.service.UserService;
@@ -62,9 +65,14 @@ public class TransactionsController {
         TransactionsListReply reply = new TransactionsListReply();
         try {
             TransactionEntity transactionEntity = transactionMapper.toInternal(addTransactionRequest.transaction);
-            transactionEntity.setDateTime(new Date(System.currentTimeMillis()));
+            User user = transactionEntity.getUser();
+            FinanceEngine financeEngine = new ModelFinanceEngine(user);
+            financeEngine.connect();
+            transactionEntity.setDateTime(financeEngine.operate(transactionEntity.getAmount()));
             transactionEntity = transactionService.addTransaction(transactionEntity);
-            reply.transactions.add(transactionMapper.fromInternal(transactionEntity));
+            userService.updateUser(user);
+            reply.transactions.add(transactionMapper.fromInternal(transactionEntity));            
+            logger.error("Added transaction id:" + transactionEntity.getTransactionId() + " amount:" + transactionEntity.getAmount());
         } catch (Exception e) {
             reply.retcode = -1;
             reply.error_message = e.getMessage();

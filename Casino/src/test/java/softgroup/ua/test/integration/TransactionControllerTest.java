@@ -5,6 +5,7 @@
  */
 package softgroup.ua.test.integration;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -25,8 +26,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.hamcrest.CoreMatchers.containsString;
+import static org.junit.Assert.assertEquals;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MvcResult;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import softgroup.ua.api.AddTransactionRequest;
+import softgroup.ua.api.RolesListReply;
+import softgroup.ua.api.TransactionsListReply;
 import softgroup.ua.jpa.User;
 import softgroup.ua.repository.UserRepository;
+import softgroup.ua.service.TransactionMapper;
 import softgroup.ua.utils.EntityIdGenerator;
 /**
  *
@@ -42,6 +52,8 @@ public class TransactionControllerTest {
     TransactionService transactionService;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    TransactionMapper transactionMapper;
     
     TransactionEntity transactionEntity;
     User testUser;
@@ -85,5 +97,23 @@ public class TransactionControllerTest {
                 .andExpect(content().string(containsString(String.valueOf(transactionEntity.getTransactionId()))))
                 .andExpect(content().string(containsString(String.valueOf(transactionEntity.getAmount()))))
                 .andExpect(content().string(containsString(transactionEntity.getInfo())));
+    }
+    
+    @Test
+    public void addTransaction() throws Exception {
+        ObjectMapper objectMapper = new ObjectMapper();
+        AddTransactionRequest addTransactionRequest = new AddTransactionRequest();
+        addTransactionRequest.transaction = transactionMapper.fromInternal(transactionEntity);
+        String content = objectMapper.writeValueAsString(addTransactionRequest);
+        MvcResult result = mockMvc.perform(post("/transactions/add")
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(content)
+        )
+                .andExpect(status().isOk())
+                .andReturn();
+        String reply = result.getResponse().getContentAsString();
+        TransactionsListReply transactionsListReply = objectMapper.readValue(reply,TransactionsListReply.class);
+        assertEquals("Return code isn't 0",0, transactionsListReply.retcode.intValue());
     }
 }
