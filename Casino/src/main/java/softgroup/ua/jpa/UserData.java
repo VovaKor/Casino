@@ -1,5 +1,6 @@
 package softgroup.ua.jpa;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import softgroup.ua.jpa.enums.Gender;
 
 import javax.persistence.*;
@@ -181,6 +182,7 @@ public class UserData implements Serializable {
         this.loginId = loginId;
     }
 
+    @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "login_id", referencedColumnName = "login_id", insertable = false, updatable = false)
     public User getUser() {

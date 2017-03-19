@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import softgroup.ua.jpa.User;
+import softgroup.ua.jpa.UserData;
 import softgroup.ua.repository.UserDataRepository;
 import softgroup.ua.repository.UserRepository;
 
@@ -65,6 +66,12 @@ public class UserService {
     public User findUserByTelephone(String telephone) {
         logger.debug("Searching user with telephone = %s", telephone);
         return userRepository.findUserByTelephone(telephone);
+    }
+
+    // TODO: 16.03.17 add to this method unit test
+    public UserData findUserDataById(String loginId) {
+        logger.debug("Searching user data with login/id = %s ", loginId);
+        return userDataRepository.findOne(loginId);
     }
 
     public List<User> getAllUser() {
