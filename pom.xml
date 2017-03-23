@@ -8,6 +8,7 @@
     <modules>
         <module>Casino</module>
         <module>CasinoAPI</module>
+        <module>CasinoGUI</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
