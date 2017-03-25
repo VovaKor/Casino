@@ -5,7 +5,6 @@
  */
 package softgroup.ua.rest;
 
-import java.util.Date;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +19,7 @@ import softgroup.ua.api.TransactionsListReply;
 import softgroup.ua.finance.FinanceEngine;
 import softgroup.ua.finance.ModelFinanceEngine;
 import softgroup.ua.jpa.TransactionEntity;
-import softgroup.ua.jpa.User;
+import softgroup.ua.jpa.UserEntity;
 import softgroup.ua.service.TransactionMapper;
 import softgroup.ua.service.TransactionService;
 import softgroup.ua.service.UserService;
@@ -65,7 +64,7 @@ public class TransactionsController {
         TransactionsListReply reply = new TransactionsListReply();
         try {
             TransactionEntity transactionEntity = transactionMapper.toInternal(addTransactionRequest.transaction);
-            User user = transactionEntity.getUser();
+            UserEntity user = transactionEntity.getUser();
             FinanceEngine financeEngine = new ModelFinanceEngine(user);
             financeEngine.connect();
             transactionEntity.setDateTime(financeEngine.operate(transactionEntity.getAmount()));

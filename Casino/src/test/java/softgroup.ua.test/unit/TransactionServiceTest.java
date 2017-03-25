@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import softgroup.ua.jpa.TransactionEntity;
-import softgroup.ua.jpa.User;
+import softgroup.ua.jpa.UserEntity;
 import softgroup.ua.repository.UserRepository;
 import softgroup.ua.service.TransactionService;
 
@@ -31,12 +31,12 @@ public class TransactionServiceTest {
     @Autowired
     private UserRepository userRepository;
 
-    private User testUser;
+    private UserEntity testUser;
     private TransactionEntity testTransaction;
 
     @Before
     public void insertTestUserAndTransaction() {
-        testUser = new User();
+        testUser = new UserEntity();
         testUser.setBalance(new BigDecimal(500));
         testUser.setEmail("test@casino.com");
         testUser.setLoginId("TransactionUser");
@@ -62,7 +62,7 @@ public class TransactionServiceTest {
         transaction.setUser(testUser);
         transactionService.addTransaction(transaction);
         Assert.assertNotNull("New transaction wasn't found", transactionService.findTransactionById(transaction.getTransactionId()));
-        Assert.assertNotNull("User wasn loaded", transactionService.findTransactionById(transaction.getTransactionId()).getUser());
+        Assert.assertNotNull("UserEntity wasn loaded", transactionService.findTransactionById(transaction.getTransactionId()).getUser());
         transactionService.deleteTransaction(transaction.getTransactionId());
         Assert.assertNull("Can't delete transaction", transactionService.findTransactionById(transaction.getTransactionId()));
     }

@@ -7,7 +7,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import softgroup.ua.jpa.TransactionEntity;
-import softgroup.ua.jpa.User;
+import softgroup.ua.jpa.UserEntity;
 
 /**
  *
@@ -37,6 +37,6 @@ public interface TransactionRepository extends JpaRepository<TransactionEntity, 
         
     public List<TransactionEntity> findByInfoContaining(String info);
     
-    public List<TransactionEntity> findByUser(User user);
+    public List<TransactionEntity> findByUser(UserEntity user);
     
 }

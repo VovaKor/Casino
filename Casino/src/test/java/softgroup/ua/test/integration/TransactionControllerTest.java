@@ -19,6 +19,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import softgroup.ua.jpa.TransactionEntity;
+import softgroup.ua.jpa.UserEntity;
 import softgroup.ua.service.TransactionService;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -30,11 +31,9 @@ import static org.junit.Assert.assertEquals;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import softgroup.ua.api.AddTransactionRequest;
-import softgroup.ua.api.RolesListReply;
 import softgroup.ua.api.TransactionsListReply;
-import softgroup.ua.jpa.User;
 import softgroup.ua.repository.UserRepository;
 import softgroup.ua.service.TransactionMapper;
 import softgroup.ua.utils.EntityIdGenerator;
@@ -56,11 +55,11 @@ public class TransactionControllerTest {
     TransactionMapper transactionMapper;
     
     TransactionEntity transactionEntity;
-    User testUser;
+    UserEntity testUser;
     
     @Before
     public void setUp() {
-        testUser = new User();
+        testUser = new UserEntity();
         testUser.setBalance(new BigDecimal(500));
         testUser.setEmail("test@casino.com");
         testUser.setLoginId("TestUserTrans");

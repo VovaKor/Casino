@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.test.context.junit4.SpringRunner;
-import softgroup.ua.jpa.User;
-import softgroup.ua.jpa.UserData;
+import softgroup.ua.jpa.UserDataEntity;
+import softgroup.ua.jpa.UserEntity;
 import softgroup.ua.service.UserService;
 
 import java.math.BigDecimal;
@@ -32,18 +32,18 @@ public class UserServiceTest {
     public void testPreparation() {
         userService.deleteAllUser();
 
-        User testUser1 = new User("testUser1", "asdfg234sdf", new BigDecimal(33.21), "test@email.com");
-        UserData testUserData1 = new UserData("testUser1", "NM3244234", "Nikolas", "Bolas", new GregorianCalendar(1995, 12, 13), "+380931111111");
+        UserEntity testUser1 = new UserEntity("testUser1", "asdfg234sdf", new BigDecimal(33.21), "test@email.com");
+        UserDataEntity testUserData1 = new UserDataEntity("testUser1", "NM3244234", "Nikolas", "Bolas", new GregorianCalendar(1995, 12, 13), "+380931111111");
         testUser1.setUserData(testUserData1);
         userService.addUser(testUser1);
 
-        User testUser2 = new User("testUser2", "cljkvd7s", new BigDecimal(123.43), "test@email.com");
-        UserData testUserData2 = new UserData("testUser2", "NM3247756", "Chandra", "Nalaar", new GregorianCalendar(1986, 3, 32), "+380932222222");
+        UserEntity testUser2 = new UserEntity("testUser2", "cljkvd7s", new BigDecimal(123.43), "test@email.com");
+        UserDataEntity testUserData2 = new UserDataEntity("testUser2", "NM3247756", "Chandra", "Nalaar", new GregorianCalendar(1986, 3, 32), "+380932222222");
         testUser2.setUserData(testUserData2);
         userService.addUser(testUser2);
 
-        User testUser3 = new User("testUser3", "Fdsf83223sdgk2399yhdji", new BigDecimal(323.21), "test@email.com");
-        UserData testUserData3 = new UserData("testUser3", "NM3247534", "Nikolas", "Markov", new GregorianCalendar(1991, 8, 19), "+380933333333");
+        UserEntity testUser3 = new UserEntity("testUser3", "Fdsf83223sdgk2399yhdji", new BigDecimal(323.21), "test@email.com");
+        UserDataEntity testUserData3 = new UserDataEntity("testUser3", "NM3247534", "Nikolas", "Markov", new GregorianCalendar(1991, 8, 19), "+380933333333");
         testUser3.setUserData(testUserData3);
         userService.addUser(testUser3);
 
@@ -53,8 +53,8 @@ public class UserServiceTest {
     public void addUserTest() {
         String loginId = "Erik63";
 
-        User user = new User(loginId);
-        UserData userData = new UserData(loginId);
+        UserEntity user = new UserEntity(loginId);
+        UserDataEntity userData = new UserDataEntity(loginId);
         user.setBalance(new BigDecimal(100.00));
         user.setEmail("test@email.ru");
         user.setPassword("passwordHash");
@@ -66,12 +66,12 @@ public class UserServiceTest {
         user.setUserData(userData);
         userService.addUser(user);
 
-        assertNotNull("User not added!", userService.findUserById(loginId));
+        assertNotNull("UserEntity not added!", userService.findUserById(loginId));
     }
 
     @Test
     public void updateUserTest() {
-        User user = userService.findUserById("testUser3");
+        UserEntity user = userService.findUserById("testUser3");
         user.setEmail("test2@email.com");
         userService.updateUser(user);
 
@@ -80,8 +80,8 @@ public class UserServiceTest {
 
     @Test
     public void findUserByIdTest() {
-        assertNotNull("User was not found!", userService.findUserById("testUser2"));
-        assertNull("User was found!", userService.findUserById("erikSanchez12"));
+        assertNotNull("UserEntity was not found!", userService.findUserById("testUser2"));
+        assertNull("UserEntity was found!", userService.findUserById("erikSanchez12"));
     }
 
     @Test
@@ -104,21 +104,21 @@ public class UserServiceTest {
 
     @Test
     public void findUserByPassport(){
-        assertNotNull("User was not found!", userService.findUserByPassport("NM3244234"));
-        assertNull("User was found!", userService.findUserByPassport("NM987342"));
+        assertNotNull("UserEntity was not found!", userService.findUserByPassport("NM3244234"));
+        assertNull("UserEntity was found!", userService.findUserByPassport("NM987342"));
     }
 
     @Test
     public void findUserByTelephone(){
-        assertNotNull("User was not found!", userService.findUserByTelephone("+380931111111"));
-        assertNull("User was found!", userService.findUserByTelephone("+380931231233"));
+        assertNotNull("UserEntity was not found!", userService.findUserByTelephone("+380931111111"));
+        assertNull("UserEntity was found!", userService.findUserByTelephone("+380931231233"));
     }
 
 
     @Test
     public void deleteUser() {
         userService.deleteUser("testUser1");
-        assertNull("User not deleted!", userService.findUserById("testUser1"));
+        assertNull("UserEntity not deleted!", userService.findUserById("testUser1"));
     }
 
     @Test

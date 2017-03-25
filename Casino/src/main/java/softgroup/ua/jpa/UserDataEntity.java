@@ -16,7 +16,7 @@ import java.util.Calendar;
 
 @Entity
 @Table(name = "user_data", schema = "casino")
-public class UserData implements Serializable {
+public class UserDataEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -31,13 +31,13 @@ public class UserData implements Serializable {
     private String address;
     private String telephone;
     private String loginId;
-    private User user;
+    private UserEntity user;
 
-    public UserData() {
+    public UserDataEntity() {
 
     }
 
-    public UserData(String loginId ,String passport, String name, String surname, Calendar birthDay, String telephone) {
+    public UserDataEntity(String loginId , String passport, String name, String surname, Calendar birthDay, String telephone) {
         this.loginId = loginId;
         this.passport = passport;
         this.name = name;
@@ -46,7 +46,7 @@ public class UserData implements Serializable {
         this.telephone = telephone;
     }
 
-    public UserData(String loginId, String passport, String name, String surname, String patronymic, Gender gender, Calendar birthDay, String country, String city, String address, String telephone) {
+    public UserDataEntity(String loginId, String passport, String name, String surname, String patronymic, Gender gender, Calendar birthDay, String country, String city, String address, String telephone) {
         this.loginId = loginId;
         this.passport = passport;
         this.name = name;
@@ -60,7 +60,7 @@ public class UserData implements Serializable {
         this.telephone = telephone;
     }
 
-    public UserData(String loginId) {
+    public UserDataEntity(String loginId) {
         this.loginId = loginId;
     }
 
@@ -185,11 +185,11 @@ public class UserData implements Serializable {
     @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "login_id", referencedColumnName = "login_id", insertable = false, updatable = false)
-    public User getUser() {
+    public UserEntity getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(UserEntity user) {
         this.user = user;
     }
 
@@ -198,7 +198,7 @@ public class UserData implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        UserData that = (UserData) o;
+        UserDataEntity that = (UserDataEntity) o;
 
         if (gender != that.gender) return false;
         if (passport != null ? !passport.equals(that.passport) : that.passport != null) return false;
@@ -233,7 +233,7 @@ public class UserData implements Serializable {
     public String toString() {
         SimpleDateFormat sdf = new SimpleDateFormat("dd MM yyyy");
 
-        return "UserData{" +
+        return "UserDataEntity{" +
                 "passport='" + passport + '\'' +
                 //", loginId='" + loginId + '\'' +
                 ", name='" + name + '\'' +

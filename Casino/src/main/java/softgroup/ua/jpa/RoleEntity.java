@@ -17,7 +17,7 @@ public class RoleEntity implements Serializable {
     private int roleId;
     private String roleName;
     private String description;
-    private List<User> userList = new ArrayList<>();
+    private List<UserEntity> userList = new ArrayList<>();
     public RoleEntity(){}
 
     public RoleEntity(int roleId, String roleName, String description) {
@@ -57,11 +57,11 @@ public class RoleEntity implements Serializable {
     }
 
     @ManyToMany(mappedBy = "rolesList", cascade = CascadeType.DETACH)
-    public List<User> getUserList() {
+    public List<UserEntity> getUserList() {
         return userList;
     }
 
-    public void setUserList(List<User> userList) {
+    public void setUserList(List<UserEntity> userList) {
         this.userList = userList;
     }
 
