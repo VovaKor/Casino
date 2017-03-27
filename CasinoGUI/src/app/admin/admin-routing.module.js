@@ -24,6 +24,7 @@ var adminRoutes = [
                 canActivateChild: [auth_guard_service_1.AuthGuard],
                 children: [
                     { path: 'roles', loadChildren: 'app/roles/roles.module#RolesModule' },
+                    { path: 'transactions', loadChildren: 'app/transactions/transactions.module#TransactionsModule' },
                     { path: '', component: admin_dashboard_component_1.AdminDashboardComponent }
                 ]
             }

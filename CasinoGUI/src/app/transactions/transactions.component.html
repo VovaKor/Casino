@@ -1,0 +1,20 @@
+<section>
+    <section *ngIf="!transactions">
+        Loading roles!!! Retrieving data...
+    </section>
+    <ul>
+        <li *ngFor="let transaction of transactions"
+            (click)="onSelect(transaction)"
+            [class.selected]="transaction === selectedTransaction">
+            <span >ID: {{transaction.transactionId}}</span>
+            <br>
+            <span>Amount: {{transaction.amount}}</span>
+            <div *ngIf="selectedTransaction === transaction">
+                <span>Date Time: {{selectedTransaction.dateTime}}</span>
+                <br>
+                <span>Description: {{selectedTransaction.info}}</span>
+            </div>
+        </li>
+    </ul>
+</section>
+<button (click)="goBack()">Back</button>

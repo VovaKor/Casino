@@ -18,6 +18,7 @@ const adminRoutes: Routes = [
         children: [
 
           { path: 'roles', loadChildren: 'app/roles/roles.module#RolesModule' },
+          { path: 'transactions', loadChildren: 'app/transactions/transactions.module#TransactionsModule' },
 
           { path: '', component: AdminDashboardComponent }
         ]
