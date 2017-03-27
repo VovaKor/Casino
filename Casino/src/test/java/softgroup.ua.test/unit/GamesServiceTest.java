@@ -1,8 +1,6 @@
 package softgroup.ua.test.unit;
 
 import java.math.BigDecimal;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 
 import org.junit.After;
@@ -15,11 +13,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import softgroup.ua.jpa.AutomatEntity;
 import softgroup.ua.jpa.GamesEntity;
-import softgroup.ua.jpa.User;
+import softgroup.ua.jpa.UserEntity;
 import softgroup.ua.repository.UserRepository;
 import softgroup.ua.repository.AutomatRepository;
 import softgroup.ua.service.GamesService;
-import softgroup.ua.service.UserService;
 
 /**
  *
@@ -39,13 +36,13 @@ public class GamesServiceTest {
     @Autowired
     private AutomatRepository automatRepository;
     
-    private User testUser;
+    private UserEntity testUser;
     private AutomatEntity testAutomat;
     private GamesEntity testGame;
 
     @Before
     public void insertTestData() {
-        testUser = new User();
+        testUser = new UserEntity();
         testUser.setLoginId("TestUser2");
         testUser.setPassword("passwd");
         testUser.setBalance(new BigDecimal(500));

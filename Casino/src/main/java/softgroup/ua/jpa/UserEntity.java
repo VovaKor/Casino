@@ -18,7 +18,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "user", schema = "casino")
-public class User implements Serializable {
+public class UserEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -27,22 +27,22 @@ public class User implements Serializable {
     private BigDecimal balance;
     private String email;
     private Calendar lastLoginDate;
-    private UserData userData;
+    private UserDataEntity userData;
     private List<GamesEntity> gamesList = new ArrayList<>();
     private List<RoleEntity> rolesList = new ArrayList<>();
     private List<TransactionEntity> transactionList = new ArrayList<>();
     private List<Content> contentList = new ArrayList<>();
 
-    public User() {
+    public UserEntity() {
 
     }
 
-    public User(String loginId) {
+    public UserEntity(String loginId) {
         this.loginId = loginId;
     }
 
 
-    public User(String loginId, String password, BigDecimal balance, String email) {
+    public UserEntity(String loginId, String password, BigDecimal balance, String email) {
         this.loginId = loginId;
         this.password = password;
         this.balance = balance;
@@ -106,11 +106,11 @@ public class User implements Serializable {
     }
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    public UserData getUserData() {
+    public UserDataEntity getUserData() {
         return userData;
     }
 
-    public void setUserData(UserData userData) {
+    public void setUserData(UserDataEntity userData) {
         this.userData = userData;
     }
 
@@ -158,7 +158,7 @@ public class User implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        User that = (User) o;
+        UserEntity that = (UserEntity) o;
 
         if (rolesList != that.rolesList) return false;
         if (loginId != null ? !loginId.equals(that.loginId) : that.loginId != null) return false;
@@ -185,7 +185,7 @@ public class User implements Serializable {
     public String toString() {
         SimpleDateFormat sdf = new SimpleDateFormat("dd MM yyyy HH:mm:ss");
 
-        return "User{" +
+        return "UserEntity{" +
                 "loginId='" + loginId + '\'' +
                 ", password='" + password + '\'' +
                 ", balance=" + balance +

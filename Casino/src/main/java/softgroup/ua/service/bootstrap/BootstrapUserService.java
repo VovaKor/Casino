@@ -6,8 +6,8 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import softgroup.ua.jpa.User;
-import softgroup.ua.jpa.UserData;
+import softgroup.ua.jpa.UserDataEntity;
+import softgroup.ua.jpa.UserEntity;
 import softgroup.ua.service.UserService;
 
 import java.math.BigDecimal;
@@ -33,7 +33,7 @@ public class BootstrapUserService implements InitializingBean {
 
     private void createSystemUser() {
         if (userService.findUserById("admin") == null) {
-            User user = new User("admin");
+            UserEntity user = new UserEntity("admin");
             user.setBalance(new BigDecimal(0));
             user.setEmail("admin@admin.admin");
             user.setPassword("12345");
@@ -44,11 +44,11 @@ public class BootstrapUserService implements InitializingBean {
 
     private void createCommonUser() {
         if(userService.findUserById("user") == null || userService.findUserDataById("user") == null){
-            User user = new User("user");
+            UserEntity user = new UserEntity("user");
             user.setBalance(new BigDecimal(10.90));
             user.setEmail("someemail@gmail.com");
             user.setPassword("qwerty123");
-            UserData userData = new UserData("user");
+            UserDataEntity userData = new UserDataEntity("user");
             userData.setPassport("NV1235234");
             userData.setName("Liliana");
             userData.setSurname("Vess");

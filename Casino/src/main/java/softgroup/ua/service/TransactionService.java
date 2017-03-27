@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import softgroup.ua.jpa.TransactionEntity;
-import softgroup.ua.jpa.User;
+import softgroup.ua.jpa.UserEntity;
 import softgroup.ua.repository.TransactionRepository;
 
 /**
@@ -75,7 +75,7 @@ public class TransactionService extends GeneralServiceImp<TransactionEntity, Lon
         return transactionRepository.findByInfoContaining(info);
     }
     
-    public List<TransactionEntity> findTransactionsByUser(User user) {
+    public List<TransactionEntity> findTransactionsByUser(UserEntity user) {
         return transactionRepository.findByUser(user);
     }
     

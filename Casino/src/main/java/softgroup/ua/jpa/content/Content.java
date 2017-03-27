@@ -1,6 +1,6 @@
 package softgroup.ua.jpa.content;
 
-import softgroup.ua.jpa.User;
+import softgroup.ua.jpa.UserEntity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -26,7 +26,7 @@ public class Content implements Serializable{
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "login_id", nullable = false)
-    private User author;
+    private UserEntity author;
 
     @Basic(optional = false)
     @NotNull
@@ -52,11 +52,11 @@ public class Content implements Serializable{
         this.contentId = contentId;
     }
 
-    public User getAuthor() {
+    public UserEntity getAuthor() {
         return author;
     }
 
-    public void setAuthor(User author) {
+    public void setAuthor(UserEntity author) {
         this.author = author;
     }
 

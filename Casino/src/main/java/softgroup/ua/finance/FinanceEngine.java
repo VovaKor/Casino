@@ -2,7 +2,7 @@ package softgroup.ua.finance;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import softgroup.ua.jpa.User;
+import softgroup.ua.jpa.UserEntity;
 
 /**
  *
@@ -10,10 +10,10 @@ import softgroup.ua.jpa.User;
  */
 public abstract class FinanceEngine {
     
-    protected User user;
+    protected UserEntity user;
     protected boolean connected;
     
-    public FinanceEngine(User user) {
+    public FinanceEngine(UserEntity user) {
         this.user = user;
     }
     

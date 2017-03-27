@@ -8,7 +8,6 @@ package softgroup.ua.jpa;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Calendar;
-import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -26,7 +25,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author User
+ * @author UserEntity
  */
 @Entity
 @Table(name = "games")
@@ -56,7 +55,7 @@ public class GamesEntity implements Serializable {
     
     @JoinColumn(name = "login_id", referencedColumnName = "login_id")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private User user;
+    private UserEntity user;
     
     @JoinColumn(name = "automat_id", referencedColumnName = "automat_id")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
@@ -99,11 +98,11 @@ public class GamesEntity implements Serializable {
         this.dateTime = dateTime;
     }
 
-    public User getUser() {
+    public UserEntity getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(UserEntity user) {
         this.user = user;
     }
 

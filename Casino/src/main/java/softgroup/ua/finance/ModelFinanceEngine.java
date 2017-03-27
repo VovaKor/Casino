@@ -7,7 +7,7 @@ package softgroup.ua.finance;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import softgroup.ua.jpa.User;
+import softgroup.ua.jpa.UserEntity;
 
 /**
  *
@@ -15,7 +15,7 @@ import softgroup.ua.jpa.User;
  */
 public class ModelFinanceEngine extends FinanceEngine {
 
-    public ModelFinanceEngine(User user) {
+    public ModelFinanceEngine(UserEntity user) {
         super(user);
     }
 
