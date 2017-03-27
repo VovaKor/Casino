@@ -19,12 +19,12 @@ const appRoutes: Routes = [
     loadChildren: 'app/admin/admin.module#AdminModule',
     canLoad: [AuthGuard]
   },
-  // {
-  //   path: 'crisis-center',
-  //   loadChildren: 'app/crisis-center/crisis-center.module#CrisisCenterModule',
-  //   data: { preload: true }
-  // },
-  { path: '',   redirectTo: '/admin', pathMatch: 'full' },
+  {
+    path: 'automats',
+    loadChildren: 'app/automats/automats.module#AutomatsModule',
+    data: { preload: true }
+  },
+  { path: '',   redirectTo: '/automats', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent }
 ];
 

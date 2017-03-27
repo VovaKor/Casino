@@ -8,10 +8,18 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement
 public class Automat {
-    @XmlElement(required=false)
+    @XmlElement
     public Integer automatId;
     @XmlElement(required=true)
     public String automatName;
     @XmlElement(required=true)
     public String description;
+    @XmlElement(required = true)
+    public Integer slot1;
+    @XmlElement(required = true)
+    public Integer slot2;
+    @XmlElement(required = true)
+    public Integer slot3;
+    @XmlElement
+    public Boolean isWon;
 }

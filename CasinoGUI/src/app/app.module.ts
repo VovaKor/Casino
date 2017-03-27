@@ -13,12 +13,13 @@ import { LoginComponent }          from './login.component';
 import { PageNotFoundComponent }   from './not-found.component';
 
 import { DialogService }           from './dialog.service';
+import {AutomatsModule} from "./automats/automats.module";
 
 @NgModule({
   imports: [
     BrowserModule,
     FormsModule,
-    //HeroesModule,
+    AutomatsModule,
     LoginRoutingModule,
     AppRoutingModule
   ],

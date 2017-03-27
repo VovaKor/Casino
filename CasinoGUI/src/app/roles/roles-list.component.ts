@@ -45,7 +45,6 @@ export class RolesListComponent implements OnInit{
                 /* onComplete */ () => this.isLoading = false);
     }
     onSelect(role: Role) {
-        //this.selectedId = crisis.id;
 
         // Navigate with relative link
         this.router.navigate([role.id], { relativeTo: this.route });

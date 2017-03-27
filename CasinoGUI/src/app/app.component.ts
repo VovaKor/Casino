@@ -5,7 +5,7 @@ import { Component } from '@angular/core';
   template: `
     <h1 class="title">Casino</h1>
     <nav>
-      
+      <a routerLink="/automats" routerLinkActive="active">Automats</a>
       <a routerLink="/admin" routerLinkActive="active">Admin</a>
       <a routerLink="/login" routerLinkActive="active">Login</a>
       <a [routerLink]="[{ outlets: { popup: ['compose'] } }]">Contact</a>
