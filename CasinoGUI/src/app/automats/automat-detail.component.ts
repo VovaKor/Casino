@@ -18,13 +18,12 @@ import { Automat } from "./automat";
       <div *ngIf="automat.isWon">
           <h1>You WON!!!!</h1>
       </div>
-    <div>
-      <label><span class="badge">{{ automat.slot1 }}</span></label>
-      <label><span class="badge">{{ automat.slot2 }}</span></label>
-      <label><span class="badge">{{ automat.slot3 }}</span></label>
+    <div *ngFor="let slot of automat.slots">
+      <label><span class="badge">{{ slot }}</span></label>
+      
     </div>
       <p>
-          <button class="banner" (click)="play()">Play</button>
+          <button class="banner" (click)="play(automat.id)">Play</button>
       </p>  
     <p>
       <button (click)="gotoAutomats()">Choose another automat</button>
@@ -52,8 +51,9 @@ export class AutomatDetailComponent implements OnInit {
       .switchMap((params: Params) => this.service.getAutomat(+params['id']))
       .subscribe((automat: Automat) => this.automat = automat);
   }
-  play(){
-
+  play(id: number){
+    this.service.getGameResult(id)
+        .subscribe(a => this.automat = a);
   }
   gotoAutomats() {
    this.router.navigate(['']);

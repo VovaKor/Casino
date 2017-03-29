@@ -5,8 +5,6 @@ export interface Automat{
     id: number;
     name: string;
     description: string;
-    slot1: number;
-    slot2: number;
-    slot3: number;
+    slots: number[];
     isWon: boolean;
 }
