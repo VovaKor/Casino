@@ -22,7 +22,7 @@ const appRoutes: Routes = [
   {
     path: 'automats',
     loadChildren: 'app/automats/automats.module#AutomatsModule',
-    data: { preload: true }
+    // data: { preload: true }
   },
   { path: '',   redirectTo: '/automats', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent }

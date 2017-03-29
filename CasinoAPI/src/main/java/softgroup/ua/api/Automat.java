@@ -14,11 +14,11 @@ public class Automat {
     public String automatName;
     @XmlElement(required=true)
     public String description;
-    @XmlElement(required = true)
+    @XmlElement
     public Integer slot1;
-    @XmlElement(required = true)
+    @XmlElement
     public Integer slot2;
-    @XmlElement(required = true)
+    @XmlElement
     public Integer slot3;
     @XmlElement
     public Boolean isWon;

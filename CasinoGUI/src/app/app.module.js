@@ -19,6 +19,7 @@ var login_routing_module_1 = require('./login-routing.module');
 var login_component_1 = require('./login.component');
 var not_found_component_1 = require('./not-found.component');
 var dialog_service_1 = require('./dialog.service');
+var automats_module_1 = require("./automats/automats.module");
 var AppModule = (function () {
     // Diagnostic only: inspect router configuration
     function AppModule(router) {
@@ -29,7 +30,7 @@ var AppModule = (function () {
             imports: [
                 platform_browser_1.BrowserModule,
                 forms_1.FormsModule,
-                //HeroesModule,
+                automats_module_1.AutomatsModule,
                 login_routing_module_1.LoginRoutingModule,
                 app_routing_module_1.AppRoutingModule
             ],

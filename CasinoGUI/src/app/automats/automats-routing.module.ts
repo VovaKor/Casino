@@ -5,15 +5,16 @@ import { AutomatListComponent }    from './automat-list.component';
 import { AutomatDetailComponent }  from './automat-detail.component';
 
 const automatsRoutes: Routes = [
-  { path: '',
+  { path: 'automats',
     component: AutomatListComponent,
-    children: [
-      {
+    // children: [
+    //
+    // ]
+  },
+    {
         path: ':id',
         component: AutomatDetailComponent
-      }
-    ]
-  }
+    }
 ];
 
 @NgModule({

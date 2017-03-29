@@ -24,7 +24,7 @@ import { Automat } from "./automat";
       <label><span class="badge">{{ automat.slot3 }}</span></label>
     </div>
       <p>
-          <button class="menu-button" (click)="play()">Play</button>
+          <button class="banner" (click)="play()">Play</button>
       </p>  
     <p>
       <button (click)="gotoAutomats()">Choose another automat</button>
@@ -56,10 +56,6 @@ export class AutomatDetailComponent implements OnInit {
 
   }
   gotoAutomats() {
-    let automatId = this.automat ? this.automat.id : null;
-    // Pass along the hero id if available
-    // so that the HeroList component can select that hero.
-    // Include a junk 'foo' property for fun.
-    this.router.navigate(['/automats', automatId]);
+   this.router.navigate(['']);
   }
 }

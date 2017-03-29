@@ -26,12 +26,11 @@ var appRoutes = [
         loadChildren: 'app/admin/admin.module#AdminModule',
         canLoad: [auth_guard_service_1.AuthGuard]
     },
-    // {
-    //   path: 'crisis-center',
-    //   loadChildren: 'app/crisis-center/crisis-center.module#CrisisCenterModule',
-    //   data: { preload: true }
-    // },
-    { path: '', redirectTo: '/admin', pathMatch: 'full' },
+    {
+        path: 'automats',
+        loadChildren: 'app/automats/automats.module#AutomatsModule',
+    },
+    { path: '', redirectTo: '/automats', pathMatch: 'full' },
     { path: '**', component: not_found_component_1.PageNotFoundComponent }
 ];
 var AppRoutingModule = (function () {

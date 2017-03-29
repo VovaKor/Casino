@@ -8,12 +8,14 @@ import { AutomatDetailComponent }  from './automat-detail.component';
 import { AutomatService } from './automat.service';
 
 import {AutomatRoutingModule} from './automats-routing.module';
+import {HttpModule} from "@angular/http";
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
-    AutomatRoutingModule
+    AutomatRoutingModule,
+    HttpModule
   ],
   declarations: [
     AutomatListComponent,

@@ -33,7 +33,6 @@ var RolesListComponent = (function () {
         /* onComplete */ function () { return _this.isLoading = false; });
     };
     RolesListComponent.prototype.onSelect = function (role) {
-        //this.selectedId = crisis.id;
         // Navigate with relative link
         this.router.navigate([role.id], { relativeTo: this.route });
     };

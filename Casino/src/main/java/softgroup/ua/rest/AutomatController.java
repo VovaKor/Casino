@@ -9,7 +9,8 @@ import softgroup.ua.api.AddAutomatRequest;
 import softgroup.ua.api.AutomatsListReply;
 import softgroup.ua.api.GenericReply;
 import softgroup.ua.jpa.AutomatEntity;
-import softgroup.ua.service.AutomatMapper;
+import softgroup.ua.service.exception.ParsingException;
+import softgroup.ua.service.mapper.AutomatMapper;
 import softgroup.ua.service.AutomatService;
 
 /**
@@ -26,14 +27,24 @@ public class AutomatController {
     public AutomatsListReply getAllAutomats(){
         AutomatsListReply reply = new AutomatsListReply();
         for (AutomatEntity automat: automatService.getAllAutomats()) {
-            reply.automats.add(automatMapper.fromInternal(automat));
+            try {
+                reply.automats.add(automatMapper.fromInternal(automat));
+            } catch (ParsingException e) {
+                e.printStackTrace();
+                logger.error(e.toString(),e);
+            }
         }
         return reply;
     }
     @RequestMapping(path="/automats/byId/{automatId}",  method=RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public AutomatsListReply getAutomatById(@PathVariable Integer automatId){
         AutomatsListReply reply = new AutomatsListReply();
-        reply.automats.add(automatMapper.fromInternal(automatService.getAutomatById(automatId)));
+        try {
+            reply.automats.add(automatMapper.fromInternal(automatService.getAutomatById(automatId)));
+        } catch (ParsingException e) {
+            e.printStackTrace();
+            logger.error(e.toString(),e);
+        }
         return reply;
     }
 

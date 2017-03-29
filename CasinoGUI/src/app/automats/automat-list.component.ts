@@ -11,19 +11,19 @@ import {Automat} from "./automat";
   template: `
     <h2>AUTOMATS</h2>
     <ul class="items">
-      <li *ngFor="let automat of automats | async"
-        [class.selected]="isSelected(automat)"
-        (click)="onSelect(automat)">
+      <li *ngFor="let automat of automats | async" (click)="onSelect(automat)">
+        <!--[class.selected]="isSelected(automat)"-->
+        
         <span class="badge">{{ automat.id }}</span> {{ automat.name }}
       </li>
     </ul>
-
+    
   `
 })
 export class AutomatListComponent implements OnInit {
   automats: Observable<Automat[]>;
 
-  private selectedId: number;
+ // private selectedId: number;
 
   constructor(
     private service: AutomatService,
@@ -32,14 +32,11 @@ export class AutomatListComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.automats = this.route.params
-      .switchMap((params: Params) => {
-        this.selectedId = +params['id'];
-        return this.service.getAutomats();
-      });
+
+    this.automats = this.service.getAutomats();
   }
 
-  isSelected(automat: Automat) { return automat.id === this.selectedId; }
+ // isSelected(automat: Automat) { return automat.id === this.selectedId; }
 
   onSelect(automat: Automat) {
     this.router.navigate(['/automats', automat.id]);
