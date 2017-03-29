@@ -29,6 +29,14 @@ export class AutomatService {
         headers.append('Accept', 'application/json');
         return headers;
   }
+
+    getGameResult(id: number): Observable<Automat> {
+        let automat$ = this.http
+            .get(`${this.baseUrl}/byId/${id}/play`, {headers: this.getHeaders()})
+            .map(mapAutomat)
+            .catch(handleError);
+        return automat$;
+    }
 }
 function mapAutomat(response:Response): Automat{
     let automats = mapAutomats(response);
@@ -44,9 +52,7 @@ function toAutomat(a:any): Automat{
         id: a.automatId,
         name: a.automatName,
         description: a.description,
-        slot1: a.slot1,
-        slot2: a.slot2,
-        slot3: a.slot3,
+        slots: a.slots,
         isWon: a.isWon
     });
     console.log('Parsed automat:', automat);

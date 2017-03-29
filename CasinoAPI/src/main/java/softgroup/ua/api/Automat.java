@@ -2,6 +2,8 @@ package softgroup.ua.api;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Вова on 08.03.2017.
@@ -15,11 +17,7 @@ public class Automat {
     @XmlElement(required=true)
     public String description;
     @XmlElement
-    public Integer slot1;
-    @XmlElement
-    public Integer slot2;
-    @XmlElement
-    public Integer slot3;
+    public List<Integer> slots = new ArrayList<>();
     @XmlElement
     public Boolean isWon;
 }
