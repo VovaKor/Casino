@@ -1,5 +1,7 @@
 package softgroup.ua.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import softgroup.ua.jpa.Feedback;
@@ -14,6 +16,8 @@ import java.util.List;
 @Service
 public class FeedbackService {
 
+    private static final Logger logger = LoggerFactory.getLogger(Feedback.class);
+
     /**
      * Feedback repository
      */
@@ -25,8 +29,11 @@ public class FeedbackService {
      *
      * @param feedback feedback
      */
-    public void addFeedback(Feedback feedback) {
+    public Feedback addFeedback(Feedback feedback) {
+        logger.debug("Adding feedback {} at {}", feedback.getEmail(), feedback.getMessageTime());
         feedbackRepository.saveAndFlush(feedback);
+        logger.debug("Added successfully");
+        return feedback;
     }
 
     /**
@@ -35,6 +42,7 @@ public class FeedbackService {
      * @return list of feedback from DB
      */
     public List<Feedback> getAllFeedback() {
+        logger.debug("Finding all feedbacks");
         return feedbackRepository.findAll();
     }
 
@@ -45,6 +53,7 @@ public class FeedbackService {
      * @return feedback with this id form DB
      */
     public Feedback findFeedbackById(Long id) {
+        logger.debug("Finding feedback by ID - {}", id);
         return feedbackRepository.findOne(id);
     }
 
@@ -55,6 +64,7 @@ public class FeedbackService {
      * @return list of feedbacks which contain this email from DB
      */
     public List<Feedback> findFeedbackByEmail(String email) {
+        logger.debug("Finding feedback by EMAIL - {}", email);
         return feedbackRepository.findByEmailContaining(email);
     }
 
@@ -65,17 +75,8 @@ public class FeedbackService {
      * @return list of feedbacks which contain this message from DB
      */
     public List<Feedback> findFeedbackByMessageContaining(String message) {
+        logger.debug("Finding feedbacks by MESSAGE - {}", message);
         return feedbackRepository.findByMessageContaining(message);
-    }
-
-    /**
-     * Method for finding feedbacks by mesageTime from DB
-     *
-     * @param messageTime messageTime
-     * @return list of feedbacks with this messageTime from DB
-     */
-    public List<Feedback> findFeedbackByMessageTime(Date messageTime) {
-        return feedbackRepository.findByMessageTime(messageTime);
     }
 
     /**
@@ -85,6 +86,7 @@ public class FeedbackService {
      * @return list of feedbacks which had been written after time from DB
      */
     public List<Feedback> findFeedbackByMessageTimeAfter(Date time) {
+        logger.info("Finding feedbacks by TIME AFTER - {}", time);
         return feedbackRepository.findByMessageTimeAfter(time);
     }
 
@@ -95,6 +97,7 @@ public class FeedbackService {
      * @return list of feedbacks which had been written before time from DB
      */
     public List<Feedback> findFeedbackByMessageTimeBefore(Date time) {
+        logger.debug("Finding feedbacks by TIME BEFORE - {}", time);
         return feedbackRepository.findByMessageTimeBefore(time);
     }
 
@@ -106,6 +109,7 @@ public class FeedbackService {
      * @return list of feedbacks which had been written between startTime and endTime from DB
      */
     public List<Feedback> findFeedbackByMessageTimeBetween(Date startTime, Date endTime) {
+        logger.debug("Finding feedbacks by TIME BETWEEN {} and {}", startTime, endTime);
         return feedbackRepository.findByMessageTimeBetween(startTime, endTime);
     }
 
@@ -115,13 +119,17 @@ public class FeedbackService {
      * @param id feedback id
      */
     public void deleteFeedback(Long id) {
+        logger.debug("Deleting feedback by ID - {}", id);
         feedbackRepository.delete(id);
+        logger.debug("Deleted successfully");
     }
 
     /**
      * Method for removing all feedbacks in DB
      */
     public void deleteAllFeedback() {
+        logger.debug("Deleting all feedbacks");
         feedbackRepository.deleteAll();
+        logger.debug("Deleted successfully");
     }
 }
