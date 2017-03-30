@@ -29,14 +29,16 @@ export class RoleService{
         return role$;
     }
 
-    update(role: Role) : Observable<Response>{
+    update(role: Role): Observable<Role>{
         return this.http
-            .put(`${this.baseUrl}/update`, JSON.stringify(role), {headers: this.getHeaders()});
+            .post(`${this.baseUrl}/update`,JSON.stringify({role}), {headers: this.getHeaders()})
+            .map(mapRole)
+            .catch(handleError);
     }
 
     private getHeaders(){
         let headers = new Headers();
-        headers.append('Accept', 'application/json');
+        headers.append('Content-Type', 'application/json');
         return headers;
     }
 }
@@ -56,8 +58,8 @@ function mapRole(response:Response): Role{
 }
 function toRole(r:any): Role{
     let role = <Role>({
-        id: r.roleId,
-        name: r.roleName,
+        roleId: r.roleId,
+        roleName: r.roleName,
         description: r.description
     });
     console.log('Parsed role:', role);

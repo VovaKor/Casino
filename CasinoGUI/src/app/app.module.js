@@ -30,9 +30,9 @@ var AppModule = (function () {
             imports: [
                 platform_browser_1.BrowserModule,
                 forms_1.FormsModule,
-                automats_module_1.AutomatsModule,
                 login_routing_module_1.LoginRoutingModule,
-                app_routing_module_1.AppRoutingModule
+                app_routing_module_1.AppRoutingModule,
+                automats_module_1.AutomatsModule,
             ],
             declarations: [
                 app_component_1.AppComponent,

@@ -31,6 +31,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 public class AutomatControllerTest {
+
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -99,6 +101,15 @@ public class AutomatControllerTest {
         this.mockMvc.perform(get("/automats/byId/1"))
                 .andDo(print()).andExpect(status().isOk())
                 .andExpect(content().string(containsString("Slot machine")));
+    }
+
+    @Test
+    public void getGameResult() throws Exception {
+        result = this.mockMvc.perform(get("/automats/byId/1/play"))
+                .andExpect(status().isOk()).andReturn();
+        responseContent = result.getResponse().getContentAsString();
+        automatsListReply = objectMapper.readValue(responseContent,AutomatsListReply.class);
+        assertEquals("Slots are empty",3, automatsListReply.automats.get(0).slots.size());
     }
 
     @Test

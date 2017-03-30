@@ -24,7 +24,7 @@ var RoleDetailsComponent = (function () {
         var _this = this;
         this.sub = this.route.params.subscribe(function (params) {
             var id = Number.parseInt(params['id']);
-            console.log('getting role with id: ', id);
+            console.log('getting role with roleId: ', id);
             _this.roleService
                 .get(id)
                 .subscribe(function (r) { return _this.role = r; });
@@ -37,15 +37,19 @@ var RoleDetailsComponent = (function () {
         var link = ['admin/roles'];
         this.router.navigate(link);
     };
-    RoleDetailsComponent.prototype.updateRoleDetails = function () {
+    RoleDetailsComponent.prototype.updateRoleDetails = function (role) {
+        var _this = this;
         this.roleService
-            .update(this.role)
-            .subscribe(function () { console.log('success'); });
+            .update(role)
+            .subscribe(function (r) {
+            _this.role = r;
+            console.log('success');
+        });
     };
     RoleDetailsComponent = __decorate([
         core_1.Component({
             selector: 'role-details',
-            template: "<!-- new syntax for ng-if -->\n    <section *ngIf=\"role\">\n        <section>\n            <h2>You selected: {{role.name}}</h2>\n<h3>Description</h3>\n<p>\n    {{role.description}} \n</p>\n</section>\n<section>\n    <form (ngSubmit)=\"updateRoleDetails()\" #roleForm=\"ngForm\">\n    <div>\n        <label for=\"name\">Name: </label>\n<input type=\"text\" name=\"name\" required [(ngModel)]=\"role.name\" #name=\"ngModel\">\n<div [hidden]=\"name.valid || name.pristine\" class=\"error\">\n    Name is required my good sir/lady!\n</div>\n</div>\n<div>\n    <label for=\"description\">Description: </label>\n<input type=\"text\" name=\"description\" [(ngModel)]=\"role.description\">\n    </div>\n    \n\n\n<button type=\"submit\" [disabled]=\"!roleForm.form.valid\">Update</button>\n</form>\n</section>\n\n<button (click)=\"gotoRolesList()\">Back to roles list</button>\n</section>\n    "
+            template: "<!-- new syntax for ng-if -->\n    <section *ngIf=\"role\">\n        <section>\n            <h2>You selected: {{role.roleName}}</h2>\n            <h3>Description</h3>\n            <p>\n                {{role.description}}\n            </p>\n        </section>\n        <section>\n            <form (ngSubmit)=\"updateRoleDetails(role)\" #roleForm=\"ngForm\">\n                <div>\n                    <label for=\"name\">Name: </label>\n                    <input type=\"text\" name=\"name\" required [(ngModel)]=\"role.roleName\" #name=\"ngModel\">\n                    <div [hidden]=\"name.valid || name.pristine\" class=\"error\">\n                        Name is required my good sir/lady!\n                    </div>\n                </div>\n                <div>\n                    <label for=\"description\">Description: </label>\n                    <input type=\"text\" name=\"description\" [(ngModel)]=\"role.description\">\n                </div>\n\n\n                <button type=\"submit\" [disabled]=\"!roleForm.form.valid\">Update</button>\n            </form>\n        </section>\n\n        <button (click)=\"gotoRolesList()\">Back to roles list</button>\n    </section>\n    "
         }), 
         __metadata('design:paramtypes', [role_service_1.RoleService, router_1.ActivatedRoute, router_1.Router])
     ], RoleDetailsComponent);

@@ -45,7 +45,8 @@ public class AutomatController {
         AutomatsListReply reply = new AutomatsListReply();
         try {
             Automat automat = automatMapper.fromInternal(automatService.getAutomatById(automatId));
-            reply.automats.add(gameEngine.fillSlots(automat));
+            gameEngine.fillSlots(automat);
+            reply.automats.add(automat);
         } catch (ParsingException e) {
             e.printStackTrace();
             logger.error(e.toString(),e);
@@ -58,7 +59,8 @@ public class AutomatController {
         AutomatsListReply reply = new AutomatsListReply();
         try {
             Automat automat = automatMapper.fromInternal(automatService.getAutomatById(automatId));
-            reply.automats.add(gameEngine.play(automat));
+            gameEngine.play(automat);
+            reply.automats.add(automat);
         } catch (ParsingException e) {
             e.printStackTrace();
             logger.error(e.toString(),e);

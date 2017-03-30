@@ -36,7 +36,7 @@ export class AutomatListComponent implements OnInit {
     this.automats = this.service.getAutomats();
   }
 
- // isSelected(automat: Automat) { return automat.id === this.selectedId; }
+ // isSelected(automat: Automat) { return automat.roleId === this.selectedId; }
 
   onSelect(automat: Automat) {
     this.router.navigate(['/automats', automat.id]);

@@ -34,12 +34,12 @@ var RolesListComponent = (function () {
     };
     RolesListComponent.prototype.onSelect = function (role) {
         // Navigate with relative link
-        this.router.navigate([role.id], { relativeTo: this.route });
+        this.router.navigate([role.roleId], { relativeTo: this.route });
     };
     RolesListComponent = __decorate([
         core_1.Component({
             selector: 'roles-list',
-            template: "\n        <section>\n            <section *ngIf=\"isLoading && !errorMessage\">\n                Loading roles!!! Retrieving data...\n            </section>\n            <ul class=\"items\">\n                <!-- this is the new syntax for ng-repeat -->\n                <li *ngFor=\"let role of roles\" (click)=\"onSelect(role)\">\n\n                    {{role.name}}\n\n                </li>\n            </ul>\n            <section *ngIf=\"errorMessage\">\n                {{errorMessage}}\n            </section>\n        </section>\n        <router-outlet></router-outlet>\n    "
+            template: "\n        <section>\n            <section *ngIf=\"isLoading && !errorMessage\">\n                Loading roles!!! Retrieving data...\n            </section>\n            <ul class=\"items\">\n                <!-- this is the new syntax for ng-repeat -->\n                <li *ngFor=\"let role of roles\" (click)=\"onSelect(role)\">\n\n                    {{role.roleName}}\n\n                </li>\n            </ul>\n            <section *ngIf=\"errorMessage\">\n                {{errorMessage}}\n            </section>\n        </section>\n        <router-outlet></router-outlet>\n    "
         }), 
         __metadata('design:paramtypes', [role_service_1.RoleService, router_1.ActivatedRoute, router_1.Router])
     ], RolesListComponent);

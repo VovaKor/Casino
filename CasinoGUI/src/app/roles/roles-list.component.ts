@@ -16,7 +16,7 @@ import {RoleService} from "./role.service";
                 <!-- this is the new syntax for ng-repeat -->
                 <li *ngFor="let role of roles" (click)="onSelect(role)">
 
-                    {{role.name}}
+                    {{role.roleName}}
 
                 </li>
             </ul>
@@ -47,6 +47,6 @@ export class RolesListComponent implements OnInit{
     onSelect(role: Role) {
 
         // Navigate with relative link
-        this.router.navigate([role.id], { relativeTo: this.route });
+        this.router.navigate([role.roleId], { relativeTo: this.route });
     }
 }

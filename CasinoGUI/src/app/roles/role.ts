@@ -2,7 +2,7 @@
  * Created by Вова on 20.03.2017.
  */
 export interface Role{
-    id: number;
-    name: string;
+    roleId: number;
+    roleName: string;
     description: string;
 }

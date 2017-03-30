@@ -14,7 +14,7 @@ public class GameEngine {
     private final Integer SLOT2 = 9;
     private final Integer SLOT3 = 12;
 
-    public Automat play(Automat automat) {
+    public void play(Automat automat) {
         Random random = new Random();
 
         int slot1 = random.nextInt(SLOT3);
@@ -27,13 +27,11 @@ public class GameEngine {
 
         automat.isWon = slot1 == slot2 && slot1 == slot3;
 
-        return automat;
     }
 
-    public Automat fillSlots(Automat automat) {
+    public void fillSlots(Automat automat) {
         automat.slots.add(SLOT1);
         automat.slots.add(SLOT2);
         automat.slots.add(SLOT3);
-        return automat;
     }
 }

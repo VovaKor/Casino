@@ -11,34 +11,33 @@ import {Role} from "./role";
     template: `<!-- new syntax for ng-if -->
     <section *ngIf="role">
         <section>
-            <h2>You selected: {{role.name}}</h2>
-<h3>Description</h3>
-<p>
-    {{role.description}} 
-</p>
-</section>
-<section>
-    <form (ngSubmit)="updateRoleDetails()" #roleForm="ngForm">
-    <div>
-        <label for="name">Name: </label>
-<input type="text" name="name" required [(ngModel)]="role.name" #name="ngModel">
-<div [hidden]="name.valid || name.pristine" class="error">
-    Name is required my good sir/lady!
-</div>
-</div>
-<div>
-    <label for="description">Description: </label>
-<input type="text" name="description" [(ngModel)]="role.description">
-    </div>
-    
+            <h2>You selected: {{role.roleName}}</h2>
+            <h3>Description</h3>
+            <p>
+                {{role.description}}
+            </p>
+        </section>
+        <section>
+            <form (ngSubmit)="updateRoleDetails(role)" #roleForm="ngForm">
+                <div>
+                    <label for="name">Name: </label>
+                    <input type="text" name="name" required [(ngModel)]="role.roleName" #name="ngModel">
+                    <div [hidden]="name.valid || name.pristine" class="error">
+                        Name is required my good sir/lady!
+                    </div>
+                </div>
+                <div>
+                    <label for="description">Description: </label>
+                    <input type="text" name="description" [(ngModel)]="role.description">
+                </div>
 
 
-<button type="submit" [disabled]="!roleForm.form.valid">Update</button>
-</form>
-</section>
+                <button type="submit" [disabled]="!roleForm.form.valid">Update</button>
+            </form>
+        </section>
 
-<button (click)="gotoRolesList()">Back to roles list</button>
-</section>
+        <button (click)="gotoRolesList()">Back to roles list</button>
+    </section>
     `
 })
 
@@ -54,7 +53,7 @@ export class RoleDetailsComponent implements OnInit, OnDestroy {
     ngOnInit(){
         this.sub = this.route.params.subscribe(params => {
             let id = Number.parseInt(params['id']);
-            console.log('getting role with id: ', id);
+            console.log('getting role with roleId: ', id);
             this.roleService
                 .get(id)
                 .subscribe(r => this.role = r);
@@ -70,11 +69,12 @@ export class RoleDetailsComponent implements OnInit, OnDestroy {
         this.router.navigate(link);
     }
 
-    updateRoleDetails(){
+    updateRoleDetails(role: Role){
         this.roleService
-            .update(this.role)
+            .update(role)
             .subscribe(
-                () => {console.log('success');}
+                r => {this.role = r;
+                console.log('success');}
             );
     }
 }

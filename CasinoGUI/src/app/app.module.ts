@@ -19,9 +19,9 @@ import {AutomatsModule} from "./automats/automats.module";
   imports: [
     BrowserModule,
     FormsModule,
-    AutomatsModule,
     LoginRoutingModule,
-    AppRoutingModule
+    AppRoutingModule,
+    AutomatsModule,
   ],
   declarations: [
     AppComponent,

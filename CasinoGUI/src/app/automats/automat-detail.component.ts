@@ -47,7 +47,7 @@ export class AutomatDetailComponent implements OnInit {
 
   ngOnInit() {
     this.route.params
-      // (+) converts string 'id' to a number
+      // (+) converts string 'roleId' to a number
       .switchMap((params: Params) => this.service.getAutomat(+params['id']))
       .subscribe((automat: Automat) => this.automat = automat);
   }

@@ -5,7 +5,7 @@ import { AutomatListComponent }    from './automat-list.component';
 import { AutomatDetailComponent }  from './automat-detail.component';
 
 const automatsRoutes: Routes = [
-  { path: 'automats',
+  { path: '',
     component: AutomatListComponent,
     // children: [
     //
