@@ -8,10 +8,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var router_1 = require('@angular/router');
-var selective_preloading_strategy_1 = require('../selective-preloading-strategy');
-require('rxjs/add/operator/map');
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = require("@angular/core");
+var router_1 = require("@angular/router");
+var selective_preloading_strategy_1 = require("../selective-preloading-strategy");
+require("rxjs/add/operator/map");
 var AdminDashboardComponent = (function () {
     function AdminDashboardComponent(route, preloadStrategy) {
         this.route = route;
@@ -28,13 +29,14 @@ var AdminDashboardComponent = (function () {
             .fragment
             .map(function (fragment) { return fragment || 'None'; });
     };
-    AdminDashboardComponent = __decorate([
-        core_1.Component({
-            template: "\n    <p>Dashboard</p>\n\n    <p>Session ID: {{ sessionId | async }}</p>\n    <a id=\"anchor\"></a>\n    <p>Token: {{ token | async }}</p>\n\n    Preloaded Modules\n    <ul>\n      <li *ngFor=\"let module of modules\">{{ module }}</li>\n    </ul>\n  "
-        }), 
-        __metadata('design:paramtypes', [router_1.ActivatedRoute, selective_preloading_strategy_1.SelectivePreloadingStrategy])
-    ], AdminDashboardComponent);
     return AdminDashboardComponent;
 }());
+AdminDashboardComponent = __decorate([
+    core_1.Component({
+        template: "\n    <p>Dashboard</p>\n\n    <p>Session ID: {{ sessionId | async }}</p>\n    <a id=\"anchor\"></a>\n    <p>Token: {{ token | async }}</p>\n\n    Preloaded Modules\n    <ul>\n      <li *ngFor=\"let module of modules\">{{ module }}</li>\n    </ul>\n  "
+    }),
+    __metadata("design:paramtypes", [router_1.ActivatedRoute,
+        selective_preloading_strategy_1.SelectivePreloadingStrategy])
+], AdminDashboardComponent);
 exports.AdminDashboardComponent = AdminDashboardComponent;
 //# sourceMappingURL=admin-dashboard.component.js.map

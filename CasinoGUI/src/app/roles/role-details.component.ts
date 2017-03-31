@@ -5,6 +5,7 @@ import {Component, OnDestroy, OnInit} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import {RoleService} from "./role.service";
 import {Role} from "./role";
+import {RolesListComponent} from "./roles-list.component";
 
 @Component({
     selector: 'role-details',
@@ -31,11 +32,11 @@ import {Role} from "./role";
                     <input type="text" name="description" [(ngModel)]="role.description">
                 </div>
 
-
                 <button type="submit" [disabled]="!roleForm.form.valid">Update</button>
+                
             </form>
         </section>
-
+        <button (click)="delRole(role)">Delete role</button>
         <button (click)="gotoRolesList()">Back to roles list</button>
     </section>
     `
@@ -45,7 +46,8 @@ export class RoleDetailsComponent implements OnInit, OnDestroy {
     role: Role;
     sub: any;
 
-    constructor(private roleService: RoleService,
+    constructor(private rolesList:RolesListComponent,
+                private roleService: RoleService,
                 private route: ActivatedRoute,
                 private router: Router){
     }
@@ -53,7 +55,7 @@ export class RoleDetailsComponent implements OnInit, OnDestroy {
     ngOnInit(){
         this.sub = this.route.params.subscribe(params => {
             let id = Number.parseInt(params['id']);
-            console.log('getting role with roleId: ', id);
+            //console.log('getting role with roleId: ', id);
             this.roleService
                 .get(id)
                 .subscribe(r => this.role = r);
@@ -65,8 +67,7 @@ export class RoleDetailsComponent implements OnInit, OnDestroy {
     }
 
     gotoRolesList(){
-        let link = ['admin/roles'];
-        this.router.navigate(link);
+        this.router.navigate(['../'],{ relativeTo: this.route });
     }
 
     updateRoleDetails(role: Role){
@@ -74,7 +75,18 @@ export class RoleDetailsComponent implements OnInit, OnDestroy {
             .update(role)
             .subscribe(
                 r => {this.role = r;
-                console.log('success');}
+                this.rolesList.ngOnInit();
+                }
             );
+
+    }
+    delRole(role: Role){
+        this.roleService.deleteRole(role.roleId).then(
+            () => {
+                this.role = null;
+                this.rolesList.ngOnInit();
+            }
+        );
+
     }
 }

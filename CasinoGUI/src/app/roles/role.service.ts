@@ -35,6 +35,20 @@ export class RoleService{
             .map(mapRole)
             .catch(handleError);
     }
+    add(role: Role): Observable<Role>{
+        return this.http
+            .post(`${this.baseUrl}/add`,JSON.stringify({role}), {headers: this.getHeaders()})
+            .map(mapRole)
+            .catch(handleError);
+    }
+    deleteRole(id: number): Promise<number>{
+        return this.http
+            .get(`${this.baseUrl}/delete/${id}`, {headers: this.getHeaders()})
+            .toPromise()
+            .then(response => response.json().retcode as number)
+            .catch(handleError);
+
+    }
 
     private getHeaders(){
         let headers = new Headers();

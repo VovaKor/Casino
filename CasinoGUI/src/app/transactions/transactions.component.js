@@ -8,11 +8,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var transaction_service_1 = require('./transaction.service');
-var router_1 = require('@angular/router');
-var common_1 = require('@angular/common');
-require('rxjs/add/operator/switchMap');
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = require("@angular/core");
+var transaction_service_1 = require("./transaction.service");
+var router_1 = require("@angular/router");
+var common_1 = require("@angular/common");
+require("rxjs/add/operator/switchMap");
 var TransactionsComponent = (function () {
     function TransactionsComponent(transactionService, route, location) {
         this.transactionService = transactionService;
@@ -41,20 +42,22 @@ var TransactionsComponent = (function () {
     TransactionsComponent.prototype.goBack = function () {
         this.location.back();
     };
-    __decorate([
-        core_1.Input(), 
-        __metadata('design:type', String)
-    ], TransactionsComponent.prototype, "login", void 0);
-    TransactionsComponent = __decorate([
-        core_1.Component({
-            selector: 'transactions',
-            moduleId: module.id,
-            templateUrl: './transactions.component.html',
-            styleUrls: ['transactions.component.css']
-        }), 
-        __metadata('design:paramtypes', [transaction_service_1.TransactionService, router_1.ActivatedRoute, common_1.Location])
-    ], TransactionsComponent);
     return TransactionsComponent;
 }());
+__decorate([
+    core_1.Input(),
+    __metadata("design:type", String)
+], TransactionsComponent.prototype, "login", void 0);
+TransactionsComponent = __decorate([
+    core_1.Component({
+        selector: 'transactions',
+        moduleId: module.id,
+        templateUrl: './transactions.component.html',
+        styleUrls: ['transactions.component.css']
+    }),
+    __metadata("design:paramtypes", [transaction_service_1.TransactionService,
+        router_1.ActivatedRoute,
+        common_1.Location])
+], TransactionsComponent);
 exports.TransactionsComponent = TransactionsComponent;
 //# sourceMappingURL=transactions.component.js.map

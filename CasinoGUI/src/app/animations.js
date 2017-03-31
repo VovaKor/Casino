@@ -1,5 +1,6 @@
 "use strict";
-var core_1 = require('@angular/core');
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = require("@angular/core");
 // Component transition animations
 exports.slideInDownAnimation = core_1.trigger('routeAnimation', [
     core_1.state('*', core_1.style({

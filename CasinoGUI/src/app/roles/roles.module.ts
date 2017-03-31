@@ -9,11 +9,11 @@ import {RolesRoutingModule} from "./roles.routes";
 import {RolesListComponent} from "./roles-list.component";
 import {RoleService} from "./role.service";
 import {RoleDetailsComponent} from "./role-details.component";
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {Popup2AddComponent} from "./popup2add.component";
 
 @NgModule({
-    imports: [ CommonModule, RolesRoutingModule, FormsModule, HttpModule, BrowserAnimationsModule],
-    declarations: [ RolesListComponent, RoleDetailsComponent],
+    imports: [ CommonModule, RolesRoutingModule, FormsModule, HttpModule],
+    declarations: [ RolesListComponent, RoleDetailsComponent, Popup2AddComponent],
     providers: [RoleService]
 })
 export class RolesModule { }

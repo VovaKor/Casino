@@ -8,6 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * Created by Вова on 20.03.2017.
  */
@@ -39,17 +40,30 @@ var RoleService = (function () {
             .map(mapRole)
             .catch(handleError);
     };
+    RoleService.prototype.add = function (role) {
+        return this.http
+            .post(this.baseUrl + "/add", JSON.stringify({ role: role }), { headers: this.getHeaders() })
+            .map(mapRole)
+            .catch(handleError);
+    };
+    RoleService.prototype.deleteRole = function (id) {
+        return this.http
+            .get(this.baseUrl + "/delete/" + id, { headers: this.getHeaders() })
+            .toPromise()
+            .then(function (response) { return response.json().retcode; })
+            .catch(handleError);
+    };
     RoleService.prototype.getHeaders = function () {
         var headers = new http_1.Headers();
         headers.append('Content-Type', 'application/json');
         return headers;
     };
-    RoleService = __decorate([
-        core_1.Injectable(), 
-        __metadata('design:paramtypes', [http_1.Http])
-    ], RoleService);
     return RoleService;
 }());
+RoleService = __decorate([
+    core_1.Injectable(),
+    __metadata("design:paramtypes", [http_1.Http])
+], RoleService);
 exports.RoleService = RoleService;
 function mapRoles(response) {
     // uncomment to simulate error:

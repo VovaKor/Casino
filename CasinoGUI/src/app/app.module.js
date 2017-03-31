@@ -8,46 +8,49 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var platform_browser_1 = require('@angular/platform-browser');
-var forms_1 = require('@angular/forms');
-var router_1 = require('@angular/router');
-var app_component_1 = require('./app.component');
-var app_routing_module_1 = require('./app-routing.module');
-var compose_message_component_1 = require('./compose-message.component');
-var login_routing_module_1 = require('./login-routing.module');
-var login_component_1 = require('./login.component');
-var not_found_component_1 = require('./not-found.component');
-var dialog_service_1 = require('./dialog.service');
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = require("@angular/core");
+var platform_browser_1 = require("@angular/platform-browser");
+var forms_1 = require("@angular/forms");
+var router_1 = require("@angular/router");
+var app_component_1 = require("./app.component");
+var app_routing_module_1 = require("./app-routing.module");
+var compose_message_component_1 = require("./compose-message.component");
+var login_routing_module_1 = require("./login-routing.module");
+var login_component_1 = require("./login.component");
+var not_found_component_1 = require("./not-found.component");
+var dialog_service_1 = require("./dialog.service");
 var automats_module_1 = require("./automats/automats.module");
+var animations_1 = require("@angular/platform-browser/animations");
 var AppModule = (function () {
     // Diagnostic only: inspect router configuration
     function AppModule(router) {
         console.log('Routes: ', JSON.stringify(router.config, undefined, 2));
     }
-    AppModule = __decorate([
-        core_1.NgModule({
-            imports: [
-                platform_browser_1.BrowserModule,
-                forms_1.FormsModule,
-                login_routing_module_1.LoginRoutingModule,
-                app_routing_module_1.AppRoutingModule,
-                automats_module_1.AutomatsModule,
-            ],
-            declarations: [
-                app_component_1.AppComponent,
-                compose_message_component_1.ComposeMessageComponent,
-                login_component_1.LoginComponent,
-                not_found_component_1.PageNotFoundComponent
-            ],
-            providers: [
-                dialog_service_1.DialogService
-            ],
-            bootstrap: [app_component_1.AppComponent]
-        }), 
-        __metadata('design:paramtypes', [router_1.Router])
-    ], AppModule);
     return AppModule;
 }());
+AppModule = __decorate([
+    core_1.NgModule({
+        imports: [
+            platform_browser_1.BrowserModule,
+            animations_1.BrowserAnimationsModule,
+            forms_1.FormsModule,
+            login_routing_module_1.LoginRoutingModule,
+            app_routing_module_1.AppRoutingModule,
+            automats_module_1.AutomatsModule,
+        ],
+        declarations: [
+            app_component_1.AppComponent,
+            compose_message_component_1.ComposeMessageComponent,
+            login_component_1.LoginComponent,
+            not_found_component_1.PageNotFoundComponent
+        ],
+        providers: [
+            dialog_service_1.DialogService
+        ],
+        bootstrap: [app_component_1.AppComponent]
+    }),
+    __metadata("design:paramtypes", [router_1.Router])
+], AppModule);
 exports.AppModule = AppModule;
 //# sourceMappingURL=app.module.js.map

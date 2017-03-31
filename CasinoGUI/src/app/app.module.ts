@@ -14,10 +14,12 @@ import { PageNotFoundComponent }   from './not-found.component';
 
 import { DialogService }           from './dialog.service';
 import {AutomatsModule} from "./automats/automats.module";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 @NgModule({
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     FormsModule,
     LoginRoutingModule,
     AppRoutingModule,

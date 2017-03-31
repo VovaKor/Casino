@@ -8,9 +8,10 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var router_1 = require('@angular/router');
-var animations_1 = require('./animations');
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = require("@angular/core");
+var router_1 = require("@angular/router");
+var animations_1 = require("./animations");
 var ComposeMessageComponent = (function () {
     function ComposeMessageComponent(router) {
         this.router = router;
@@ -36,27 +37,27 @@ var ComposeMessageComponent = (function () {
         // clears the contents of the named outlet
         this.router.navigate([{ outlets: { popup: null } }]);
     };
-    __decorate([
-        core_1.HostBinding('@routeAnimation'), 
-        __metadata('design:type', Object)
-    ], ComposeMessageComponent.prototype, "routeAnimation", void 0);
-    __decorate([
-        core_1.HostBinding('style.display'), 
-        __metadata('design:type', Object)
-    ], ComposeMessageComponent.prototype, "display", void 0);
-    __decorate([
-        core_1.HostBinding('style.position'), 
-        __metadata('design:type', Object)
-    ], ComposeMessageComponent.prototype, "position", void 0);
-    ComposeMessageComponent = __decorate([
-        core_1.Component({
-            templateUrl: './compose-message.component.html',
-            styles: [':host { position: relative; bottom: 10%; }'],
-            animations: [animations_1.slideInDownAnimation]
-        }), 
-        __metadata('design:paramtypes', [router_1.Router])
-    ], ComposeMessageComponent);
     return ComposeMessageComponent;
 }());
+__decorate([
+    core_1.HostBinding('@routeAnimation'),
+    __metadata("design:type", Object)
+], ComposeMessageComponent.prototype, "routeAnimation", void 0);
+__decorate([
+    core_1.HostBinding('style.display'),
+    __metadata("design:type", Object)
+], ComposeMessageComponent.prototype, "display", void 0);
+__decorate([
+    core_1.HostBinding('style.position'),
+    __metadata("design:type", Object)
+], ComposeMessageComponent.prototype, "position", void 0);
+ComposeMessageComponent = __decorate([
+    core_1.Component({
+        templateUrl: './compose-message.component.html',
+        styles: [':host { position: relative; bottom: 10%; }'],
+        animations: [animations_1.slideInDownAnimation]
+    }),
+    __metadata("design:paramtypes", [router_1.Router])
+], ComposeMessageComponent);
 exports.ComposeMessageComponent = ComposeMessageComponent;
 //# sourceMappingURL=compose-message.component.js.map
