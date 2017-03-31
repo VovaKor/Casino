@@ -9,9 +9,10 @@ import {RolesRoutingModule} from "./roles.routes";
 import {RolesListComponent} from "./roles-list.component";
 import {RoleService} from "./role.service";
 import {RoleDetailsComponent} from "./role-details.component";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
-    imports: [ CommonModule, RolesRoutingModule, FormsModule, HttpModule],
+    imports: [ CommonModule, RolesRoutingModule, FormsModule, HttpModule, BrowserAnimationsModule],
     declarations: [ RolesListComponent, RoleDetailsComponent],
     providers: [RoleService]
 })
