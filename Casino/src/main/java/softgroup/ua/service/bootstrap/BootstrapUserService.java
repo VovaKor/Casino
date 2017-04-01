@@ -4,6 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.DependsOn;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import softgroup.ua.jpa.RoleEntity;
@@ -32,10 +35,12 @@ public class BootstrapUserService implements InitializingBean {
     @Override
     @Transactional()
     public void afterPropertiesSet() throws Exception {
+        logger.error("User Bootstrap");
         createSystemUser();
         createCommonUser();
     }
 
+    @DependsOn("bootstrapRoles")
     private void createSystemUser() {
         if (userService.findUserById("admin") == null) {
             UserEntity user = new UserEntity("admin");

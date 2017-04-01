@@ -4,6 +4,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import softgroup.ua.jpa.RoleEntity;
@@ -13,6 +17,7 @@ import softgroup.ua.repository.RoleRepository;
  * Created by Вова on 12.03.2017.
  */
 @Service
+@Component("bootstrapRoles")
 public class BootstrapRoles implements InitializingBean {
     private static final Logger logger =  LoggerFactory.getLogger(BootstrapRoles.class);
     @Autowired
@@ -20,8 +25,10 @@ public class BootstrapRoles implements InitializingBean {
     @Override
     @Transactional
     public void afterPropertiesSet() throws Exception {
+        logger.error("Roles Bootstrap");
         createRoles();
     }
+
     private void createRoles() {
         if (roleRepository.findByRoleId(1)== null) {
             roleRepository.save(new RoleEntity(1,"root","Administrative user, has access to everything."));
