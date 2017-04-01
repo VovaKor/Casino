@@ -16,7 +16,7 @@ import softgroup.ua.engines.finance.ModelFinanceEngine;
 import softgroup.ua.jpa.TransactionEntity;
 import softgroup.ua.jpa.UserEntity;
 import softgroup.ua.service.exception.ParsingException;
-import softgroup.ua.service.mapper.TransactionMapper;
+import softgroup.ua.service.mappers.TransactionMapper;
 import softgroup.ua.service.TransactionService;
 import softgroup.ua.service.UserService;
 

@@ -13,7 +13,7 @@ import softgroup.ua.jpa.UserEntity;
 import softgroup.ua.service.UserService;
 import softgroup.ua.service.bootstrap.BootstrapUserService;
 import softgroup.ua.service.exception.ParsingException;
-import softgroup.ua.service.mapper.UserMapper;
+import softgroup.ua.service.mappers.UserMapper;
 
 /**
  * @author Stanislav Rymar

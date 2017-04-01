@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package softgroup.ua.service.mapper;
+package softgroup.ua.service.mappers;
 
 import java.math.BigDecimal;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package softgroup.ua.service.mapper;
+package softgroup.ua.service.mappers;
 
 
 import softgroup.ua.service.exception.ParsingException;

@@ -104,15 +104,6 @@ public class AutomatControllerTest {
     }
 
     @Test
-    public void getGameResult() throws Exception {
-        result = this.mockMvc.perform(get("/automats/byId/1/play"))
-                .andExpect(status().isOk()).andReturn();
-        responseContent = result.getResponse().getContentAsString();
-        automatsListReply = objectMapper.readValue(responseContent,AutomatsListReply.class);
-        assertEquals("Slots are empty",3, automatsListReply.automats.get(0).slots.size());
-    }
-
-    @Test
     public void getAllAutomats() throws Exception {
         this.mockMvc.perform(get("/automats/all"))
                 .andDo(print()).andExpect(status().isOk())

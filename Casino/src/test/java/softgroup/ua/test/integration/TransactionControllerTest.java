@@ -37,7 +37,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import softgroup.ua.api.AddTransactionRequest;
 import softgroup.ua.api.TransactionsListReply;
 import softgroup.ua.repository.UserRepository;
-import softgroup.ua.service.mapper.TransactionMapper;
+import softgroup.ua.service.mappers.TransactionMapper;
 import softgroup.ua.utils.EntityIdGenerator;
 /**
  *

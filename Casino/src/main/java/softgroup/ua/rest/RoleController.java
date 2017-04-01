@@ -9,7 +9,7 @@ import softgroup.ua.api.AddRoleRequest;
 import softgroup.ua.api.GenericReply;
 import softgroup.ua.api.RolesListReply;
 import softgroup.ua.jpa.RoleEntity;
-import softgroup.ua.service.mapper.RoleMapper;
+import softgroup.ua.service.mappers.RoleMapper;
 import softgroup.ua.service.RoleService;
 
 /**

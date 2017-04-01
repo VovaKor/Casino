@@ -9,11 +9,11 @@ import softgroup.ua.api.AddAutomatRequest;
 import softgroup.ua.api.Automat;
 import softgroup.ua.api.AutomatsListReply;
 import softgroup.ua.api.GenericReply;
-import softgroup.ua.jpa.AutomatEntity;
 import softgroup.ua.engines.games.GameEngine;
-import softgroup.ua.service.exception.ParsingException;
-import softgroup.ua.service.mapper.AutomatMapper;
+import softgroup.ua.jpa.AutomatEntity;
 import softgroup.ua.service.AutomatService;
+import softgroup.ua.service.exception.ParsingException;
+import softgroup.ua.service.mappers.AutomatMapper;
 
 /**
  * Created by Вова on 08.03.2017.
@@ -27,6 +27,7 @@ public class AutomatController {
     AutomatMapper automatMapper;
     @Autowired
     GameEngine gameEngine;
+
     @RequestMapping(path="/automats/all",  method= RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public AutomatsListReply getAllAutomats(){
         AutomatsListReply reply = new AutomatsListReply();
@@ -53,21 +54,6 @@ public class AutomatController {
         }
         return reply;
     }
-
-    @RequestMapping(path="/automats/byId/{automatId}/play",  method=RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public AutomatsListReply getGameResult(@PathVariable Integer automatId){
-        AutomatsListReply reply = new AutomatsListReply();
-        try {
-            Automat automat = automatMapper.fromInternal(automatService.getAutomatById(automatId));
-            gameEngine.play(automat);
-            reply.automats.add(automat);
-        } catch (ParsingException e) {
-            e.printStackTrace();
-            logger.error(e.toString(),e);
-        }
-        return reply;
-    }
-
 
     @RequestMapping(path="/automats/add",  method=RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public AutomatsListReply addAutomat (@RequestBody AddAutomatRequest addAutomatRequest){
