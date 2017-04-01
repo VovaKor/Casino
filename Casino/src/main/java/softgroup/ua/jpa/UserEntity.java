@@ -126,7 +126,7 @@ public class UserEntity implements Serializable {
     @JoinTable(name = "user_roles", joinColumns = {
             @JoinColumn(name = "login_id", referencedColumnName = "login_id")}, inverseJoinColumns = {
             @JoinColumn(name = "role_id", referencedColumnName = "role_id")})
-    @ManyToMany(cascade = CascadeType.DETACH)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
     public List<RoleEntity> getRolesList() {
         return rolesList;
     }

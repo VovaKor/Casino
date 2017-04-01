@@ -18,6 +18,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import softgroup.ua.api.LoginReply;
+import softgroup.ua.api.LoginRequest;
 import softgroup.ua.jpa.TransactionEntity;
 import softgroup.ua.jpa.UserEntity;
 import softgroup.ua.service.TransactionService;
@@ -35,7 +37,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import softgroup.ua.api.AddTransactionRequest;
 import softgroup.ua.api.TransactionsListReply;
 import softgroup.ua.repository.UserRepository;
-import softgroup.ua.service.TransactionMapper;
+import softgroup.ua.service.mapper.TransactionMapper;
 import softgroup.ua.utils.EntityIdGenerator;
 /**
  *
@@ -45,6 +47,10 @@ import softgroup.ua.utils.EntityIdGenerator;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 public class TransactionControllerTest {
+
+    public final static String AUTH_HTTP_HEADER ="X-Authorization";
+    private static String token = null;
+
     @Autowired
     MockMvc mockMvc;
     @Autowired
@@ -58,7 +64,18 @@ public class TransactionControllerTest {
     UserEntity testUser;
     
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
+        login();
+        if(null == testUser) {
+            addTestUser();
+        }
+        transactionEntity = new TransactionEntity(EntityIdGenerator.random(), new Date(System.currentTimeMillis()), new BigDecimal(150));
+        transactionEntity.setInfo("Transaction information");
+        transactionEntity.setUser(userRepository.findOne(testUser.getLoginId()));
+        transactionService.save(transactionEntity);
+    }
+
+    private void addTestUser() {
         testUser = new UserEntity();
         testUser.setBalance(new BigDecimal(500));
         testUser.setEmail("test@casino.com");
@@ -66,11 +83,26 @@ public class TransactionControllerTest {
         testUser.setPassword("qwerty");
         testUser.setLastLoginDate(new GregorianCalendar());
         userRepository.save(testUser);
-        
-        transactionEntity = new TransactionEntity(EntityIdGenerator.random(), new Date(System.currentTimeMillis()), new BigDecimal(150));
-        transactionEntity.setInfo("Transaction information");
-        transactionEntity.setUser(userRepository.findOne(testUser.getLoginId()));
-        transactionService.save(transactionEntity);
+    }
+
+    public void login() throws Exception {
+        if(token!=null){
+            return;
+        }
+        LoginRequest rq = new LoginRequest();
+        rq.login = "admin";
+        rq.password = "12345";
+        ObjectMapper om = new ObjectMapper();
+        String content = om.writeValueAsString(rq);
+        MvcResult result = mockMvc.perform(post("/auth")
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(content)
+        )
+                .andExpect(status().isOk())
+                .andReturn();
+        String reply = result.getResponse().getContentAsString();
+        token = om.readValue(reply, LoginReply.class).token;
     }
     
     @After
@@ -81,7 +113,8 @@ public class TransactionControllerTest {
     
     @Test
     public void getAllTransactionsTest() throws  Exception {
-        this.mockMvc.perform(get("/transactions/all"))
+        this.mockMvc.perform(get("/transactions/all")
+        .header(AUTH_HTTP_HEADER, token))
                 .andDo(print()).andExpect(status().isOk())
                 .andExpect(content().string(containsString(transactionEntity.getUser().getLoginId())))
                 .andExpect(content().string(containsString(String.valueOf(transactionEntity.getTransactionId()))))
@@ -90,7 +123,8 @@ public class TransactionControllerTest {
     
     @Test
     public void getTransactionsByLoginIdTest() throws  Exception {
-        this.mockMvc.perform(get("/transactions/byloginid/TestUserTrans"))
+        this.mockMvc.perform(get("/transactions/byloginid/TestUserTrans")
+                .header(AUTH_HTTP_HEADER, token))
                 .andDo(print()).andExpect(status().isOk())
                 .andExpect(content().string(containsString(transactionEntity.getUser().getLoginId())))
                 .andExpect(content().string(containsString(String.valueOf(transactionEntity.getTransactionId()))))
@@ -105,6 +139,7 @@ public class TransactionControllerTest {
         addTransactionRequest.transaction = transactionMapper.fromInternal(transactionEntity);
         String content = objectMapper.writeValueAsString(addTransactionRequest);
         MvcResult result = mockMvc.perform(post("/transactions/add")
+                .header(AUTH_HTTP_HEADER, token)
                 .accept(MediaType.APPLICATION_JSON_UTF8)
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(content)

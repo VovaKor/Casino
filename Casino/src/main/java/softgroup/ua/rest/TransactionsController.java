@@ -15,7 +15,8 @@ import softgroup.ua.finance.FinanceEngine;
 import softgroup.ua.finance.ModelFinanceEngine;
 import softgroup.ua.jpa.TransactionEntity;
 import softgroup.ua.jpa.UserEntity;
-import softgroup.ua.service.TransactionMapper;
+import softgroup.ua.service.exception.ParsingException;
+import softgroup.ua.service.mapper.TransactionMapper;
 import softgroup.ua.service.TransactionService;
 import softgroup.ua.service.UserService;
 
@@ -36,8 +37,14 @@ public class TransactionsController {
     @RequestMapping(path = "/transactions/all", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public TransactionsListReply getAllTransactions() {
         TransactionsListReply transactionsListReply = new TransactionsListReply();
-        transactionService.findAll().stream().forEach((TransactionEntity t) -> {
-            transactionsListReply.transactions.add(transactionMapper.fromInternal(t));
+        transactionService.getAllTransactions().forEach((TransactionEntity t) -> {
+            try {
+                transactionsListReply.transactions.add(transactionMapper.fromInternal(t));
+            } catch (ParsingException e) {
+                transactionsListReply.retcode = -2;
+                transactionsListReply.error_message = e.getMessage();
+                logger.error(e.getMessage());
+            }
         });
         return transactionsListReply;
     }
@@ -45,8 +52,14 @@ public class TransactionsController {
     @RequestMapping(path = "/transactions/byloginid/{loginId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public TransactionsListReply getTransactionsByLoginId(@PathVariable String loginId) {
         TransactionsListReply transactionsListReply = new TransactionsListReply();
-        transactionService.findTransactionsByUser(userService.findUserById(loginId)).stream().forEach((TransactionEntity t) -> {
-            transactionsListReply.transactions.add(transactionMapper.fromInternal(t));
+        transactionService.findTransactionsByUser(userService.findUserById(loginId)).forEach((TransactionEntity t) -> {
+            try {
+                transactionsListReply.transactions.add(transactionMapper.fromInternal(t));
+            } catch (ParsingException e) {
+                transactionsListReply.retcode = -1;
+                transactionsListReply.error_message = e.getMessage();
+                logger.error(e.getMessage());
+            }
         });
         return transactionsListReply;
     }

@@ -11,12 +11,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.junit4.SpringRunner;
 import softgroup.ua.jpa.TransactionEntity;
 import softgroup.ua.jpa.UserEntity;
-import softgroup.ua.repository.UserRepository;
 import softgroup.ua.service.TransactionService;
-
+import softgroup.ua.service.UserService;
+import softgroup.ua.authorization.AuthenticatedUser;
 /**
  *
  * @author alexander
@@ -29,36 +31,48 @@ public class TransactionServiceTest {
     private TransactionService transactionService;
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
     private UserEntity testUser;
     private TransactionEntity testTransaction;
 
+    private UserEntity authenticatedUser = null;
+
     @Before
     public void insertTestUserAndTransaction() {
+        login();
         testUser = new UserEntity();
         testUser.setBalance(new BigDecimal(500));
         testUser.setEmail("test@casino.com");
         testUser.setLoginId("TransactionUser");
         testUser.setPassword("qwerty");
         testUser.setLastLoginDate(new GregorianCalendar());
-        userRepository.save(testUser);
+        userService.addUser(testUser);
 
-        testTransaction = new TransactionEntity(Long.valueOf(126), new Date(System.currentTimeMillis()), new BigDecimal(150));
+        testTransaction = new TransactionEntity(126L, new Date(System.currentTimeMillis()), new BigDecimal(150));
         testTransaction.setInfo("Transaction information");
         testTransaction.setUser(testUser);
         transactionService.save(testTransaction);
     }
 
+    public void login() {
+        if (null == authenticatedUser) {
+            authenticatedUser = userService.authenticateUser("admin", "12345");
+            AuthenticatedUser au = new AuthenticatedUser(authenticatedUser);
+            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(au, null, au.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+        }
+    }
+
     @After
     public void deleteTestUserAndTransaction() {
         transactionService.delete(testTransaction.getTransactionId());
-        userRepository.delete(testUser.getLoginId());
+        userService.deleteUser(testUser.getLoginId());
     }
 
     @Test
     public void addTransactionTest() {
-        TransactionEntity transaction = new TransactionEntity(new Long(124), new Date(System.currentTimeMillis()), new BigDecimal(-50));
+        TransactionEntity transaction = new TransactionEntity(124L, new Date(System.currentTimeMillis()), new BigDecimal(-50));
         transaction.setUser(testUser);
         transactionService.addTransaction(transaction);
         Assert.assertNotNull("New transaction wasn't found", transactionService.findTransactionById(transaction.getTransactionId()));
@@ -70,7 +84,7 @@ public class TransactionServiceTest {
     @Test
     public void getAllTransactionsTest() {
         int transactionsAmount = transactionService.getAllTransactions().size();
-        TransactionEntity transaction = new TransactionEntity(new Long(124), new Date(System.currentTimeMillis()), new BigDecimal(50));
+        TransactionEntity transaction = new TransactionEntity(124L, new Date(System.currentTimeMillis()), new BigDecimal(50));
         transaction.setUser(testUser);
         transactionService.addTransaction(transaction);
         Assert.assertTrue(transactionService.getAllTransactions().size() > transactionsAmount);
