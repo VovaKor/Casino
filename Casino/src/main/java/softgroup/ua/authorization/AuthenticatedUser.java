@@ -14,7 +14,10 @@ import java.util.List;
  */
 public class AuthenticatedUser implements UserDetails {
 
+
+
     private final UserEntity user;
+
     Collection<UserAuthority> authorities = new ArrayList<>();
 
     public AuthenticatedUser(UserEntity user) {
@@ -33,6 +36,9 @@ public class AuthenticatedUser implements UserDetails {
         }
     }
 
+    public UserEntity getUser() {
+        return user;
+    }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.authorities;
