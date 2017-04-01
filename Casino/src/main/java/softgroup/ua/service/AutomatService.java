@@ -14,18 +14,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * Created by Вова on 08.03.2017.
  */
 @Service
-public class AutomatService extends GeneralServiceImp<AutomatEntity, Integer>{
+public class AutomatService {
     private static final Logger logger =  LoggerFactory.getLogger(AutomatService.class);
     @Autowired
     AutomatRepository automatRepository;
 
     public List <AutomatEntity> getAllAutomats() {
         return automatRepository.findAll();
-    }
-
-    @Override
-    public JpaRepository<AutomatEntity, Integer> getRepository() {
-        return automatRepository;
     }
 
     public AutomatEntity getAutomatById(Integer automatId) {
