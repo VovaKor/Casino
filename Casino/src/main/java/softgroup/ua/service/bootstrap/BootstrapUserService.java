@@ -66,6 +66,7 @@ public class BootstrapUserService implements InitializingBean {
             userData.setBirthDay(new GregorianCalendar(1986, 3,14));
             userData.setTelephone("+309711122233");
             user.setUserData(userData);
+            user.getRolesList().add(roleService.getRoleById(3));
             userService.addUser(user);
             logger.debug("Common user was created from bootstrap");
         }
