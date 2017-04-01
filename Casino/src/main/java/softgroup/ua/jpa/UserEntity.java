@@ -114,7 +114,7 @@ public class UserEntity implements Serializable {
         this.userData = userData;
     }
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
     public List<GamesEntity> getGamesList() {
         return gamesList;
     }
@@ -126,7 +126,7 @@ public class UserEntity implements Serializable {
     @JoinTable(name = "user_roles", joinColumns = {
             @JoinColumn(name = "login_id", referencedColumnName = "login_id")}, inverseJoinColumns = {
             @JoinColumn(name = "role_id", referencedColumnName = "role_id")})
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
+    @ManyToMany(cascade = CascadeType.DETACH)
     public List<RoleEntity> getRolesList() {
         return rolesList;
     }
