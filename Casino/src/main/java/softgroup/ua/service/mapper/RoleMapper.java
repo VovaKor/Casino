@@ -1,4 +1,4 @@
-package softgroup.ua.service;
+package softgroup.ua.service.mapper;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +12,7 @@ import softgroup.ua.repository.RoleRepository;
  * Created by Вова on 08.03.2017.
  */
 @Component
-public class RoleMapper {
+public class RoleMapper implements GenericMapper<RoleEntity, Role>{
     private static final Logger logger =  LoggerFactory.getLogger(RoleMapper.class);
     @Autowired
     RoleRepository roleRepository;
@@ -21,6 +21,7 @@ public class RoleMapper {
      * @param roleEntity internal role model
      * @return external REST role model
      */
+    @Override
     public Role fromInternal(RoleEntity roleEntity) {
         Role role = null;
         if (roleEntity != null) {
@@ -38,6 +39,7 @@ public class RoleMapper {
      * @param role REST model
      * @return internal RoleEntity with all required fields set
      */
+    @Override
     public RoleEntity toInternal(Role role) {
         RoleEntity roleEntity = null;
         if (role.roleId != null) {
