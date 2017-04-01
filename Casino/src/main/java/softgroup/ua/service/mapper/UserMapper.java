@@ -3,6 +3,7 @@ package softgroup.ua.service.mapper;
 import org.springframework.stereotype.Component;
 import softgroup.ua.api.User;
 import softgroup.ua.jpa.UserEntity;
+import softgroup.ua.service.UserService;
 import softgroup.ua.service.exception.ParsingException;
 
 /**
@@ -30,7 +31,7 @@ public class UserMapper implements GenericMapper<UserEntity, User> {
         if (user != null) {
             UserEntity userEntity = new UserEntity();
             userEntity.setLoginId(user.getLoginId());
-            userEntity.setPassword(user.getPassword());
+            userEntity.setPassword(UserService.digest(user.getPassword()));
             userEntity.setBalance(user.getBalance());
             userEntity.setEmail(user.getEmail());
             return userEntity;

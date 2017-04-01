@@ -6,11 +6,14 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import softgroup.ua.jpa.RoleEntity;
 import softgroup.ua.jpa.UserDataEntity;
 import softgroup.ua.jpa.UserEntity;
+import softgroup.ua.service.RoleService;
 import softgroup.ua.service.UserService;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.GregorianCalendar;
 
 /**
@@ -23,6 +26,8 @@ public class BootstrapUserService implements InitializingBean {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private RoleService roleService;
 
     @Override
     @Transactional()
@@ -36,7 +41,8 @@ public class BootstrapUserService implements InitializingBean {
             UserEntity user = new UserEntity("admin");
             user.setBalance(new BigDecimal(0));
             user.setEmail("admin@admin.admin");
-            user.setPassword("12345");
+            user.setPassword(UserService.digest("12345"));
+            user.getRolesList().add(roleService.getRoleById(1));
             userService.addUser(user);
             logger.debug("Admin user was created from bootstrap");
         }
@@ -47,7 +53,7 @@ public class BootstrapUserService implements InitializingBean {
             UserEntity user = new UserEntity("user");
             user.setBalance(new BigDecimal(10.90));
             user.setEmail("someemail@gmail.com");
-            user.setPassword("qwerty123");
+            user.setPassword(UserService.digest("qwerty123"));
             UserDataEntity userData = new UserDataEntity("user");
             userData.setPassport("NV1235234");
             userData.setName("Liliana");

@@ -3,13 +3,19 @@ package softgroup.ua.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.codec.Hex;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import softgroup.ua.jpa.UserDataEntity;
 import softgroup.ua.jpa.UserEntity;
 import softgroup.ua.repository.UserDataRepository;
 import softgroup.ua.repository.UserRepository;
 
+import java.security.NoSuchAlgorithmException;
+import java.util.GregorianCalendar;
 import java.util.List;
+
+import java.security.MessageDigest;
 
 /**
  * @author Rymar Stanislav
@@ -82,6 +88,36 @@ public class UserService {
     public void deleteAllUser() {
         logger.debug("Deleting all users");
         userRepository.deleteAll();
+    }
+
+    @Transactional
+    public UserEntity authenticateUser(String login, String password) {
+        UserEntity user = userRepository.findOne(login);
+        if (user != null) {
+            if( ! user.getPassword().equalsIgnoreCase(digest(password))){
+                user = null;
+                logger.debug("Invalid password");
+            }
+            user.setLastLoginDate(new GregorianCalendar());
+            userRepository.save(user);
+            logger.debug("Login ok");
+        }else{
+            logger.debug("User not found");
+        }
+        return user;
+    }
+
+    public static String digest(String original) {
+        String res = "";
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            md.update(original.getBytes());
+            byte[] digest = md.digest();
+            res = new String(Hex.encode(digest));
+        } catch (NoSuchAlgorithmException ex) {
+            logger.error("Can not create SHA-256 digester");
+        }
+        return res;
     }
 
 }
