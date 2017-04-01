@@ -10,7 +10,7 @@ import softgroup.ua.api.Automat;
 import softgroup.ua.api.AutomatsListReply;
 import softgroup.ua.api.GenericReply;
 import softgroup.ua.jpa.AutomatEntity;
-import softgroup.ua.service.GameEngine;
+import softgroup.ua.engines.games.GameEngine;
 import softgroup.ua.service.exception.ParsingException;
 import softgroup.ua.service.mapper.AutomatMapper;
 import softgroup.ua.service.AutomatService;
