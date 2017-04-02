@@ -16,6 +16,7 @@ import softgroup.ua.authorization.AuthenticatedUser;
 import softgroup.ua.authorization.TokenProvider;
 import softgroup.ua.jpa.UserEntity;
 import softgroup.ua.service.UserService;
+import softgroup.ua.service.exception.AuthorizationException;
 import softgroup.ua.service.exception.ParsingException;
 import softgroup.ua.service.mappers.UserMapper;
 
@@ -36,23 +37,22 @@ public class AuthorizationController {
     @RequestMapping(path = "/auth", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<LoginReply> authenticateUser(@RequestBody LoginRequest request) {
         LoginReply reply = new LoginReply();
-        UserEntity user;
-        user = userService.authenticateUser(request.loginId, request.password);
-        if (null != user) {
+        UserEntity user = null;
+        HttpStatus httpStatus = HttpStatus.OK;
+        try {
+            user = userService.authenticateUser(request.loginId, request.password);
             String token = tokenProvider.newToken();
             tokenProvider.put(token, new AuthenticatedUser(user));
             reply.token = token;
-            try {
-                reply.user = userMapper.fromInternal(user);
-            } catch (ParsingException e) {
-                e.printStackTrace();
-            }
-        } else {
+            reply.user = userMapper.fromInternal(user);
+        } catch (Exception e) {
             reply.retcode = -1;
-            reply.error_message = "Check login and password";
-            logger.error("Error login in user. User: " + request.loginId);
-            return new ResponseEntity<>(reply, HttpStatus.NOT_FOUND);
+            reply.error_message = e.getMessage();
+            if (e instanceof AuthorizationException) {
+                logger.error("Error login in user. User: " + request.loginId);
+            }
+            httpStatus = HttpStatus.NOT_FOUND;
         }
-        return new ResponseEntity<>(reply, HttpStatus.OK);
+        return new ResponseEntity<>(reply, httpStatus);
     }
 }

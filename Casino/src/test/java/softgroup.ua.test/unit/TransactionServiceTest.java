@@ -39,7 +39,7 @@ public class TransactionServiceTest {
     private UserEntity authenticatedUser = null;
 
     @Before
-    public void insertTestUserAndTransaction() {
+    public void insertTestUserAndTransaction() throws Exception {
         login();
         testUser = new UserEntity();
         testUser.setBalance(new BigDecimal(500));
@@ -55,7 +55,7 @@ public class TransactionServiceTest {
         transactionService.save(testTransaction);
     }
 
-    public void login() {
+    public void login() throws Exception {
         if (null == authenticatedUser) {
             authenticatedUser = userService.authenticateUser("admin", "12345");
             AuthenticatedUser au = new AuthenticatedUser(authenticatedUser);
