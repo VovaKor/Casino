@@ -6,7 +6,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.junit4.SpringRunner;
+import softgroup.ua.authorization.AuthenticatedUser;
 import softgroup.ua.jpa.AutomatEntity;
 import softgroup.ua.jpa.GamesEntity;
 import softgroup.ua.jpa.UserEntity;
@@ -44,7 +47,10 @@ public class AutomatServiceTest {
     public void setUp() throws Exception {
         automatId = 1000;
         historyId = EntityIdGenerator.random();
-        UserEntity userEntity = userService.findUserById("admin");
+        UserEntity userEntity = userService.authenticateUser("admin", "12345");
+        AuthenticatedUser authenticatedUser = new AuthenticatedUser(userEntity);
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(authenticatedUser, null, authenticatedUser.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
         testEntity = new AutomatEntity(automatId,"Test automat","Test description");
         gameHistory = new GamesEntity(historyId, BigDecimal.TEN, new GregorianCalendar());
         //testEntity.getGamesList().add(gameHistory);
