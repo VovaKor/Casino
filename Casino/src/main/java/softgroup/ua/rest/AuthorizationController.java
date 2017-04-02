@@ -35,7 +35,7 @@ public class AuthorizationController {
     public LoginReply authenticateUser(@RequestBody LoginRequest request) {
         LoginReply reply = new LoginReply();
         UserEntity user;
-        user = userService.authenticateUser(request.login, request.password);
+        user = userService.authenticateUser(request.loginId, request.password);
         if (null != user) {
             String token = tokenProvider.newToken();
             tokenProvider.put(token, new AuthenticatedUser(user));
@@ -48,7 +48,7 @@ public class AuthorizationController {
         } else {
             reply.retcode = -1;
             reply.error_message = "Check login and password";
-            logger.error("Error loggin in user. User: " + request.login);
+            logger.error("Error loggin in user. User: " + request.loginId);
         }
         return reply;
     }

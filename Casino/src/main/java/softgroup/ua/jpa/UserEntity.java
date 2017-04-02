@@ -24,7 +24,7 @@ public class UserEntity implements Serializable {
 
     private String loginId;
     private String password;
-    private BigDecimal balance;
+    private BigDecimal balance = new BigDecimal(0.00);
     private String email;
     private Calendar lastLoginDate;
     private UserDataEntity userData;

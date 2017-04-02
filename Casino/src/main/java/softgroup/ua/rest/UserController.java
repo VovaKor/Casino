@@ -2,9 +2,7 @@ package softgroup.ua.rest;
 
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import softgroup.ua.api.AddUserRequest;
 import softgroup.ua.api.User;
@@ -28,31 +26,49 @@ public class UserController {
     @Autowired
     private UserMapper userMapper;
 
-    @GetMapping(value = "/user/{loginId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<?> findUserById(@PathVariable String loginId) {
+    @GetMapping(value = "/users/all", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public UserListReply findAllUsers() {
+        UserListReply reply = new UserListReply();
+        logger.debug("Searching all user!");
+        userService.getAllUser().forEach((UserEntity u) -> {
+            try {
+                reply.getList().add(userMapper.fromInternal(u));
+            } catch (ParsingException e) {
+                reply.retcode = -2;
+                reply.error_message = e.getMessage();
+                logger.error(e.getMessage());
+            }
+        });
+
+        return reply;
+    }
+
+    @GetMapping(value = "/users/{loginId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public UserListReply findUserById(@PathVariable String loginId) {
+        UserListReply reply = new UserListReply();
         logger.debug("Searching UserEntity by login/id where login/id is %s ", loginId);
         User user = null;
-        UserListReply reply = new UserListReply();
         UserEntity userEntity = userService.findUserById(loginId);
-
 
         if (userEntity != null) {
             try {
                 user = userMapper.fromInternal(userEntity);
                 reply.getList().add(user);
-                return new ResponseEntity<>(reply, HttpStatus.OK);
+                return reply;
             } catch (Exception e) {
-                e.printStackTrace();
-                return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+                reply.retcode = -3;
+                reply.error_message = e.getMessage();
+                return reply;
             }
 
-        } else {
-            return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
         }
+
+        return reply;
     }
 
-    @PostMapping(value = "/user")
-    public ResponseEntity<Void> addUser(@RequestBody AddUserRequest addUserRequest) {
+    @PostMapping(value = "/register", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public UserListReply addUser(@RequestBody AddUserRequest addUserRequest) {
+        UserListReply reply = new UserListReply();
 
         if (addUserRequest != null) {
             UserEntity userEntity;
@@ -60,19 +76,19 @@ public class UserController {
                 User user = addUserRequest.getUser();
                 userEntity = userMapper.toInternal(user);
                 userService.addUser(userEntity);
-
                 logger.debug("UserEntity successful added");
-                return new ResponseEntity<>(HttpStatus.CREATED);
+                reply.getList().add(user);
             } catch (ParsingException e) {
-                e.printStackTrace();
-                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+                reply.retcode = -1;
+                reply.error_message = e.getMessage();
+                return reply;
             }
         } else {
-            logger.debug("No content for adding");
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            reply.retcode = -2;
+            reply.error_message = "Empty addUserRequest";
         }
 
+        return reply;
     }
-
 
 }

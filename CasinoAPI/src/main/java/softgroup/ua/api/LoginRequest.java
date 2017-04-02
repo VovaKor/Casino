@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class LoginRequest {
     @XmlElement(required = true)
-    public String login;
+    public String loginId;
     @XmlElement(required = true)
     public String password;
 }

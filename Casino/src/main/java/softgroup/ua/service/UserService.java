@@ -3,6 +3,7 @@ package softgroup.ua.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.crypto.codec.Hex;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +18,7 @@ import java.util.List;
 
 import java.security.MessageDigest;
 
+
 /**
  * @author Rymar Stanislav
  */
@@ -29,6 +31,7 @@ public class UserService {
     @Autowired
     private UserDataRepository userDataRepository;
 
+    @Secured({})
     public void addUser(UserEntity user) {
         logger.debug("Adding user with login/id = %s", user.getLoginId());
         userRepository.save(user);

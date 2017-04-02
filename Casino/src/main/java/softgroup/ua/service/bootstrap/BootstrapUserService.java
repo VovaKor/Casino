@@ -16,11 +16,11 @@ import softgroup.ua.service.RoleService;
 import softgroup.ua.service.UserService;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
 import java.util.GregorianCalendar;
 
 /**
- * Created by Vlad on 05.03.2017.
+ * @author Stanislav Rymar
+ * @author Vlad
  */
 @Service
 public class BootstrapUserService implements InitializingBean {
@@ -44,7 +44,6 @@ public class BootstrapUserService implements InitializingBean {
     private void createSystemUser() {
         if (userService.findUserById("admin") == null) {
             UserEntity user = new UserEntity("admin");
-            user.setBalance(new BigDecimal(0));
             user.setEmail("admin@admin.admin");
             user.setPassword(UserService.digest("12345"));
             user.getRolesList().add(roleService.getRoleById(1));
@@ -59,6 +58,7 @@ public class BootstrapUserService implements InitializingBean {
             user.setBalance(new BigDecimal(10.90));
             user.setEmail("someemail@gmail.com");
             user.setPassword(UserService.digest("qwerty123"));
+            user.getRolesList().add(roleService.getRoleById(4));
             UserDataEntity userData = new UserDataEntity("user");
             userData.setPassport("NV1235234");
             userData.setName("Liliana");
