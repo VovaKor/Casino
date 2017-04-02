@@ -38,6 +38,7 @@ public class GameControllerTest {
     private final static String AUTH_HTTP_HEADER ="X-Authorization";
     private static String token = null;
     private MvcResult result;
+    private String requestContent;
     private String responseContent;
     private AutomatsListReply automatsListReply;
     private ObjectMapper objectMapper;
@@ -51,16 +52,17 @@ public class GameControllerTest {
         rq.loginId = "user";
         rq.password = "qwerty123";
         objectMapper = new ObjectMapper();
-        String content = objectMapper.writeValueAsString(rq);
-        MvcResult result = mockMvc.perform(post("/auth")
+
+        requestContent = objectMapper.writeValueAsString(rq);
+        result = mockMvc.perform(post("/auth")
                 .accept(MediaType.APPLICATION_JSON_UTF8)
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(content)
+                .content(requestContent)
         )
                 .andExpect(status().isOk())
                 .andReturn();
-        String reply = result.getResponse().getContentAsString();
-        LoginReply lr = objectMapper.readValue(reply, LoginReply.class);
+        responseContent = result.getResponse().getContentAsString();
+        LoginReply lr = objectMapper.readValue(responseContent, LoginReply.class);
         token = lr.token;
     }
 

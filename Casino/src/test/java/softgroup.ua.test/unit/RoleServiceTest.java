@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import softgroup.ua.jpa.RoleEntity;
+import softgroup.ua.jpa.UserEntity;
 import softgroup.ua.service.RoleService;
+import softgroup.ua.service.UserService;
 
 /**
  * Created by Вова on 08.03.2017.
@@ -18,23 +20,30 @@ import softgroup.ua.service.RoleService;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class RoleServiceTest {
 
-
+    @Autowired
+    UserService userService;
     @Autowired
     RoleService roleService;
 
     private RoleEntity roleEntity;
     private Integer roleId;
+    private UserEntity userEntity;
 
     @Before
     public void setUp() throws Exception {
         roleId = 100;
         roleEntity = new RoleEntity(roleId,"test","Test role");
+        userEntity = userService.findUserById("admin");
+        userEntity.getRolesList().add(roleEntity);
+        roleEntity.getUserList().add(userEntity);
+
     }
 
     @After
     public void tearDown() throws Exception {
         roleId = null;
         roleEntity = null;
+        userEntity = null;
     }
     @Test
     public void getRoleById() throws Exception {

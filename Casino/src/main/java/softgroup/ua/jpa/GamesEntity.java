@@ -8,18 +8,7 @@ package softgroup.ua.jpa;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Calendar;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -58,7 +47,7 @@ public class GamesEntity implements Serializable {
     private UserEntity user;
     
     @JoinColumn(name = "automat_id", referencedColumnName = "automat_id")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
     private AutomatEntity automat;
 
     public GamesEntity() {

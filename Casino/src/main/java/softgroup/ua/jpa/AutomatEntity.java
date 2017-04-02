@@ -24,7 +24,7 @@ public class AutomatEntity implements Serializable{
     @Column(name = "description", nullable = false, length = 200)
     private String description;
     
-    @OneToMany(cascade = CascadeType.DETACH, mappedBy = "automat")
+    @OneToMany(cascade = CascadeType.DETACH, mappedBy = "automat", fetch = FetchType.EAGER)
     private List<GamesEntity> gamesList = new ArrayList<>();
     public AutomatEntity(){}
     public AutomatEntity(int automatId, String automatName, String description) {

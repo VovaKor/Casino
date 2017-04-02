@@ -4,7 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import softgroup.ua.jpa.AutomatEntity;
+import softgroup.ua.jpa.GamesEntity;
 import softgroup.ua.repository.AutomatRepository;
 
 import java.util.List;
@@ -14,6 +16,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * Created by Вова on 08.03.2017.
  */
 @Service
+@Transactional(timeout = 10)
 public class AutomatService {
     private static final Logger logger =  LoggerFactory.getLogger(AutomatService.class);
     @Autowired
@@ -23,6 +26,7 @@ public class AutomatService {
         return automatRepository.findAll();
     }
 
+    @Transactional(readOnly = true)
     public AutomatEntity getAutomatById(Integer automatId) {
         return automatRepository.findByAutomatId(automatId);
     }
@@ -43,7 +47,10 @@ public class AutomatService {
         AutomatEntity automatEntity = automatRepository.findOne(automatId);
         if (automatEntity != null) {
             logger.debug("Deleting automat \"%s\" with id \"%s\"", automatEntity.getAutomatName(), automatEntity.getAutomatId());
+            List<GamesEntity> gamesEntityList = automatEntity.getGamesList();
+            gamesEntityList.forEach(gamesEntity -> gamesEntity.setAutomat(null));
             automatRepository.delete(automatEntity);
         }
+
     }
 }

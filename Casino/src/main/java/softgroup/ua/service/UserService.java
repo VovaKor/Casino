@@ -49,7 +49,9 @@ public class UserService {
 
     public UserEntity findUserById(String loginId) {
         logger.debug("Searching user with login/id = %s", loginId);
-        return userRepository.findOne(loginId);
+        UserEntity userEntity = userRepository.findOne(loginId);
+        userEntity.getRolesList().size();
+        return userEntity;
     }
 
     public List<UserEntity> findUserByName(String name) {
