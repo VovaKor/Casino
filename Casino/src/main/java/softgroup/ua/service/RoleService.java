@@ -23,10 +23,13 @@ public class RoleService {
     @Autowired
     RoleRepository roleRepository;
 
+    @Secured({"ROLE_ROOT"})
+    @Transactional(readOnly = true)
     public List<RoleEntity> getAllRoles(){
         return  roleRepository.findAll();
     }
 
+    @Secured({"ROLE_ROOT"})
     @Transactional(readOnly = true)
     public RoleEntity getRoleById(int roleId) {
         return roleRepository.findByRoleId(roleId);
