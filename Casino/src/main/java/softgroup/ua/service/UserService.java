@@ -55,7 +55,9 @@ public class UserService {
         logger.debug("Searching user with login/id = %s", loginId);
         UserEntity userEntity = userRepository.findOne(loginId);
         //This line is mandatory to solve “failed to lazily initialize a collection of role” exception
-        Hibernate.initialize(userEntity.getRolesList().size());
+        if (userEntity != null) {
+            Hibernate.initialize(userEntity.getRolesList().size());
+        }
         return userEntity;
     }
 
@@ -109,6 +111,7 @@ public class UserService {
                 throw new AuthorizationException("Invalid password");
             }
             else {
+                Hibernate.initialize(user.getRolesList().size());
                 user.setLastLoginDate(new GregorianCalendar());
                 userRepository.save(user);
                 logger.debug("Login ok");
