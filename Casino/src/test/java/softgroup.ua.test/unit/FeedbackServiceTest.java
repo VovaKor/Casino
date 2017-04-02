@@ -7,9 +7,15 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.junit4.SpringRunner;
+import softgroup.ua.authorization.AuthenticatedUser;
 import softgroup.ua.jpa.Feedback;
+import softgroup.ua.jpa.UserEntity;
 import softgroup.ua.service.FeedbackService;
+import softgroup.ua.service.UserService;
+import softgroup.ua.service.exception.AuthorizationException;
 import softgroup.ua.utils.EntityIdGenerator;
 
 import java.sql.Timestamp;
@@ -32,11 +38,20 @@ public class FeedbackServiceTest {
     @Autowired
     private FeedbackService feedbackService;
 
+    @Autowired
+    private UserService userService;
+
+    private List<Feedback> feedbacks;
+
+    private UserEntity authenticatedUser = null;
+
     /**
      * Method which execute before all test methods. This method delete all feedback in DB and insert new.
      */
     @Before
-    public void deleteAllAndAddFeedbacks() {
+    public void deleteAllAndAddFeedbacks() throws AuthorizationException {
+        login();
+        feedbacks = feedbackService.getAllFeedback();
         Timestamp stamp = new Timestamp(System.currentTimeMillis());
         Date date = new Date(stamp.getTime());
         feedbackService.deleteAllFeedback();
@@ -45,6 +60,15 @@ public class FeedbackServiceTest {
         feedbackService.addFeedback(new Feedback(52l, "Hello everyone!3", "vasya1488@gmail.com", date));
         feedbackService.addFeedback(new Feedback(53l, "Hello everyone!4", "vasya666@gmail.com", date));
         feedbackService.addFeedback(new Feedback(54l, "Hello everyone!11", "vasya777@gmail.com", date));
+    }
+
+    public void login() throws AuthorizationException {
+        if (null == authenticatedUser) {
+            authenticatedUser = userService.authenticateUser("admin", "12345");
+            AuthenticatedUser au = new AuthenticatedUser(authenticatedUser);
+            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(au, null, au.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+        }
     }
 
     /**
@@ -149,6 +173,9 @@ public class FeedbackServiceTest {
     @After
     public void deleteAll() {
         feedbackService.deleteAllFeedback();
+        for (Feedback f : feedbacks) {
+            feedbackService.addFeedback(f);
+        }
     }
 
 
