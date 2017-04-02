@@ -11,6 +11,7 @@ import softgroup.ua.jpa.UserDataEntity;
 import softgroup.ua.jpa.UserEntity;
 import softgroup.ua.repository.UserDataRepository;
 import softgroup.ua.repository.UserRepository;
+import softgroup.ua.service.exception.AuthorizationException;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.GregorianCalendar;
@@ -96,21 +97,21 @@ public class UserService {
     }
 
     @Transactional
-    public UserEntity authenticateUser(String login, String password) {
+    public UserEntity authenticateUser(String login, String password) throws AuthorizationException {
         UserEntity user = userRepository.findOne(login);
         if (user != null) {
             if( ! user.getPassword().equalsIgnoreCase(digest(password))){
-                user = null;
                 logger.debug("Invalid password");
+                throw new AuthorizationException("Invalid password");
             }
             else {
                 user.setLastLoginDate(new GregorianCalendar());
                 userRepository.save(user);
                 logger.debug("Login ok");
             }
-
         }else{
             logger.debug("User not found");
+            throw new AuthorizationException("User not found");
         }
         return user;
     }

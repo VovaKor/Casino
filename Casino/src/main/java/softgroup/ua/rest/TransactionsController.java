@@ -37,30 +37,32 @@ public class TransactionsController {
     @RequestMapping(path = "/transactions/all", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public TransactionsListReply getAllTransactions() {
         TransactionsListReply transactionsListReply = new TransactionsListReply();
-        transactionService.getAllTransactions().forEach((TransactionEntity t) -> {
+        for(TransactionEntity t : transactionService.getAllTransactions()) {
             try {
                 transactionsListReply.transactions.add(transactionMapper.fromInternal(t));
             } catch (ParsingException e) {
                 transactionsListReply.retcode = -2;
                 transactionsListReply.error_message = e.getMessage();
                 logger.error(e.getMessage());
+                break;
             }
-        });
+        }
         return transactionsListReply;
     }
     
     @RequestMapping(path = "/transactions/byloginid/{loginId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public TransactionsListReply getTransactionsByLoginId(@PathVariable String loginId) {
         TransactionsListReply transactionsListReply = new TransactionsListReply();
-        transactionService.findTransactionsByUser(userService.findUserById(loginId)).forEach((TransactionEntity t) -> {
+        for(TransactionEntity t : transactionService.findTransactionsByUser(userService.findUserById(loginId))) {
             try {
                 transactionsListReply.transactions.add(transactionMapper.fromInternal(t));
             } catch (ParsingException e) {
                 transactionsListReply.retcode = -1;
                 transactionsListReply.error_message = e.getMessage();
                 logger.error(e.getMessage());
+                break;
             }
-        });
+        }
         return transactionsListReply;
     }
     
@@ -84,7 +86,8 @@ public class TransactionsController {
             reply.retcode = -1;
             reply.error_message = e.getMessage();
             logger.error("Error adding transaction. Exception: " + e.getMessage());
+        } finally {
+            return reply;
         }
-        return reply;
     }
 }
