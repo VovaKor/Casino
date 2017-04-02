@@ -101,9 +101,12 @@ public class UserService {
                 user = null;
                 logger.debug("Invalid password");
             }
-            user.setLastLoginDate(new GregorianCalendar());
-            userRepository.save(user);
-            logger.debug("Login ok");
+            else {
+                user.setLastLoginDate(new GregorianCalendar());
+                userRepository.save(user);
+                logger.debug("Login ok");
+            }
+
         }else{
             logger.debug("User not found");
         }

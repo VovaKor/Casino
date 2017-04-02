@@ -66,7 +66,6 @@ public class UserController {
     @PostMapping(value = "/register", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public UserListReply addUser(@RequestBody AddUserRequest addUserRequest) {
         UserListReply reply = new UserListReply();
-
         if (addUserRequest != null) {
             UserEntity userEntity;
             try {

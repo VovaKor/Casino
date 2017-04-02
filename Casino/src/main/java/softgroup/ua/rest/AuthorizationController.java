@@ -3,7 +3,9 @@ package softgroup.ua.rest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -32,7 +34,7 @@ public class AuthorizationController {
     private TokenProvider tokenProvider;
 
     @RequestMapping(path = "/auth", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LoginReply authenticateUser(@RequestBody LoginRequest request) {
+    public ResponseEntity<LoginReply> authenticateUser(@RequestBody LoginRequest request) {
         LoginReply reply = new LoginReply();
         UserEntity user;
         user = userService.authenticateUser(request.loginId, request.password);
@@ -48,8 +50,9 @@ public class AuthorizationController {
         } else {
             reply.retcode = -1;
             reply.error_message = "Check login and password";
-            logger.error("Error loggin in user. User: " + request.loginId);
+            logger.error("Error login in user. User: " + request.loginId);
+            return new ResponseEntity<>(reply, HttpStatus.NOT_FOUND);
         }
-        return reply;
+        return new ResponseEntity<>(reply, HttpStatus.OK);
     }
 }
