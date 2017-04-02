@@ -1,11 +1,13 @@
 package softgroup.ua.service;
 
+import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.crypto.codec.Hex;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import softgroup.ua.jpa.UserDataEntity;
 import softgroup.ua.jpa.UserEntity;
@@ -24,6 +26,7 @@ import java.security.MessageDigest;
  * @author Rymar Stanislav
  */
 @Service
+@Transactional(timeout = 10)
 public class UserService {
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
@@ -47,11 +50,12 @@ public class UserService {
         logger.debug("Updating user with login/id = %s", user.getLoginId());
         userRepository.save(user);
     }
-
+    @Transactional(readOnly = true)
     public UserEntity findUserById(String loginId) {
         logger.debug("Searching user with login/id = %s", loginId);
         UserEntity userEntity = userRepository.findOne(loginId);
-        userEntity.getRolesList().size();
+        //This line is mandatory to solve “failed to lazily initialize a collection of role” exception
+        Hibernate.initialize(userEntity.getRolesList().size());
         return userEntity;
     }
 
