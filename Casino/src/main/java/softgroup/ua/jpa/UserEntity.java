@@ -2,7 +2,6 @@ package softgroup.ua.jpa;
 
 import org.hibernate.validator.constraints.Email;
 import softgroup.ua.jpa.content.Content;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -114,7 +113,7 @@ public class UserEntity implements Serializable {
         this.userData = userData;
     }
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.DETACH)
     public List<GamesEntity> getGamesList() {
         return gamesList;
     }
