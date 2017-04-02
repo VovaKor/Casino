@@ -1,4 +1,4 @@
-package softgroup.ua.service;
+package softgroup.ua.service.mappers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -6,10 +6,9 @@ import softgroup.ua.api.FeedbackAPI;
 import softgroup.ua.jpa.Feedback;
 import softgroup.ua.repository.FeedbackRepository;
 
-//import softgroup.ua.api.FeedbackAPI;
 
 @Component
-public class FeedbackMapper {
+public class FeedbackMapper implements GenericMapper<Feedback, FeedbackAPI>{
 
     @Autowired
     private FeedbackRepository feedbackRepository;
