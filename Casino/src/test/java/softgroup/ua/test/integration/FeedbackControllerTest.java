@@ -18,8 +18,8 @@ import softgroup.ua.api.FeedbackListReply;
 import softgroup.ua.api.LoginReply;
 import softgroup.ua.api.LoginRequest;
 import softgroup.ua.jpa.Feedback;
+import softgroup.ua.repository.FeedbackRepository;
 import softgroup.ua.service.mappers.FeedbackMapper;
-import softgroup.ua.service.FeedbackService;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -46,7 +46,7 @@ public class FeedbackControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
-    private FeedbackService feedbackService;
+    private FeedbackRepository feedbackRepository;
 
     @Autowired
     private FeedbackMapper feedbackMapper;
@@ -63,7 +63,7 @@ public class FeedbackControllerTest {
         feedback.setMessage("message");
         feedback.setEmail("alukin@gmail.com");
         feedback.setMessageTime(date);
-        feedbackService.addFeedback(feedback);
+        feedbackRepository.save(feedback);
 
     }
 
@@ -89,12 +89,14 @@ public class FeedbackControllerTest {
 
     @After
     public void tearDown() {
-        feedbackService.deleteFeedback(111l);
+
+        feedbackRepository.delete(111l);
     }
 
     @Test
     public void getAllFeedbackTest() throws Exception {
-        this.mockMvc.perform(get("/feedback/all").header(AUTH_HTTP_HEADER, token))
+        this.mockMvc.perform(get("/feedback/all")
+                .header(AUTH_HTTP_HEADER, token))
                 .andDo(print()).andExpect(status().isOk())
                 .andExpect(content().string(containsString("111")))
                 .andExpect(content().string(containsString("message")))
@@ -103,7 +105,8 @@ public class FeedbackControllerTest {
 
     @Test
     public void findFeedbackByIdTest() throws Exception {
-        this.mockMvc.perform(get("/feedback/byId/111").header(AUTH_HTTP_HEADER, token))
+        this.mockMvc.perform(get("/feedback/byId/111")
+                .header(AUTH_HTTP_HEADER, token))
                 .andDo(print()).andExpect(status().isOk())
                 .andExpect(content().string(containsString("alukin")));
     }
@@ -114,10 +117,10 @@ public class FeedbackControllerTest {
         AddFeedbackRequest addFeedbackRequest = new AddFeedbackRequest();
         addFeedbackRequest.feedback = feedbackMapper.fromInternal(feedback);
         String content = objectMapper.writeValueAsString(addFeedbackRequest);
-        MvcResult result = mockMvc.perform(post("/feedback/add")
+        MvcResult result = mockMvc.perform(post("/feedback/add").
+                        header(AUTH_HTTP_HEADER, token)
                         .accept(MediaType.APPLICATION_JSON_UTF8)
                         .contentType(MediaType.APPLICATION_JSON_UTF8)
-                        .header(AUTH_HTTP_HEADER, token)
                         .content(content)
         )
                 .andExpect(status().isOk())
