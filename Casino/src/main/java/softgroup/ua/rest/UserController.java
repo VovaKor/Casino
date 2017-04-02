@@ -39,7 +39,6 @@ public class UserController {
                 logger.error(e.getMessage());
             }
         });
-
         return reply;
     }
 
@@ -60,9 +59,7 @@ public class UserController {
                 reply.error_message = e.getMessage();
                 return reply;
             }
-
         }
-
         return reply;
     }
 
@@ -87,7 +84,6 @@ public class UserController {
             reply.retcode = -2;
             reply.error_message = "Empty addUserRequest";
         }
-
         return reply;
     }
 

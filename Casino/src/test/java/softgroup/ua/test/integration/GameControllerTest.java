@@ -48,7 +48,7 @@ public class GameControllerTest {
             return;
         }
         LoginRequest rq = new LoginRequest();
-        rq.login = "user";
+        rq.loginId = "user";
         rq.password = "qwerty123";
         objectMapper = new ObjectMapper();
         String content = objectMapper.writeValueAsString(rq);

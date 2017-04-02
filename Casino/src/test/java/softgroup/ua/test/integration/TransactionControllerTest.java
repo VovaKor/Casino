@@ -90,7 +90,7 @@ public class TransactionControllerTest {
             return;
         }
         LoginRequest rq = new LoginRequest();
-        rq.login = "admin";
+        rq.loginId = "admin";
         rq.password = "12345";
         ObjectMapper om = new ObjectMapper();
         String content = om.writeValueAsString(rq);
