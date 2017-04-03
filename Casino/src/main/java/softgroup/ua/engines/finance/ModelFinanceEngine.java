@@ -41,7 +41,7 @@ public class ModelFinanceEngine extends FinanceEngine {
     public boolean checkBalance(BigDecimal amount) throws Exception {
         if (!connected)
             throw new Exception("Not connected");
-        return user.getBalance().compareTo(amount.abs()) == 1;
+        return user.getBalance().compareTo(amount.abs()) >= 0;
     }
     
 }
