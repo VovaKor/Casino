@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import softgroup.ua.api.AutomatsListReply;
 import softgroup.ua.api.LoginReply;
 import softgroup.ua.api.LoginRequest;
+import softgroup.ua.service.GamesService;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.*;
@@ -34,6 +35,8 @@ public class GameControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+    @Autowired
+    private GamesService historyService;
 
     private final static String AUTH_HTTP_HEADER ="X-Authorization";
     private static String token = null;
@@ -72,6 +75,10 @@ public class GameControllerTest {
         result = null;
         responseContent = null;
         automatsListReply = null;
+        historyService.findAll().forEach(gamesEntity -> {
+            long id = gamesEntity.getGameId();
+            historyService.delete(id);
+        });
     }
 
     @Test
@@ -83,6 +90,7 @@ public class GameControllerTest {
         responseContent = result.getResponse().getContentAsString();
         automatsListReply = objectMapper.readValue(responseContent,AutomatsListReply.class);
         assertEquals("Slots are empty",3, automatsListReply.automats.get(0).slots.size());
+
     }
 
 }

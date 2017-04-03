@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,6 +43,7 @@ public class GameController {
     @Autowired
     GameEngine gameEngine;
 
+    @Secured({"ROLE_USER"})
     @RequestMapping(path="/automats/byId/{automatId}/play",  method= RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public AutomatsListReply getGameResult(@PathVariable Integer automatId){
         AutomatsListReply reply = new AutomatsListReply();

@@ -47,9 +47,9 @@ public class AuthorizationController {
             reply.user = userMapper.fromInternal(user);
         } catch (Exception e) {
             reply.retcode = -1;
-            reply.error_message = e.getMessage();
             if (e instanceof AuthorizationException) {
                 logger.error("Error login in user. User: " + request.loginId);
+                reply.error_message = "Error login in user. User: " + request.loginId;
             }
             httpStatus = HttpStatus.NOT_FOUND;
         }

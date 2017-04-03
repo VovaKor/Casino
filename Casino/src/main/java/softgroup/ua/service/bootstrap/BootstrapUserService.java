@@ -85,7 +85,7 @@ public class BootstrapUserService implements InitializingBean {
             //ROLE_ROOT for AutomatService.updateAutomat method.
             //This causes to Access is denied exception
 
-            user.getRolesList().add(roleService.getRoleById(1));
+            user.getRolesList().add(roleService.getRoleById(3));
             UserDataEntity userData = new UserDataEntity("user");
             userData.setPassport("NV1235234");
             userData.setName("Liliana");

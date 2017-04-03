@@ -51,12 +51,13 @@ public class AutomatControllerTest {
         automatRequest.automat.automatName = "Rest test";
         automatRequest.automat.description = "Rest test automat";
         objectMapper = new ObjectMapper();
-        if(token!=null){
-            return;
-        }
+
+    }
+
+    private void generateToken(String login, String password) throws Exception {
         LoginRequest rq = new LoginRequest();
-        rq.loginId = "admin";
-        rq.password = "12345";
+        rq.loginId = login;
+        rq.password = password;
 
         requestContent = objectMapper.writeValueAsString(rq);
         result = mockMvc.perform(post("/auth")
@@ -83,6 +84,7 @@ public class AutomatControllerTest {
     @Test
     public void addUpdateDeleteAutomat() throws Exception {
         /* Adding new automat test*/
+        generateToken("admin","12345");
         requestContent = objectMapper.writeValueAsString(automatRequest);
         result = mockMvc.perform(post("/automats/add")
                 .header(AUTH_HTTP_HEADER, token)
@@ -96,6 +98,7 @@ public class AutomatControllerTest {
         automatsListReply = objectMapper.readValue(responseContent,AutomatsListReply.class);
         assertEquals("Return code isn't 0",0, automatsListReply.retcode.intValue());
         /* Updating new automat test*/
+        generateToken("user","qwerty123");
         automatRequest.automat.automatName = "New test rest name";
         automatRequest.automat.description = "New test description";
         requestContent = objectMapper.writeValueAsString(automatRequest);
@@ -111,6 +114,7 @@ public class AutomatControllerTest {
         automatsListReply = objectMapper.readValue(responseContent,AutomatsListReply.class);
         assertEquals("Return code isn't 0",0, automatsListReply.retcode.intValue());
         /* Deleting new automat test*/
+        generateToken("admin","12345");
         mockMvc.perform(get("/automats/delete/"+automatRequest.automat.automatId)
                 .header(AUTH_HTTP_HEADER, token)
                 .accept(MediaType.APPLICATION_JSON_UTF8)
@@ -119,6 +123,7 @@ public class AutomatControllerTest {
     }
     @Test
     public void getAutomatById() throws Exception {
+        generateToken("user","qwerty123");
         this.mockMvc.perform(get("/automats/byId/1")
                 .header(AUTH_HTTP_HEADER, token)
         )
@@ -128,6 +133,7 @@ public class AutomatControllerTest {
 
     @Test
     public void getAllAutomats() throws Exception {
+        generateToken("user","qwerty123");
         this.mockMvc.perform(get("/automats/all")
                 .header(AUTH_HTTP_HEADER, token)
         )

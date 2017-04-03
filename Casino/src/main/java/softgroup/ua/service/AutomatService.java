@@ -25,10 +25,12 @@ public class AutomatService {
     @Autowired
     AutomatRepository automatRepository;
 
+    @Secured({"ROLE_ROOT","ROLE_USER"})
     public List <AutomatEntity> getAllAutomats() {
         return automatRepository.findAll();
     }
 
+    @Secured({"ROLE_USER","ROLE_ROOT"})
     @Transactional(readOnly = true)
     public AutomatEntity getAutomatById(Integer automatId) {
         return automatRepository.findByAutomatId(automatId);
@@ -42,7 +44,7 @@ public class AutomatService {
         return automatEntity;
     }
 
-    @Secured({"ROLE_ROOT"})
+    @Secured({"ROLE_ROOT", "ROLE_USER"})
     @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED)
     public AutomatEntity updateAutomat(AutomatEntity automatEntity) {
         logger.debug("Updating automat \"%s\" with id \"%s\"", automatEntity.getAutomatName(), automatEntity.getAutomatId());

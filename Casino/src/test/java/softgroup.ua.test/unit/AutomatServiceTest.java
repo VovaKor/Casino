@@ -16,6 +16,7 @@ import softgroup.ua.jpa.UserEntity;
 import softgroup.ua.service.AutomatService;
 import softgroup.ua.service.GamesService;
 import softgroup.ua.service.UserService;
+import softgroup.ua.service.exception.AuthorizationException;
 import softgroup.ua.utils.EntityIdGenerator;
 
 import java.math.BigDecimal;
@@ -42,15 +43,13 @@ public class AutomatServiceTest {
     private Integer automatId;
     private GamesEntity gameHistory;
     private long historyId;
+    private UserEntity userEntity;
 
     @Before
     public void setUp() throws Exception {
         automatId = 1000;
         historyId = EntityIdGenerator.random();
-        UserEntity userEntity = userService.authenticateUser("admin", "12345");
-        AuthenticatedUser authenticatedUser = new AuthenticatedUser(userEntity);
-        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(authenticatedUser, null, authenticatedUser.getAuthorities());
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        authenticate("admin","12345");
         testEntity = new AutomatEntity(automatId,"Test automat","Test description");
         gameHistory = new GamesEntity(historyId, BigDecimal.TEN, new GregorianCalendar());
         //testEntity.getGamesList().add(gameHistory);
@@ -67,6 +66,7 @@ public class AutomatServiceTest {
     }
     @Test
     public void getAutomatById() throws Exception {
+        authenticate("user","qwerty123");
         assertNotNull("Automat not found",automatService.getAutomatById(1));
     }
 
@@ -79,6 +79,7 @@ public class AutomatServiceTest {
         assertNotNull("Test automat not found.",testEntity);
 
         /*Updating automat test*/
+        authenticate("user","qwerty123");
         testEntity.getGamesList().add(gameHistory);
         testEntity.setAutomatName("updatedTestName");
         testEntity.setDescription("New test description");
@@ -88,6 +89,7 @@ public class AutomatServiceTest {
         assertEquals("Automat description not updated","New test description",testEntity.getDescription());
         assertEquals("Automat history not exist",1,testEntity.getGamesList().stream().filter(gamesEntity -> gamesEntity.getGameId()== historyId).count());
         /*Deleting automat test*/
+        authenticate("admin","12345");
         automatService.deleteAutomat(automatId);
         assertNull("Test automat not deleted.",automatService.getAutomatById(automatId));
 
@@ -97,7 +99,14 @@ public class AutomatServiceTest {
 
     @Test
     public void getAllAutomats() throws Exception {
+        authenticate("user","qwerty123");
         int count = automatService.getAllAutomats().size();
         assert(count>=1);
+    }
+    private void authenticate(String login, String password) throws AuthorizationException {
+        userEntity = userService.authenticateUser(login, password);
+        AuthenticatedUser authenticatedUser = new AuthenticatedUser(userEntity);
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(authenticatedUser, null, authenticatedUser.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 }
