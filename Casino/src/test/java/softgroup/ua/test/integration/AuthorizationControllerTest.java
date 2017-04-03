@@ -30,13 +30,29 @@ public class AuthorizationControllerTest {
     MockMvc mockMvc;
 
     @Test
-    public void login() throws Exception {
-        if(token!=null){
-            return;
-        }
+    public void loginAdmin() throws Exception {
         LoginRequest rq = new LoginRequest();
         rq.loginId = "admin";
         rq.password = "12345";
+        ObjectMapper om = new ObjectMapper();
+        String content = om.writeValueAsString(rq);
+        MvcResult result = mockMvc.perform(post("/auth")
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(content)
+        )
+                .andExpect(status().isOk())
+                .andReturn();
+        String reply = result.getResponse().getContentAsString();
+        LoginReply lr = om.readValue(reply, LoginReply.class);
+        token = lr.token;
+    }
+    @Test
+    public void loginUser() throws Exception {
+
+        LoginRequest rq = new LoginRequest();
+        rq.loginId = "user";
+        rq.password = "qwerty123";
         ObjectMapper om = new ObjectMapper();
         String content = om.writeValueAsString(rq);
         MvcResult result = mockMvc.perform(post("/auth")

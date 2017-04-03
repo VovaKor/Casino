@@ -36,24 +36,25 @@ public class UserService {
     @Autowired
     private UserDataRepository userDataRepository;
 
-//    @Secured({})
-    // It's better to remove this annotation from here.
-    // People cant't registrate because of it.
+
     public void addUser(UserEntity user) {
         logger.debug("Adding user with login/id = %s", user.getLoginId());
         userRepository.save(user);
     }
 
+    @Secured({"ROLE_ROOT"})
     public void deleteUser(String loginId) {
         logger.debug("Deleting use with login/id = %s", loginId);
         userRepository.delete(loginId);
     }
 
+    @Secured({"ROLE_USER"})
     public void updateUser(UserEntity user) {
         logger.debug("Updating user with login/id = %s", user.getLoginId());
         userRepository.save(user);
     }
 
+    @Secured({"ROLE_ROOT", "ROLE_MODERATOR"})
     @Transactional(readOnly = true)
     public UserEntity findUserById(String loginId) {
         logger.debug("Searching user with login/id = %s", loginId);
@@ -65,43 +66,45 @@ public class UserService {
         }
         return userEntity;
     }
-
+    @Secured({"ROLE_ROOT", "ROLE_MODERATOR"})
     public List<UserEntity> findUserByName(String name) {
         logger.debug("Searching users with name = %s", name);
         return userRepository.findUserByName(name);
     }
 
+    @Secured({"ROLE_ROOT", "ROLE_MODERATOR"})
     public List<UserEntity> findUserBySurname(String surname) {
         logger.debug("Searching users with surname = %s", surname);
         return userRepository.findUserBySurname(surname);
     }
-
+    @Secured({"ROLE_ROOT", "ROLE_MODERATOR"})
     public List<UserEntity> findUserByNameAndSurname(String name, String surname) {
         logger.debug("Searching users with name = %s and surname = %s", name, surname);
         return userRepository.findUserByNameAndSurname(name, surname);
     }
-
+    @Secured({"ROLE_ROOT", "ROLE_MODERATOR"})
     public UserEntity findUserByPassport(String passport) {
         logger.debug("Searching user with passport = %s", passport);
         return userRepository.findUserByPassport(passport);
     }
-
+    @Secured({"ROLE_ROOT", "ROLE_MODERATOR"})
     public UserEntity findUserByTelephone(String telephone) {
         logger.debug("Searching user with telephone = %s", telephone);
         return userRepository.findUserByTelephone(telephone);
     }
 
     // TODO: 16.03.17 add to this method unit test
+    @Secured({"ROLE_ROOT", "ROLE_MODERATOR"})
     public UserDataEntity findUserDataById(String loginId) {
         logger.debug("Searching user data with login/id = %s ", loginId);
         return userDataRepository.findOne(loginId);
     }
-
+    @Secured({"ROLE_ROOT", "ROLE_MODERATOR"})
     public List<UserEntity> getAllUser() {
         logger.debug("Searching all users");
         return userRepository.findAll();
     }
-
+    @Secured({"ROLE_ROOT", "ROLE_MODERATOR"})
     public void deleteAllUser() {
         logger.debug("Deleting all users");
         userRepository.deleteAll();
