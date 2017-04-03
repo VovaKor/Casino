@@ -3,6 +3,7 @@ package softgroup.ua.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import softgroup.ua.jpa.Feedback;
 import softgroup.ua.repository.FeedbackRepository;
@@ -29,6 +30,7 @@ public class FeedbackService {
      *
      * @param feedback feedback
      */
+    @Secured({"ROLE_USER"})
     public Feedback addFeedback(Feedback feedback) {
         logger.debug("Adding feedback {} at {}", feedback.getEmail(), feedback.getMessageTime());
         feedbackRepository.saveAndFlush(feedback);
@@ -41,6 +43,7 @@ public class FeedbackService {
      *
      * @return list of feedback from DB
      */
+    @Secured({"ROLE_USER", "ROLE_MODERATOR", "ROLE_ROOT"})
     public List<Feedback> getAllFeedback() {
         logger.debug("Finding all feedbacks");
         return feedbackRepository.findAll();
@@ -52,6 +55,7 @@ public class FeedbackService {
      * @param id feedbackId
      * @return feedback with this id form DB
      */
+    @Secured({"ROLE_MODERATOR", "ROLE_ROOT"})
     public Feedback findFeedbackById(Long id) {
         logger.debug("Finding feedback by ID - {}", id);
         return feedbackRepository.findOne(id);
@@ -63,6 +67,7 @@ public class FeedbackService {
      * @param email email
      * @return list of feedbacks which contain this email from DB
      */
+    @Secured({"ROLE_MODERATOR", "ROLE_ROOT"})
     public List<Feedback> findFeedbackByEmail(String email) {
         logger.debug("Finding feedback by EMAIL - {}", email);
         return feedbackRepository.findByEmailContaining(email);
@@ -74,6 +79,7 @@ public class FeedbackService {
      * @param message message
      * @return list of feedbacks which contain this message from DB
      */
+    @Secured({"ROLE_MODERATOR", "ROLE_ROOT"})
     public List<Feedback> findFeedbackByMessageContaining(String message) {
         logger.debug("Finding feedbacks by MESSAGE - {}", message);
         return feedbackRepository.findByMessageContaining(message);
@@ -85,6 +91,7 @@ public class FeedbackService {
      * @param time time
      * @return list of feedbacks which had been written after time from DB
      */
+    @Secured({"ROLE_MODERATOR", "ROLE_ROOT"})
     public List<Feedback> findFeedbackByMessageTimeAfter(Date time) {
         logger.info("Finding feedbacks by TIME AFTER - {}", time);
         return feedbackRepository.findByMessageTimeAfter(time);
@@ -96,6 +103,7 @@ public class FeedbackService {
      * @param time time
      * @return list of feedbacks which had been written before time from DB
      */
+    @Secured({"ROLE_MODERATOR", "ROLE_ROOT"})
     public List<Feedback> findFeedbackByMessageTimeBefore(Date time) {
         logger.debug("Finding feedbacks by TIME BEFORE - {}", time);
         return feedbackRepository.findByMessageTimeBefore(time);
@@ -108,6 +116,7 @@ public class FeedbackService {
      * @param endTime   endTime
      * @return list of feedbacks which had been written between startTime and endTime from DB
      */
+    @Secured({"ROLE_MODERATOR", "ROLE_ROOT"})
     public List<Feedback> findFeedbackByMessageTimeBetween(Date startTime, Date endTime) {
         logger.debug("Finding feedbacks by TIME BETWEEN {} and {}", startTime, endTime);
         return feedbackRepository.findByMessageTimeBetween(startTime, endTime);
@@ -118,6 +127,7 @@ public class FeedbackService {
      *
      * @param id feedback id
      */
+    @Secured({"ROLE_MODERATOR", "ROLE_ROOT"})
     public void deleteFeedback(Long id) {
         logger.debug("Deleting feedback by ID - {}", id);
         feedbackRepository.delete(id);
@@ -127,6 +137,7 @@ public class FeedbackService {
     /**
      * Method for removing all feedbacks in DB
      */
+    @Secured({"ROLE_MODERATOR", "ROLE_ROOT"})
     public void deleteAllFeedback() {
         logger.debug("Deleting all feedbacks");
         feedbackRepository.deleteAll();

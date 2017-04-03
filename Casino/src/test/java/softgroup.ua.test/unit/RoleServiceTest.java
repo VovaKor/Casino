@@ -7,7 +7,10 @@ import static org.junit.Assert.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.junit4.SpringRunner;
+import softgroup.ua.authorization.AuthenticatedUser;
 import softgroup.ua.jpa.RoleEntity;
 import softgroup.ua.jpa.UserEntity;
 import softgroup.ua.service.RoleService;
@@ -33,7 +36,10 @@ public class RoleServiceTest {
     public void setUp() throws Exception {
         roleId = 100;
         roleEntity = new RoleEntity(roleId,"test","Test role");
-        userEntity = userService.findUserById("admin");
+        userEntity = userService.authenticateUser("admin", "12345");
+        AuthenticatedUser authenticatedUser = new AuthenticatedUser(userEntity);
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(authenticatedUser, null, authenticatedUser.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
         userEntity.getRolesList().add(roleEntity);
         roleEntity.getUserList().add(userEntity);
 

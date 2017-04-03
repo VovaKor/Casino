@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import softgroup.ua.api.AddFeedbackRequest;
 import softgroup.ua.api.FeedbackListReply;
 import softgroup.ua.jpa.Feedback;
-import softgroup.ua.service.FeedbackMapper;
 import softgroup.ua.service.FeedbackService;
+import softgroup.ua.service.mappers.FeedbackMapper;
 
 
 @RestController

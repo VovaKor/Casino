@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.crypto.codec.Hex;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import softgroup.ua.jpa.UserDataEntity;
@@ -50,6 +51,7 @@ public class UserService {
         logger.debug("Updating user with login/id = %s", user.getLoginId());
         userRepository.save(user);
     }
+
     @Transactional(readOnly = true)
     public UserEntity findUserById(String loginId) {
         logger.debug("Searching user with login/id = %s", loginId);
@@ -102,7 +104,7 @@ public class UserService {
         userRepository.deleteAll();
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED)
     public UserEntity authenticateUser(String login, String password) throws AuthorizationException {
         UserEntity user = userRepository.findOne(login);
         if (user != null) {
