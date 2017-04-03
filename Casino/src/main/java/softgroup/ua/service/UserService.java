@@ -61,6 +61,7 @@ public class UserService {
         //This line is mandatory to solve “failed to lazily initialize a collection of role” exception
         if (userEntity != null) {
             Hibernate.initialize(userEntity.getRolesList().size());
+            Hibernate.initialize(userEntity.getGamesList().size());
         }
         return userEntity;
     }
@@ -116,6 +117,8 @@ public class UserService {
             }
             else {
                 Hibernate.initialize(user.getRolesList().size());
+                //gamesList has to be initialized Eagerly
+                Hibernate.initialize(user.getGamesList().size());
                 user.setLastLoginDate(new GregorianCalendar());
                 userRepository.save(user);
                 logger.debug("Login ok");

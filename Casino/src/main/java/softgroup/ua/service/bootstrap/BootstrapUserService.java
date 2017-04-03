@@ -15,6 +15,7 @@ import softgroup.ua.authorization.AuthenticatedUser;
 import softgroup.ua.jpa.RoleEntity;
 import softgroup.ua.jpa.UserDataEntity;
 import softgroup.ua.jpa.UserEntity;
+import softgroup.ua.jpa.enums.Gender;
 import softgroup.ua.service.RoleService;
 import softgroup.ua.service.UserService;
 
@@ -74,15 +75,29 @@ public class BootstrapUserService implements InitializingBean {
             user.setBalance(new BigDecimal(10.90));
             user.setEmail("someemail@gmail.com");
             user.setPassword(UserService.digest("qwerty123"));
-            user.getRolesList().add(roleService.getRoleById(4));
+            //Role id was set to 4, but there isn't any role associated
+            //with such id in AuthenticationUser, so this user
+            //had no UserAuthority
+            //            user.getRolesList().add(roleService.getRoleById(4));
+
+            //If roleId > 1, which means that this authenticated user will have
+            //ROLE_USER and ROLE_MODERATOR UserAuthority, but in GameControllerTest we need
+            //ROLE_ROOT for AutomatService.updateAutomat method.
+            //This causes to Access is denied exception
+
+            user.getRolesList().add(roleService.getRoleById(1));
             UserDataEntity userData = new UserDataEntity("user");
             userData.setPassport("NV1235234");
             userData.setName("Liliana");
             userData.setSurname("Vess");
             userData.setBirthDay(new GregorianCalendar(1986, 3,14));
             userData.setTelephone("+309711122233");
+            //Firstly gender wasn't set, that's why UserMapper failed
+            //on 45-th row
+            userData.setGender(Gender.MALE);
             user.setUserData(userData);
-            user.getRolesList().add(roleService.getRoleById(3));
+            //Role was set twice
+//            user.getRolesList().add(roleService.getRoleById(3));
             userService.addUser(user);
             logger.debug("Common user was created from bootstrap");
         }
