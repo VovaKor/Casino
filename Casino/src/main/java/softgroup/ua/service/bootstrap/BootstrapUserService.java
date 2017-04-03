@@ -7,8 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import softgroup.ua.authorization.AuthenticatedUser;
 import softgroup.ua.jpa.RoleEntity;
 import softgroup.ua.jpa.UserDataEntity;
 import softgroup.ua.jpa.UserEntity;
@@ -16,7 +19,10 @@ import softgroup.ua.service.RoleService;
 import softgroup.ua.service.UserService;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 /**
  * @author Stanislav Rymar
@@ -42,6 +48,7 @@ public class BootstrapUserService implements InitializingBean {
 
     @DependsOn("bootstrapRoles")
     private void createSystemUser() {
+        login();
         if (userService.findUserById("admin") == null) {
             UserEntity user = new UserEntity("admin");
             user.setEmail("admin@admin.admin");
@@ -50,6 +57,15 @@ public class BootstrapUserService implements InitializingBean {
             userService.addUser(user);
             logger.debug("Admin user was created from bootstrap");
         }
+    }
+
+    private void login() {
+        UserEntity bootstrapUser = new UserEntity("bootstrapUser", "123", BigDecimal.ZERO, "bootstrap@casino.com");
+        List<RoleEntity> roles = Collections.singletonList(new RoleEntity(1,"root","Administrative user, has access to everything."));
+        bootstrapUser.setRolesList(roles);
+        AuthenticatedUser au = new AuthenticatedUser(bootstrapUser);
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(au, null, au.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
     private void createCommonUser() {
