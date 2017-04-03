@@ -70,6 +70,7 @@ public class UserController {
             UserEntity userEntity;
             try {
                 User user = addUserRequest.getUser();
+                System.out.println(user.getLoginId());
                 userEntity = userMapper.toInternal(user);
                 userService.addUser(userEntity);
                 logger.debug("UserEntity successful added");

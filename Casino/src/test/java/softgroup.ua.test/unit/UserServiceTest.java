@@ -103,26 +103,26 @@ public class UserServiceTest {
     }
 
     @Test
-    public void findUserByPassport(){
+    public void findUserByPassportTest(){
         assertNotNull("UserEntity was not found!", userService.findUserByPassport("NM3244234"));
         assertNull("UserEntity was found!", userService.findUserByPassport("NM987342"));
     }
 
     @Test
-    public void findUserByTelephone(){
+    public void findUserByTelephoneTest(){
         assertNotNull("UserEntity was not found!", userService.findUserByTelephone("+380931111111"));
         assertNull("UserEntity was found!", userService.findUserByTelephone("+380931231233"));
     }
 
 
     @Test
-    public void deleteUser() {
+    public void deleteUserTest() {
         userService.deleteUser("testUser1");
         assertNull("UserEntity not deleted!", userService.findUserById("testUser1"));
     }
 
     @Test
-    public void deleteAllUser() {
+    public void deleteAllUserTest() {
         userService.deleteAllUser();
         assertEquals("Users tables still has a user!", 0, userService.getAllUser().size());
     }
