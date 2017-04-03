@@ -36,7 +36,9 @@ public class UserService {
     @Autowired
     private UserDataRepository userDataRepository;
 
-    @Secured({})
+//    @Secured({})
+    // It's better to remove this annotation from here.
+    // People cant't registrate because of it.
     public void addUser(UserEntity user) {
         logger.debug("Adding user with login/id = %s", user.getLoginId());
         userRepository.save(user);
