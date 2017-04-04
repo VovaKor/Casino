@@ -27,7 +27,7 @@ public class TransactionService extends GeneralServiceImp<TransactionEntity, Lon
         return transactionRepository;
     }
 
-    @Secured({"ROLE_ROOT", "ROLE_USER"})
+    @Secured({"ROLE_USER", "ROLE_ROOT"})
     public TransactionEntity addTransaction(TransactionEntity transaction) {
         transaction = transactionRepository.saveAndFlush(transaction);
         return transaction;

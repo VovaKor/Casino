@@ -28,12 +28,12 @@ public abstract class FinanceEngine {
                  throw new Exception("Not enough money");
             }
         } else {
-            dateTime = accure(amount);
+            dateTime = accrue(amount);
         }
         return dateTime;
     }
     public abstract boolean checkBalance(BigDecimal amount) throws Exception;
     public abstract boolean connect();
     protected abstract Date takeOf(BigDecimal amount) throws Exception;
-    protected abstract Date accure(BigDecimal amount) throws Exception;
+    protected abstract Date accrue(BigDecimal amount) throws Exception;
 }

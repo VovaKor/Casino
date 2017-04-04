@@ -8,6 +8,7 @@ import softgroup.ua.api.AddUserRequest;
 import softgroup.ua.api.User;
 import softgroup.ua.api.UserListReply;
 import softgroup.ua.jpa.UserEntity;
+import softgroup.ua.repository.RoleRepository;
 import softgroup.ua.service.UserService;
 import softgroup.ua.service.bootstrap.BootstrapUserService;
 import softgroup.ua.service.exception.ParsingException;
@@ -25,6 +26,8 @@ public class UserController {
     private UserService userService;
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private RoleRepository roleRepository;
 
     @GetMapping(value = "/users/all", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public UserListReply findAllUsers() {
@@ -72,6 +75,7 @@ public class UserController {
                 User user = addUserRequest.getUser();
                 System.out.println(user.getLoginId());
                 userEntity = userMapper.toInternal(user);
+                userEntity.getRolesList().add(roleRepository.findByRoleId(3));
                 userService.addUser(userEntity);
                 logger.debug("UserEntity successful added");
                 reply.getList().add(user);

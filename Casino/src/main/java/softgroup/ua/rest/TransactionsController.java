@@ -15,10 +15,10 @@ import softgroup.ua.engines.finance.FinanceEngine;
 import softgroup.ua.engines.finance.ModelFinanceEngine;
 import softgroup.ua.jpa.TransactionEntity;
 import softgroup.ua.jpa.UserEntity;
+import softgroup.ua.repository.UserRepository;
 import softgroup.ua.service.exception.ParsingException;
 import softgroup.ua.service.mappers.TransactionMapper;
 import softgroup.ua.service.TransactionService;
-import softgroup.ua.service.UserService;
 
 /**
  *
@@ -32,7 +32,7 @@ public class TransactionsController {
     @Autowired
     TransactionMapper transactionMapper;
     @Autowired
-    UserService userService;
+    UserRepository userRepository;
     
     @RequestMapping(path = "/transactions/all", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public TransactionsListReply getAllTransactions() {
@@ -53,7 +53,7 @@ public class TransactionsController {
     @RequestMapping(path = "/transactions/byloginid/{loginId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public TransactionsListReply getTransactionsByLoginId(@PathVariable String loginId) {
         TransactionsListReply transactionsListReply = new TransactionsListReply();
-        for(TransactionEntity t : transactionService.findTransactionsByUser(userService.findUserById(loginId))) {
+        for(TransactionEntity t : transactionService.findTransactionsByUser(userRepository.findOne(loginId))) {
             try {
                 transactionsListReply.transactions.add(transactionMapper.fromInternal(t));
             } catch (ParsingException e) {
@@ -79,9 +79,9 @@ public class TransactionsController {
             financeEngine.connect();
             transactionEntity.setDateTime(financeEngine.operate(transactionEntity.getAmount()));
             transactionEntity = transactionService.addTransaction(transactionEntity);
-            userService.updateUser(user);
+            userRepository.save(user);
             reply.transactions.add(transactionMapper.fromInternal(transactionEntity));            
-            logger.error("Added transaction id:" + transactionEntity.getTransactionId() + " amount:" + transactionEntity.getAmount());
+            logger.info("Added transaction id:" + transactionEntity.getTransactionId() + " amount:" + transactionEntity.getAmount());
         } catch (Exception e) {
             reply.retcode = -1;
             reply.error_message = e.getMessage();

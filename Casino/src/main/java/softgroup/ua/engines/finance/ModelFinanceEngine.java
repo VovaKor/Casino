@@ -32,7 +32,7 @@ public class ModelFinanceEngine extends FinanceEngine {
     }
 
     @Override
-    protected Date accure(BigDecimal amount) throws Exception {
+    protected Date accrue(BigDecimal amount) throws Exception {
         user.setBalance(user.getBalance().add(amount));
         return new Date(System.currentTimeMillis());
     }
