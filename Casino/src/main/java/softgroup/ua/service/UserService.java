@@ -54,7 +54,6 @@ public class UserService {
         userRepository.save(user);
     }
 
-    @Secured({"ROLE_ROOT", "ROLE_MODERATOR"})
     @Transactional(readOnly = true)
     public UserEntity findUserById(String loginId) {
         logger.debug("Searching user with login/id = %s", loginId);
