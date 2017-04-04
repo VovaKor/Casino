@@ -48,8 +48,9 @@ public class GameController {
     public AutomatsListReply getGameResult(@PathVariable Integer automatId){
         AutomatsListReply reply = new AutomatsListReply();
         AuthenticatedUser authenticatedUser = (AuthenticatedUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UserEntity userEntity = authenticatedUser.getUser();
+
         try {
+            UserEntity userEntity = userService.findUserById(authenticatedUser.getUser().getLoginId());
             AutomatEntity automatEntity = automatService.getAutomatById(automatId);
             Automat automat = automatMapper.fromInternal(automatEntity);
             gameEngine.play(automat, userEntity);
