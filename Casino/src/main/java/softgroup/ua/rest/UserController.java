@@ -73,7 +73,6 @@ public class UserController {
             UserEntity userEntity;
             try {
                 User user = addUserRequest.getUser();
-                System.out.println(user.getLoginId());
                 userEntity = userMapper.toInternal(user);
                 userEntity.getRolesList().add(roleRepository.findByRoleId(3));
                 userService.addUser(userEntity);
