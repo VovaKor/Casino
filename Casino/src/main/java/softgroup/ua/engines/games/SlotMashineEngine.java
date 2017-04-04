@@ -37,9 +37,9 @@ public class SlotMashineEngine implements GameEngine {
 
             automat.isWon = slot1 == slot2 && slot1 == slot3;
             if (automat.isWon){
-                userEntity.setBalance(balance.add(BigDecimal.valueOf(1)));
+                userEntity.setBalance(balance.add(BigDecimal.ONE));
             }else {
-                userEntity.setBalance(balance.subtract(BigDecimal.valueOf(1)));
+                userEntity.setBalance(balance.subtract(BigDecimal.ONE));
             }
 
         } else {
