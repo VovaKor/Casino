@@ -1,6 +1,6 @@
-# Casino
+# Casino RESTful Web Service
 
-Used technologes:
+Used technologies:
 
 1. MySQL database
 2. Spring Boot
